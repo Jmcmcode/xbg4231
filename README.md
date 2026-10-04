@@ -20,6 +20,10 @@ Her name is set once, as `NAME` near the top of the script in `index.html`. It a
 
 **Bigger sums (like the homework):** word sums ("The total of 43 and 18 is ☐"), missing numbers up to 2000 ("68 + ☐ = 100"), adding three numbers, and story sums. The frog shows the "friendly jumps" method: count up to the next ten, then the next hundred, then the rest.
 
+**My tricky ones:** a round built from her own mistakes and slow facts (up to 8), mixed with about half as many facts she already knows well, starting with an easy one. A sum she got wrong comes back until she gets it right first time on 3 separate days (the next day, then 3 days later), then it's "tamed". The home-screen tile shows how many are waiting.
+
+**Clever tricks (💡 Tricks):** animated ten-frames (2 rows of 5, as used at school) act out each trick with counters that pop in, slide across and disappear: number bonds to 10, doubles (a mirror), near doubles, adding and taking away 10, make 10 first, back to 10 first, adding 9, taking away 9, using a sum you know, counting up when numbers are close, and the frog's friendly jumps for bigger sums. Each has Watch (a new example every time) and, where there is one, Practise for the matching speed builder.
+
 ## Calm sums, fun at the end
 
 The sums are kept calm so she can concentrate: a right answer gets a soft chime, a few words ("Brilliant, Rosalie!") and a star; a wrong answer gets a gentle tone and "have another go". Nothing pops up, flies across or covers the sum while she's working, in any mode.
@@ -51,8 +55,12 @@ The game is built to make mistakes feel safe, because she's a bit of a perfectio
 - **Fixing it counts.** Getting it right on the second go, on her own, earns a silver star (worth a full star) and keeps her run going. If the frog helps, she gets a green "learned with Hoppy" star but no point, and her run restarts.
 - **Second wrong answer:** the frog shows the jumps and says the answer.
 - **End of round:** "Brave brain: 8 sums on your own!", "You fixed 2 mistakes! Your brain grew!", and a round with no frog help at all earns "Brave brain! Every sum on your own!" plus 2 bonus stars.
-- **Learning from the tricky ones:** goes through each sum she got wrong, showing what she typed ("Mistakes help us learn!"), the right answer, a tip for that exact sum (make 10 first, near doubles, take away 10 then add 1 back, count up when the numbers are close, friendly jumps to 100), and the frog acting it out. Then she can try those sums again.
+- **Learning from the tricky ones:** goes through each sum she got wrong, showing what she typed ("Mistakes help us learn!"), the right answer and a tip for that exact sum. For sums up to 20 the matching ten-frame animation plays straight away, using her numbers; bigger sums get the frog's friendly jumps. Then she can try those sums again.
 - Sums she gets wrong are saved on the iPad and come back in later rounds until she gets them right first time.
+
+## For grown-ups
+
+Records → "For grown-ups: what Rosalie finds tricky" shows mistakes noted, tricky ones waiting and tamed, a suggested speed builder (the family with the most slips), her trickiest facts with their related take-aways, which kinds of sum go wrong most (adding or taking away across 10, missing numbers, word sums and so on), and patterns in her mistakes with what they usually mean: often 1 out (counting slips), adding instead of taking away, 10 out, or digits swapped.
 
 ## Updates
 
