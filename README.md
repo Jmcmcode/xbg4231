@@ -1,6 +1,10 @@
-# Frog Hop Sums
+# Rosalie's Frog Hop
 
-A maths game for the iPad: adding and taking away, with a frog that hops along a number line to help.
+A maths game for the iPad, made for Rosalie: adding and taking away, with a frog that hops along a number line to help.
+
+Play it at https://jmcmcode.github.io/xbg4231/
+
+Her name is set once, as `NAME` near the top of the script in `index.html`. It appears in the greeting, the praise, the animals' lines, the results, the level-ups, the sticker book and some story sums, and the spoken praise uses it too.
 
 ## Games
 
@@ -26,4 +30,4 @@ A maths game for the iPad: adding and taking away, with a frog that hops along a
 
 ## Putting it on the iPad
 
-It's a single file, `index.html`, with no build step. Host it anywhere (for example GitHub Pages), open it in Safari, tap **Share → Add to Home Screen**, and it opens full-screen like an app. Sounds play through the iPad speaker, so check the volume and that silent mode is off.
+It's a single page, `index.html`, plus its home-screen icons (`apple-touch-icon.png`, `icon-192.png`, `icon-512.png`) and `manifest.webmanifest`. There's no build step. It's hosted on GitHub Pages from this branch. Open it in Safari, tap **Share → Add to Home Screen**, and it opens full-screen like an app, with the frog icon and the name "Rosalie's Sums". Sounds play through the iPad speaker, so check the volume and that silent mode is off.

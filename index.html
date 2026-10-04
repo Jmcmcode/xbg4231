@@ -5,13 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Frog Hop">
+<meta name="apple-mobile-web-app-title" content="Rosalie's Sums">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#C4EBE1">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
 </head>
 <body>
 <!-- game:start -->
-<title>Frog Hop Sums</title>
+<title>Rosalie's Frog Hop</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Baloo+2:wght@600;700;800&display=swap">
@@ -41,6 +45,7 @@ button:disabled{opacity:.5;cursor:default}
 .hero-frog{width:clamp(100px,16vw,140px);height:auto;flex:none;animation:idle 3s ease-in-out infinite}
 .brand-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
 h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);line-height:.95;margin:0;color:var(--frog-dark);text-wrap:balance}
+.hello{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(20px,2.8vw,26px);color:var(--berry);line-height:1}
 .lv-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .lv-name{font-family:var(--display);font-weight:800;font-size:clamp(20px,2.8vw,26px);color:var(--ink)}
 .lv-stars{font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums}
@@ -246,7 +251,8 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
     <div class="brand">
       <svg class="hero-frog" viewBox="-44 -72 88 100" aria-hidden="true"><use href="#frogSym" x="-44" y="-72" width="88" height="100"/></svg>
       <div class="brand-text">
-        <h1>Frog Hop Sums</h1>
+        <p class="hello" id="hello">Hello, Rosalie!</p>
+        <h1>Rosalie's Frog Hop</h1>
         <div class="lv-row"><span class="lv-name" id="lvName">Tadpole</span><span class="lv-stars" id="lvStars"></span></div>
         <div class="lv-track"><div class="lv-fill" id="lvFill" style="width:0%"></div></div>
         <p class="lv-next" id="lvNext"></p>
@@ -321,7 +327,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
     <div class="res-row">
       <div class="newsticker" id="resSticker" hidden></div>
       <div class="joke" id="joke">
-        <b>Joke time!</b>
+        <b>Joke time, Rosalie!</b>
         <p id="jokeQ"></p>
         <button id="jokeBtn" class="chip">Tell me!</button>
         <p class="ans" id="jokeA" hidden></p>
@@ -357,7 +363,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
       </div>
     </div>
     <div class="rev-done" id="revDone" hidden>
-      <h2>Now you know the tricks!</h2>
+      <h2>Now you know the tricks, Rosalie!</h2>
       <p>Ready to try those sums again?</p>
       <div class="res-actions">
         <button id="retryBtn" class="key go">Try them again</button>
@@ -369,7 +375,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
   <section id="book" class="screen book" hidden>
     <div class="book-top">
       <button id="bookBack" class="chip">Home</button>
-      <h2>Sticker book</h2>
+      <h2>Rosalie's sticker book</h2>
       <span style="width:84px"></span>
     </div>
     <p class="book-note" id="bookNote"></p>
@@ -435,6 +441,19 @@ const JOKES = [
   ['What do you call a dinosaur that is never late?', 'A prontosaurus!'],
   ['Why did the banana go to the doctor?', "It wasn't peeling well!"],
 ];
+const NAME = 'Rosalie';
+// Adds her name to some cheers: "Brilliant!" -> "Brilliant, Rosalie!"
+const named = (text, chance = 0.45) => Math.random() < chance ? text.replace(/!$/, `, ${NAME}!`) : text;
+function greeting() { const h = new Date().getHours(); return (h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening') + `, ${NAME}!`; }
+function speak(text) {
+  if (!state.sound || !('speechSynthesis' in window)) return;
+  try {
+    const u = new SpeechSynthesisUtterance(text), v = speechSynthesis.getVoices().find(x => /en[-_]GB/i.test(x.lang));
+    if (v) u.voice = v;
+    u.lang = 'en-GB'; u.rate = 1; u.pitch = 1.15;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  } catch (e) {}
+}
 const reduced = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
 const $ = id => document.getElementById(id);
 const rnd = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
@@ -513,8 +532,10 @@ function audio() {
     return ac;
   } catch (e) { return null; }
 }
+let speechReady = false;
 function unlockAudio() {
   const a = audio(); if (!a) return;
+  if (!speechReady && 'speechSynthesis' in window) { speechReady = true; try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } catch (e) {} }
   try { const b = a.createBuffer(1, 1, 22050), src = a.createBufferSource(); src.buffer = b; src.connect(a.destination); src.start(0); } catch (e) {}
 }
 ['touchend', 'pointerdown', 'click', 'keydown'].forEach(ev => document.addEventListener(ev, unlockAudio, { capture: true, passive: true }));
@@ -612,7 +633,7 @@ function buddy(animal, text) {
   animal = animal || pick(ANIMALS);
   const b = $('buddy');
   b.querySelector('.face').textContent = animal.e;
-  b.querySelector('.bubble').textContent = text || pick(animal.say);
+  b.querySelector('.bubble').textContent = text || named(pick(animal.say), 0.35);
   b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
   clearTimeout(buddyT); buddyT = setTimeout(() => b.classList.remove('show'), 1850);
   setTimeout(() => animal.snd(), 160);
@@ -767,14 +788,15 @@ const STORIES = [
   { t: 'There are {a} children in Class 3 and {b} children in Class 4. How many children is that altogether?', u: 'children' },
   { t: 'A bus has {a} people on it. {b} more people get on. How many people are on the bus now?', u: 'people' },
   { t: 'A shop sells {a} apples on Saturday and {b} apples on Sunday. How many apples is that in total?', u: 'apples' },
-  { t: 'Maya reads {a} pages on Monday and {b} pages on Tuesday. How many pages does she read altogether?', u: 'pages' },
+  { t: 'Rosalie reads {a} pages on Monday and {b} pages on Tuesday. How many pages does she read altogether?', u: 'pages' },
   { t: 'A train has {a} seats in the first carriage and {b} seats in the second. What is the total number of seats?', u: 'seats' },
+  { t: 'Rosalie has {a} stickers. Gran gives her {b} more. How many stickers does she have now?', u: 'stickers' },
   { t: 'A cow eats {a} carrots in the morning and {b} carrots in the afternoon. How many carrots does she eat altogether?', u: 'carrots' },
 ];
 const MISS_STORIES = [
   { t: 'Leo needs {c} points to win. He has {a} points. How many more points does he need?', u: 'points' },
   { t: 'A jar holds {c} sweets. There are {a} sweets in it now. How many more sweets will fill it?', u: 'sweets' },
-  { t: 'Ava wants to collect {c} shells. She has found {a}. How many more shells does she need?', u: 'shells' },
+  { t: 'Rosalie wants to collect {c} shells. She has found {a}. How many more shells does she need?', u: 'shells' },
 ];
 function storyQ() {
   let T, a, b, c, ans, help, solved, missing = Math.random() < 0.3;
@@ -895,6 +917,7 @@ function tipFor(q) {
 /* ---------- screens ---------- */
 function show(id) { document.querySelectorAll('.screen').forEach(s => { s.hidden = s.id !== id; }); }
 function refreshHome() {
+  $('hello').textContent = greeting();
   $('stickerCount').textContent = state.stickers.length;
   $('soundBtn').textContent = 'Sound: ' + (state.sound ? 'on' : 'off');
   const n = Object.keys(state.tricky).length, r = $('remember');
@@ -1003,17 +1026,21 @@ async function startRound(mode, qs) {
   $('dots').hidden = timed;
   $('dots').classList.toggle('many', game.total > 12);
   show('play'); showQ();
+  $('sum').style.visibility = timed ? 'hidden' : '';
   if (timed) {
     const g = game; g.locked = true;
     $('tfill').style.width = '100%'; $('ttext').textContent = fmt(g.limit); $('timer').classList.remove('low');
     await countdown();
     if (game !== g) return;
+    $('sum').style.visibility = '';
     g.locked = false; g.t0 = performance.now(); g.timerId = setInterval(tickTimer, 100);
   }
 }
 async function countdown() {
   const o = $('overlay'), t = $('overlayT'), g = game;
   o.hidden = false; t.classList.remove('small');
+  t.textContent = `Ready, ${NAME}?`; t.classList.add('small'); t.classList.remove('zoom'); void t.offsetWidth; t.classList.add('zoom');
+  await wait(1100); t.classList.remove('small');
   for (const n of ['3', '2', '1', 'Go!']) {
     if (game !== g) break;
     t.textContent = n; t.classList.remove('zoom'); void t.offsetWidth; t.classList.add('zoom');
@@ -1099,6 +1126,7 @@ function check() {
 function streakParty() {
   const s = game.streak;
   if (s === 3) toast('3 in a row!');
+  if (s === 5 || s === 10) speak(`${s} in a row, ${NAME}! Amazing!`);
   else if (s === 5) { toast('5 in a row!'); parade(); burst(innerWidth / 2, innerHeight * 0.3, 70, { emoji: PARTY }); }
   else if (s === 10) { toast('10 in a row!'); parade(); rain(120, PARTY); }
   else if (s === 15) { toast('15! Unstoppable!'); rain(140, PARTY); }
@@ -1123,8 +1151,8 @@ function right() {
   sfx.good(g.streak);
   if (first) {
     buddy(); burst(cx, cy, 36, { emoji: Math.random() < 0.5 ? PARTY : null }); streakParty();
-    say(pick(["That's right!", 'Brilliant!', 'Super hopping!', 'Yes! Well done!', 'You got it!', 'Fantastic!', 'Smashed it!']));
-  } else say('Yes! Now you know that one.');
+    say(named(pick(["That's right!", 'Brilliant!', 'Super hopping!', 'Yes! Well done!', 'You got it!', 'Fantastic!', 'Smashed it!'])));
+  } else say(`Yes, ${NAME}! Now you know that one.`);
   setTimeout(next, first ? 1500 : 1600);
 }
 function wrong() {
@@ -1140,7 +1168,7 @@ function wrong() {
     setTimeout(next, 1100); return;
   }
   renderQ();
-  if (g.attempts === 1) { say(pick(['Not quite. Have another go!', 'Oops! Try again!', 'So close! One more go!'])); return; }
+  if (g.attempts === 1) { say(pick([`Not quite, ${NAME}. Have another go!`, 'Oops! Try again!', `So close, ${NAME}! One more go!`])); return; }
   if (g.attempts === 2) {
     runHelp(q, $('line'), say, $('helpBtn')).then(ok => { if (ok && game === g && g.q === q && !g.locked) say(q.help.reveal); });
     return;
@@ -1186,10 +1214,11 @@ async function endRound() {
 
   // Words
   let title;
-  if (g.mode === 'retry') title = perfect ? 'You fixed them all!' : 'Getting better!';
-  else if (g.timed) title = beat ? 'You beat the clock!' : g.timeUp ? "Time's up! Great try!" : ratio >= 0.9 ? 'Super speedy!' : 'All done!';
-  else title = perfect ? 'Perfect! Every single one!' : ratio >= 0.8 ? 'Fantastic hopping!' : ratio >= 0.5 ? 'Great work!' : 'Good try! Keep hopping!';
+  if (g.mode === 'retry') title = perfect ? `You fixed them all, ${NAME}!` : `Getting better, ${NAME}!`;
+  else if (g.timed) title = beat ? `${NAME} beat the clock!` : g.timeUp ? `Time's up! Great try, ${NAME}!` : ratio >= 0.9 ? `Super speedy, ${NAME}!` : `All done, ${NAME}!`;
+  else title = perfect ? `Perfect, ${NAME}! Every single one!` : ratio >= 0.8 ? `Fantastic hopping, ${NAME}!` : ratio >= 0.5 ? `Great work, ${NAME}!` : `Good try, ${NAME}! Keep hopping!`;
   $('resTitle').textContent = title;
+  setTimeout(() => { if (my === endToken) speak(title); }, 400);
   $('resLine').textContent = g.timed
     ? (beat ? `All ${g.total} right in ${fmt(used)}, with ${fmt(g.limit - used)} to spare!` : `${correct} right out of ${g.total} in ${fmt(used)}.`)
     : g.mode === 'retry' ? `You got ${correct} out of ${g.total} right this time.` : `You got ${correct} out of ${g.total} right first time.`;
@@ -1237,7 +1266,8 @@ function uniqueMissed(g) {
 }
 function levelUp(lv) {
   return new Promise(res => {
-    $('lvTitle').textContent = `Level up! You're a ${lv.name}!`;
+    $('lvTitle').textContent = `Level up, ${NAME}! You're a ${lv.name}!`;
+    speak(`Level up, ${NAME}! You're a ${lv.name}!`);
     $('lvGift').textContent = `Your frog got ${lv.gift}!`;
     $('levelup').hidden = false; sfx.fanfare(); setTimeout(() => ANIMALS[0].snd(), 900); rain(120, ['⭐', '🎉', '🐸', '✨']);
     $('lvBtn').onclick = () => { $('levelup').hidden = true; sfx.boing(); res(); };
