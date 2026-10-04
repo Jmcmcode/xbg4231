@@ -16,7 +16,7 @@
 <body>
 <!-- game:start -->
 <title>Rosalie's Frog Hop</title>
-<meta name="build" content="2026-10-04 19:52:21">
+<meta name="build" content="2026-10-04 20:04:25">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Baloo+2:wght@600;700;800&display=swap">
@@ -287,6 +287,13 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 .stampede.dino .row{font-size:110px;animation-duration:2.8s}
 .golden{position:absolute;left:0;top:0;width:96px;height:96px;border-radius:50%;font-size:58px;line-height:96px;text-align:center;pointer-events:auto;background:radial-gradient(circle,rgba(255,214,90,.95) 0 35%,rgba(255,198,58,.35) 60%,transparent 70%);filter:drop-shadow(0 0 12px #FFC63A);touch-action:manipulation}
 .golden.away{transition:transform .6s ease-in;transform:translate(120vw,-40vh)!important}
+.trophy-wrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max-content;max-width:92vw;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--paper);border-radius:36px;padding:18px 40px 24px;box-shadow:0 10px 0 var(--sun-dark);border:5px solid var(--sun);animation:recIn .6s cubic-bezier(.3,1.6,.5,1)}
+.trophy{font-size:min(130px,24vw);line-height:1;animation:trophyBob 1s ease-in-out infinite alternate}
+.rec-title{font-family:var(--display);font-weight:800;font-size:clamp(40px,8vw,72px);line-height:1;color:var(--coral);letter-spacing:.02em;white-space:nowrap}
+.rec-big{font-family:var(--display);font-weight:800;font-size:clamp(48px,10vw,96px);line-height:1.05;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.rec-small{font-weight:700;font-size:22px;color:var(--ink-soft)}
+@keyframes recIn{from{transform:translate(-50%,-50%) scale(.2) rotate(-12deg)}to{transform:translate(-50%,-50%) scale(1) rotate(0)}}
+@keyframes trophyBob{from{transform:translateY(0) rotate(-6deg)}to{transform:translateY(-14px) rotate(6deg)}}
 .disco-bg{position:absolute;inset:0;background:conic-gradient(from 0deg,#FF5DA2,#FFC63A,#4FD18B,#3AB0FF,#A65AFF,#FF5DA2);opacity:.82;animation:hue 1.6s linear infinite}
 .disco-ball{position:absolute;left:50%;top:-10px;font-size:110px;transform:translateX(-50%);animation:swing 1s ease-in-out infinite alternate;transform-origin:top center}
 body.quake #app{animation:quake .25s linear 6}
@@ -1018,6 +1025,20 @@ async function flyCatch() {
   await wait(550); sfx.burp(); funSay('BURRRP!');
   await wait(900); funHide();
 }
+// A new personal best: a trophy, the improvement in big numbers, fireworks and a cheer.
+async function recordParty(g, correct, used) {
+  const prev = g.prevBest, fast = !g.endless && prev && correct === prev.correct;
+  const big = !prev ? (g.endless ? `${correct} in a minute!` : `${correct} right!`)
+    : fast ? `${fmt(prev.time)} → ${fmt(used)}`
+    : `${prev.correct} → ${correct}`;
+  const small = !prev ? 'Your first record!' : fast ? 'Same score, but faster!' : g.endless ? 'sums in a minute' : 'sums right';
+  funShow(`<div class="trophy-wrap"><div class="trophy">🏆</div><div class="rec-title">NEW RECORD!</div><div class="rec-big">${big}</div><div class="rec-small">${small}</div></div>`);
+  sfx.drumroll(); await wait(reduced ? 300 : 900);
+  sfx.fanfare(); setTimeout(() => sfx.cheer(), 300);
+  speak(g.endless ? `New record, ${NAME}! ${correct} in a minute!` : `New record, ${NAME}!`);
+  fireworksShow(5); rain(80, ['🏆', '⭐', '🎉']);
+  await wait(3200); funHide();
+}
 async function giantBoing() {
   funShow(`${frogUse('giant')}<div class="fun-say">BOING!</div>`);
   sfx.boing(); await wait(650); funSay('BOING! BOING!'); sfx.boing(); await wait(550); funSay('BOING! BOING! BOING!'); sfx.boing();
@@ -1726,7 +1747,7 @@ async function endRound() {
   if (g.timed) {
     used = g.timeUp ? g.limit : Math.min(g.limit, (performance.now() - g.t0) / 1000);
     beat = perfect && !g.timeUp;
-    const b = state.bests[g.mode];
+    const b = state.bests[g.mode]; g.prevBest = b ? { ...b } : null;
     if (g.endless) { if (!b || correct > b.correct) { state.bests[g.mode] = { correct, time: g.limit }; record = correct > 0; } ratio = record ? 1 : 0.7; }
     else if (!b || correct > b.correct || (correct === b.correct && used < b.time)) { state.bests[g.mode] = { correct, time: Math.round(used * 10) / 10 }; record = !!b || correct > 0; }
   }
@@ -1758,7 +1779,6 @@ async function endRound() {
   if (g.timed && b) $('resBest').textContent = g.endless ? `Your best sprint: ${b.correct} in a minute` : `Your best for ${CLOCKS[g.mode].name}: ${b.correct} right` + (b.correct === 20 ? ` in ${fmt(b.time)}` : '');
   $('resBanners').innerHTML = '';
   const banners = [];
-  if (record) banners.push(['New record!', '']);
   if (braveAll) banners.push(['Brave brain! Every sum on your own! +2 stars', 'gold']);
   else if (!g.timed && g.total - helpedN > 0) banners.push([`Brave brain: ${g.total - helpedN} sums on your own!`, 'alt']);
   if (g.newGold) banners.push([`⚡ ${g.newGold} new gold fact${g.newGold === 1 ? '' : 's'}!`, 'gold']);
@@ -1788,8 +1808,10 @@ async function endRound() {
     if (r.ok || r.second || r.helped) sfx.ding(r.ok ? i : r.second ? i - 2 : i - 5);
     await wait(reduced ? 0 : (shown > 12 ? 70 : 120)); if (my !== endToken) return;
   }
+  if (record) { await wait(300); if (my !== endToken) return; await recordParty(g, correct, used); if (my !== endToken) return; }
   const great = beat || ratio >= 0.9, hasPic = !!getPic();
-  if (great) { sfx.fanfare(); burst(innerWidth / 2, innerHeight * 0.35, 120, { emoji: PARTY }); if (!hasPic) parade(); }
+  if (record) { /* the record party was the big moment */ }
+  else if (great) { sfx.fanfare(); burst(innerWidth / 2, innerHeight * 0.35, 120, { emoji: PARTY }); if (!hasPic) parade(); }
   else if (ratio >= 0.6) { sfx.fanfare(); burst(innerWidth / 2, innerHeight * 0.35, 90, { emoji: PARTY }); }
   else if (!hasPic) buddy(pick(ANIMALS), pick(['Practice makes purr-fect!', 'Keep hopping!', "You're getting there!"]));
   if (hasPic) {
