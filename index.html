@@ -90,6 +90,8 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 .dot.now{background:var(--paper);box-shadow:0 0 0 3px var(--ink)}
 .dot.ok{background:var(--sun);box-shadow:0 0 0 2px var(--sun-dark)}
 .dot.miss{background:var(--coral)}
+.left-bits{display:flex;align-items:center;gap:10px}
+.chip.snd{padding:8px 14px;font-size:22px;line-height:1}
 .right-bits{display:flex;align-items:center;gap:10px}
 .streak{font-family:var(--display);font-weight:800;font-size:20px;background:var(--sun);border-radius:999px;padding:2px 12px;box-shadow:0 3px 0 var(--sun-dark);white-space:nowrap}
 .streak.bump{animation:pop .4s ease}
@@ -363,14 +365,14 @@ body.quake #app{animation:quake .25s linear 6}
       <button id="bookBtn" class="chip">Sticker book &middot; <b id="stickerCount">0</b></button>
       <button id="recBtn" class="chip">Records</button>
       <span id="dayChip" class="chip flame" hidden></span>
-      <button id="soundBtn" class="chip">Sound: on</button>
+      <button id="soundBtn" class="chip" aria-pressed="true">🔊 Sound on</button>
     </div>
     <p class="remember" id="remember" hidden></p>
   </section>
 
   <section id="play" class="screen play" hidden>
     <header class="bar">
-      <button id="quitBtn" class="chip">Home</button>
+      <div class="left-bits"><button id="quitBtn" class="chip">Home</button><button id="playSound" class="chip snd" aria-label="Sound on">🔊</button></div>
       <div class="dots" id="dots" aria-label="Progress"></div>
       <div class="right-bits">
         <span class="streak" id="streak" hidden></span>
@@ -1228,7 +1230,7 @@ function show(id) { document.querySelectorAll('.screen').forEach(s => { s.hidden
 function refreshHome() {
   $('hello').textContent = greeting();
   $('stickerCount').textContent = state.stickers.length;
-  $('soundBtn').textContent = 'Sound: ' + (state.sound ? 'on' : 'off');
+  showSound();
   const n = Object.keys(state.tricky).length, r = $('remember');
   r.hidden = n === 0;
   r.textContent = `The frog remembers ${n} tricky sum${n === 1 ? '' : 's'} and will bring ${n === 1 ? 'it' : 'them'} back to practise.`;
@@ -1735,7 +1737,20 @@ $('hero').addEventListener('click', () => {
   const h = $('hero'); h.classList.remove('hop'); void h.offsetWidth; h.classList.add('hop');
   pick([ANIMALS[0].snd, sfx.burp, sfx.boing, sfx.raspberry, ANIMALS[0].snd])();
 });
-$('soundBtn').addEventListener('click', () => { state.sound = !state.sound; save(); refreshHome(); if (state.sound) ANIMALS[0].snd(); });
+// One switch for all sound: effects, animal noises and the voice. It's remembered on the iPad.
+function showSound() {
+  $('soundBtn').textContent = state.sound ? '🔊 Sound on' : '🔇 Sound off';
+  $('soundBtn').setAttribute('aria-pressed', String(state.sound));
+  $('playSound').textContent = state.sound ? '🔊' : '🔇';
+  $('playSound').setAttribute('aria-label', state.sound ? 'Sound on' : 'Sound off');
+}
+function toggleSound() {
+  state.sound = !state.sound; save(); showSound();
+  if (state.sound) { audio(); ANIMALS[0].snd(); }
+  else { try { speechSynthesis.cancel(); } catch (e) {} if (ac) ac.suspend(); }
+}
+$('soundBtn').addEventListener('click', toggleSound);
+$('playSound').addEventListener('click', toggleSound);
 document.addEventListener('keydown', e => {
   if ($('play').hidden) return;
   if (/^[0-9]$/.test(e.key)) press(e.key);
