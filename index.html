@@ -16,7 +16,7 @@
 <body>
 <!-- game:start -->
 <title>Rosalie's Frog Hop</title>
-<meta name="build" content="2026-10-04 19:44:09">
+<meta name="build" content="2026-10-04 19:52:21">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Baloo+2:wght@600;700;800&display=swap">
@@ -57,12 +57,36 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 .lv-fill{height:100%;background:var(--sun);border-radius:999px;box-shadow:inset 0 -3px 0 var(--sun-dark);transition:width .6s ease}
 .lv-next{margin:0;font-size:16px;font-weight:700;color:var(--ink-soft)}
 .groups{display:grid;gap:18px;width:min(980px,100%)}
-@media (min-width:900px) and (orientation:landscape){.groups{grid-template-columns:repeat(2,minmax(0,1fr))}.group.clock{grid-column:1/-1}}
+@media (min-width:900px) and (orientation:landscape){.groups{grid-template-columns:repeat(2,minmax(0,1fr))}.group.clock,.group.builders{grid-column:1/-1}}
 .group{display:flex;flex-direction:column;gap:10px;min-width:0}
 .group-h{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(22px,3vw,28px);color:var(--ink)}
 .group-h span{font-family:var(--body);font-weight:700;font-size:.68em;color:var(--ink-soft);margin-left:6px}
 .modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .modes.three-up{grid-template-columns:repeat(3,minmax(0,1fr))}
+.modes.four-up{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.mode.builder{flex-direction:column;align-items:flex-start;gap:4px;min-height:70px}
+.mode.builder small{font-size:14px}
+.mode.builder .gold-n{color:var(--sun-dark)}
+.chip.zap{background:var(--sun);box-shadow:0 4px 0 var(--sun-dark)}
+/* Fast facts map */
+.facts{align-items:center}
+.legend{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;font-weight:700;color:var(--ink-soft);font-size:15px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:22px;height:16px;border-radius:6px;display:inline-block}
+.fam-list{display:flex;flex-direction:column;gap:14px;width:min(900px,100%)}
+.fam{background:rgba(255,253,245,.55);border-radius:22px;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.fam-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.fam-top h3{margin:0;font-family:var(--display);font-weight:800;font-size:22px}
+.fam-top .n{font-weight:700;color:var(--ink-soft)}
+.fam-top .chip{margin-left:auto;min-height:40px;padding:6px 16px;font-size:16px}
+.pads{display:flex;flex-wrap:wrap;gap:8px}
+.fpad{min-width:78px;padding:8px 10px 6px;border-radius:14px;text-align:center;font-family:var(--display);font-weight:800;font-size:19px;line-height:1.1;background:transparent;border:2px dashed var(--shade);color:var(--shade)}
+.fpad .pips{display:flex;gap:3px;justify-content:center;margin-top:4px;height:6px}
+.fpad .pips b{width:6px;height:6px;border-radius:50%;background:var(--ink-faint)}
+.fpad .pips b.on{background:var(--sun-dark)}
+.fpad.tried{background:var(--paper);border:2px solid var(--paper);color:var(--ink);box-shadow:0 3px 0 var(--shade)}
+.fpad.gold{background:var(--sun);border:2px solid var(--sun);color:var(--ink);box-shadow:0 3px 0 var(--sun-dark)}
+.fpad.gold .pips b{background:var(--sun-dark)}
 .mode{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--paper);border-radius:22px;box-shadow:0 6px 0 var(--shade);font-family:var(--display);font-weight:700;font-size:clamp(19px,2.6vw,25px);line-height:1.1;text-align:left;min-height:76px;transition:transform .08s}
 .mode:active{transform:translateY(4px);box-shadow:0 2px 0 var(--shade)}
 .mode small{display:block;font-family:var(--body);font-size:15px;font-weight:700;color:var(--ink-soft);margin-top:2px}
@@ -360,8 +384,12 @@ label.chip{display:inline-flex;align-items:center;cursor:pointer}
     </div>
     <div class="groups">
       <div class="group clock">
-        <h2 class="group-h">Beat the clock <span>20 sums up to 20</span></h2>
-        <div class="modes three-up" id="clockModes"></div>
+        <h2 class="group-h">Beat the clock <span>sums up to 20</span></h2>
+        <div class="modes four-up" id="clockModes"></div>
+      </div>
+      <div class="group builders">
+        <h2 class="group-h">Speed builders <span>learn the key facts by heart</span></h2>
+        <div class="modes three-up" id="builderModes"></div>
       </div>
       <div class="group">
         <h2 class="group-h">Up to 20 <span>practice with help</span></h2>
@@ -386,6 +414,7 @@ label.chip{display:inline-flex;align-items:center;cursor:pointer}
     <div class="home-foot">
       <button id="wardBtn" class="chip">Dress up <span id="wardName">Hoppy</span></button>
       <button id="bookBtn" class="chip">Sticker book &middot; <b id="stickerCount">0</b></button>
+      <button id="factsBtn" class="chip zap">⚡ Fast facts</button>
       <button id="recBtn" class="chip">Records</button>
       <span id="dayChip" class="chip flame" hidden></span>
       <button id="soundBtn" class="chip" aria-pressed="true">🔊 Sound on</button>
@@ -509,6 +538,21 @@ label.chip{display:inline-flex;align-items:center;cursor:pointer}
     </div>
   </section>
 
+  <section id="facts" class="screen facts" hidden>
+    <div class="book-top">
+      <button id="factsBack" class="chip">Home</button>
+      <h2>Rosalie's fast facts</h2>
+      <span style="width:84px"></span>
+    </div>
+    <p class="book-note" id="factsNote"></p>
+    <div class="legend">
+      <span><i style="border:2px dashed var(--shade)"></i>Not tried yet</span>
+      <span><i style="background:var(--paper)"></i>Getting quicker</span>
+      <span><i style="background:var(--sun)"></i>Gold: fast 3 times</span>
+    </div>
+    <div class="fam-list" id="famList"></div>
+  </section>
+
   <section id="records" class="screen records" hidden>
     <div class="book-top">
       <button id="recBack" class="chip">Home</button>
@@ -557,6 +601,7 @@ const KEY = 'froghop.v1';
 const STICKERS = ['🐸','🦆','🐞','🦋','🐢','🐟','🐌','🌻','🐝','🦔','🦉','🐿️','🐛','🦢','🌷','🍄','🐠','🦊','🐇','🌈','🐳','🦜','🐙','⭐'];
 const HW = ['words', 'missbig', 'three', 'story'];
 const CLOCKS = {
+  t60: { secs: 60, name: 'Sprint', sub: 'As many as you can in 1 minute', endless: true },
   t180: { secs: 180, name: 'Warm-up', sub: '20 sums in 3 minutes' },
   t120: { secs: 120, name: 'Test speed', sub: '20 sums in 2 minutes' },
   t90: { secs: 90, name: 'Lightning', sub: '20 sums in 1½ minutes' },
@@ -570,6 +615,22 @@ const LEVELS = [
   { at: 220, name: 'Frog Royalty', item: 'crown', gift: 'a golden crown', unlock: 'Fireworks and a gold frog colour' },
   { at: 320, name: 'Frog Legend', item: 'medal', gift: 'a gold medal', unlock: 'a rainbow frog colour' },
 ];
+// Speed builders: the key facts to know by heart, in the order to learn them.
+const FAST = 4, GOLD_AT = 3; // a sum answered in 4 seconds or less is "fast"; 3 fast answers make a fact gold
+const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
+const FAMILIES = [
+  { id: 'sb_bonds10', name: 'Bonds to 10', tip: 'Pairs that make 10: 1 and 9, 2 and 8, 3 and 7, 4 and 6, 5 and 5.', pairs: [[1, 9], [2, 8], [3, 7], [4, 6], [5, 5]], forms: ['miss', 'miss', 'sub', 'sub', 'add'] },
+  { id: 'sb_doubles', name: 'Doubles', tip: 'A double is a number added to itself, like 6 + 6 = 12.', pairs: range(1, 10).map(n => [n, n]), forms: ['add', 'add', 'add', 'sub', 'miss'] },
+  { id: 'sb_near', name: 'Near doubles', tip: 'Use a double, then add 1 more: 6 + 7 is 6 + 6 = 12, plus 1 = 13.', pairs: range(1, 9).map(n => [n, n + 1]), forms: ['add', 'add', 'add', 'sub'] },
+  { id: 'sb_ten', name: 'Add and take 10', tip: 'Adding 10 just adds a ten: 4 + 10 = 14. Taking 10 away takes the ten off: 14 − 10 = 4.', pairs: range(1, 9).map(n => [n, 10]), forms: ['add', 'add', 'sub', 'sub'] },
+  { id: 'sb_bonds20', name: 'Bonds to 20', tip: 'Pairs that make 20 are like pairs that make 10: 3 + 7 = 10, so 13 + 7 = 20.', pairs: range(1, 9).map(n => [n, 20 - n]), forms: ['miss', 'miss', 'sub', 'sub', 'add'] },
+  { id: 'sb_cross', name: 'Cross 10', tip: 'Make 10 first: 8 + 5 is 8 + 2 = 10, then 3 more = 13.', pairs: [[2, 9], [3, 8], [3, 9], [4, 7], [4, 8], [4, 9], [5, 7], [5, 8], [5, 9], [6, 8], [6, 9], [7, 9]], forms: ['add', 'add', 'sub', 'sub', 'miss'] },
+];
+const FAMILY = Object.fromEntries(FAMILIES.map(f => [f.id, f]));
+const pairKey = (x, y) => Math.min(x, y) + '+' + Math.max(x, y);
+// Every key fact once (5 + 5 is both a bond to 10 and a double).
+const ALL_PAIRS = [...new Map(FAMILIES.flatMap(f => f.pairs).map(([x, y]) => [pairKey(x, y), [x, y]])).values()];
+const goldTotal = () => ALL_PAIRS.filter(([x, y]) => (state.facts[pairKey(x, y)] || {}).fast >= GOLD_AT).length;
 const OUTFITS = { bow: ['🎀', 'Bow tie'], glasses: ['🕶️', 'Sunglasses'], hat: ['🎉', 'Party hat'], cape: ['🦸', 'Cape'], crown: ['👑', 'Crown'], medal: ['🏅', 'Gold medal'] };
 const PALETTES = {
   green: { name: 'Green', at: 0, body: '#4FA83D', dark: '#2E7524', belly: '#CDEB9A', css: '#4FA83D' },
@@ -715,6 +776,7 @@ function load() {
     totals: Object.assign({ right: 0, rounds: 0, perfect: 0, bestStreak: 0 }, s.totals && typeof s.totals === 'object' ? s.totals : {}),
     seen: s.seen && typeof s.seen === 'object' ? s.seen : {},
     voice: typeof s.voice === 'string' ? s.voice : '',
+    facts: s.facts && typeof s.facts === 'object' ? s.facts : {},
   };
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
@@ -1083,6 +1145,11 @@ function smallQ(mode, type, missing) {
     const crosses = (start < 10 && end > 10) || (start > 10 && end < 10);
     if (!bridge || crosses) break;
   }
+  return buildSmall(mode, type, missing, a, b, c);
+}
+// Builds an up-to-20 sum: a + b = c or a − b = c, with the box at the end or (missing) in the middle.
+function buildSmall(mode, type, missing, a, b, c) {
+  const start = (type === 'add' && !missing) ? Math.max(a, b) : a, end = c;
   const op = type === 'add' ? '+' : '−';
   const tokens = missing ? [a, op, '?', '=', c] : [a, op, b, '=', '?'];
   const ans = missing ? b : c, n = Math.abs(end - start), dir = Math.sign(end - start);
@@ -1100,6 +1167,35 @@ function smallQ(mode, type, missing) {
       reveal: missing ? `That was ${ans} hops. Type ${ans}.` : `The frog landed on ${ans}. Type ${ans}.`,
     },
   };
+}
+// A sum made from one fact: parts x and y, whole x + y.
+function factQ(mode, x, y, form) {
+  const w = x + y, [p, q] = Math.random() < 0.5 ? [x, y] : [y, x];
+  if (form === 'add') return buildSmall(mode, 'add', false, p, q, w);
+  if (form === 'sub') return buildSmall(mode, 'sub', false, w, p, q);
+  if (form === 'miss') return buildSmall(mode, 'add', true, p, q, w);
+  return buildSmall(mode, 'sub', true, w, p, q);
+}
+// The fact behind an up-to-20 sum, so 8 + 5, 13 − 5 and 5 + ? = 13 all count as the same fact.
+function factKey(q) {
+  const i = q.info; if (!i || i.kind !== 'small') return null;
+  return i.type === 'add' ? pairKey(i.a, i.b) : pairKey(i.b, i.c);
+}
+// Facts she has tried but isn't quick at yet, slowest first.
+function slowPairs(pairs, n) {
+  return pairs.filter(([x, y]) => { const f = state.facts[pairKey(x, y)]; return f && f.fast < GOLD_AT && f.t > FAST; })
+    .sort((a, b) => state.facts[pairKey(b[0], b[1])].t - state.facts[pairKey(a[0], a[1])].t).slice(0, n);
+}
+function recordFact(q, secs, g) {
+  const k = factKey(q); if (!k) return;
+  const f = state.facts[k] || (state.facts[k] = { n: 0, fast: 0, t: 0 });
+  f.n++; f.t = Math.round(secs * 10) / 10;
+  if (secs <= FAST && f.fast < GOLD_AT) { f.fast++; if (f.fast === GOLD_AT && ALL_PAIRS.some(([x, y]) => pairKey(x, y) === k)) g.newGold = (g.newGold || 0) + 1; }
+}
+function markFactSlow(q) {
+  const k = factKey(q); if (!k) return;
+  const f = state.facts[k] || (state.facts[k] = { n: 0, fast: 0, t: 0 });
+  f.t = Math.max(f.t, 9);
 }
 function bigPair() {
   const r = Math.random(); let a, b;
@@ -1190,6 +1286,9 @@ const GEN = {
   words: wordQ, missbig: missQ, three: threeQ, story: storyQ,
   hwmix: () => pick([wordQ, missQ, threeQ, storyQ])(),
 };
+FAMILIES.forEach(f => { GEN[f.id] = () => { const [x, y] = pick(f.pairs); return factQ(f.id, x, y, pick(f.forms)); }; });
+// Which kind of sum to make from a slow fact, to suit the mode.
+const SLOW_FORM = { add: ['add'], sub: ['sub'], miss20: ['miss', 'missSub'], mix20: ['add', 'sub'] };
 function fits(mode, q) {
   if (mode === 'hwmix') return HW.includes(q.mode);
   if (mode === 'mix20') return q.mode === 'add' || q.mode === 'sub';
@@ -1198,10 +1297,24 @@ function fits(mode, q) {
 function buildRound(mode) {
   const seen = new Set(), qs = [];
   const take = gen => { let q; for (let t = 0; t < 30; t++) { q = gen(); if (!seen.has(q.key)) break; } seen.add(q.key); qs.push(q); };
+  const addSlow = (pairs, forms, qmode, n) => slowPairs(pairs, n).forEach(([x, y]) => { const q = factQ(qmode || pick(forms), x, y, pick(forms)); if (!seen.has(q.key)) { seen.add(q.key); qs.push(q); } });
   if (CLOCKS[mode]) {
-    for (let i = 0; i < 10; i++) { take(GEN.add); take(GEN.sub); }
+    // A few slow facts come back in every timed round.
+    slowPairs(ALL_PAIRS, 3).forEach(([x, y]) => { const t = pick(['add', 'sub']); const q = factQ(t, x, y, t); if (!seen.has(q.key)) { seen.add(q.key); qs.push(q); } });
+    const n = CLOCKS[mode].endless ? 60 : 20;
+    while (qs.length < n) take(qs.length % 2 ? GEN.add : GEN.sub);
     return shuffle(qs);
   }
+  if (FAMILY[mode]) {
+    const f = FAMILY[mode];
+    addSlow(f.pairs, f.forms, mode, 4);
+    while (qs.length < 12) take(GEN[mode]);
+    return shuffle(qs);
+  }
+  if (SLOW_FORM[mode]) slowPairs(ALL_PAIRS, 2).forEach(([x, y]) => {
+    const form = pick(SLOW_FORM[mode]), qm = mode === 'mix20' ? (form === 'add' ? 'add' : 'sub') : mode;
+    const q = factQ(qm, x, y, form); if (!seen.has(q.key)) { seen.add(q.key); qs.push(q); }
+  });
   const tricky = shuffle(Object.values(state.tricky).map(t => t && t.q).filter(q => q && q.info && fits(mode, q))).slice(0, 3);
   for (const q of tricky) { seen.add(q.key); qs.push(q); }
   while (qs.length < 10) take(GEN[mode]);
@@ -1305,11 +1418,33 @@ function refreshHome() {
   chip.hidden = d < 2; chip.textContent = `🔥 ${d} days in a row`;
   $('clockModes').innerHTML = Object.entries(CLOCKS).map(([id, c]) => {
     const b = state.bests[id];
-    const best = !b ? 'No record yet' : (b.correct === 20 && b.time < c.secs ? `Best: all 20 in ${fmt(b.time)}` : `Best: ${b.correct} right`);
+    const best = !b ? 'No record yet' : c.endless ? `Best: ${b.correct} in a minute` : (b.correct === 20 && b.time < c.secs ? `Best: all 20 in ${fmt(b.time)}` : `Best: ${b.correct} right`);
     return `<button class="mode clocky" data-mode="${id}"><span class="clock-top"><svg class="clock-ic"><use href="#clockSym"/></svg>${c.name}</span><small>${c.sub}</small><span class="best">${best}</span></button>`;
+  }).join('');
+  $('builderModes').innerHTML = FAMILIES.map(f => {
+    const gold = goldCount(f);
+    return `<button class="mode builder" data-mode="${f.id}"><span>⚡ ${f.name}</span><small><span class="gold-n">${gold} of ${f.pairs.length}</span> facts gold</small></button>`;
   }).join('');
   updateFrog();
 }
+const goldCount = f => f.pairs.filter(([x, y]) => (state.facts[pairKey(x, y)] || {}).fast >= GOLD_AT).length;
+
+/* ---------- fast facts map ---------- */
+function openFacts() {
+  const total = ALL_PAIRS.length, gold = goldTotal();
+  $('factsNote').textContent = `${gold} of ${total} key facts are gold. A fact goes gold when you get it right in ${FAST} seconds or less, ${GOLD_AT} times. Adding and taking away both count: 8 + 5, 13 − 5 and 5 + ☐ = 13 are the same fact.`;
+  $('famList').innerHTML = FAMILIES.map(f => {
+    const pads = f.pairs.map(([x, y]) => {
+      const fct = state.facts[pairKey(x, y)], fast = fct ? Math.min(fct.fast, GOLD_AT) : 0;
+      const cls = !fct ? '' : fast >= GOLD_AT ? 'gold' : 'tried';
+      const pips = Array.from({ length: GOLD_AT }, (_, i) => `<b class="${i < fast ? 'on' : ''}"></b>`).join('');
+      return `<div class="fpad ${cls}">${x} + ${y}<div class="pips">${pips}</div></div>`;
+    }).join('');
+    return `<div class="fam"><div class="fam-top"><h3>${f.name}</h3><span class="n">${goldCount(f)} of ${f.pairs.length} gold</span><button class="chip" data-mode="${f.id}">Practise</button></div><div class="pads">${pads}</div></div>`;
+  }).join('');
+  show('facts');
+}
+$('famList').addEventListener('click', e => { const b = e.target.closest('[data-mode]'); if (b) { audio(); startRound(b.dataset.mode); } });
 
 /* ---------- number line ---------- */
 const PAD_Y = 118;
@@ -1391,7 +1526,7 @@ function flash(cls) { const c = $('card'); c.classList.remove('good', 'bad'); vo
 async function startRound(mode, qs) {
   hopToken++; endToken++; clearFx(); $('levelup').hidden = true;
   const timed = !!CLOCKS[mode];
-  game = { mode, timed, qs: qs || buildRound(mode), i: 0, stars: 0, streak: 0, bestStreak: 0, results: [], limit: timed ? CLOCKS[mode].secs : 0 };
+  game = { mode, timed, endless: timed && !!CLOCKS[mode].endless, qs: qs || buildRound(mode), i: 0, stars: 0, streak: 0, bestStreak: 0, results: [], limit: timed ? CLOCKS[mode].secs : 0 };
   game.total = game.qs.length;
   $('starCount').textContent = '0';
   $('streak').hidden = true;
@@ -1406,7 +1541,7 @@ async function startRound(mode, qs) {
     await countdown();
     if (game !== g) return;
     $('sum').style.visibility = '';
-    g.locked = false; g.t0 = performance.now(); g.timerId = setInterval(tickTimer, 100);
+    g.locked = false; g.t0 = performance.now(); g.qStart = g.t0; g.timerId = setInterval(tickTimer, 100);
   }
 }
 async function countdown() {
@@ -1434,7 +1569,7 @@ function stopTimer() { if (game && game.timerId) { clearInterval(game.timerId); 
 async function timeUp() {
   const g = game; stopTimer(); g.locked = true; g.timeUp = true;
   const o = $('overlay'), t = $('overlayT');
-  t.textContent = "Time's up!"; t.classList.add('small'); t.classList.remove('zoom'); void t.offsetWidth; t.classList.add('zoom');
+  t.textContent = g.endless ? 'Stop! Count them up!' : "Time's up!"; t.classList.add('small'); t.classList.remove('zoom'); void t.offsetWidth; t.classList.add('zoom');
   o.hidden = false; sfx.boing();
   await wait(1300); o.hidden = true;
   if (game === g) endRound();
@@ -1443,17 +1578,19 @@ function showQ() {
   hopToken++;
   Object.assign(game, { q: game.qs[game.i], typed: '', attempts: 0, given: null, missed: false, locked: false, revealed: false });
   const q = game.q, helper = !game.timed;
+  game.qStart = performance.now();
   $('card').classList.remove('good', 'bad');
   renderSum($('sum'), q, '', '');
   const hiding = (q.layout === 'eq' && q.tokens[q.tokens.length - 1] !== '?') || (q.layout === 'words' && !q.text.endsWith('{?}.'));
-  say(game.timed ? 'Quick as you can!' : q.layout === 'story' ? 'Read it carefully, then type the answer.' : hiding ? 'What number is hiding in the box?' : 'Type your answer, then tap Check.');
+  const fam = FAMILY[game.mode];
+  say(fam && game.i === 0 ? fam.tip : game.timed ? 'Quick as you can!' : q.layout === 'story' ? 'Read it carefully, then type the answer.' : hiding ? 'What number is hiding in the box?' : 'Type your answer, then tap Check.');
   // Help unlocks after her first try, so she trusts her own answer first.
   game.qHelped = false;
   $('helpBtn').hidden = !helper; $('helpBtn').disabled = false; $('helpBtn').classList.add('locked');
   $('helpLabel').textContent = 'Have a go first, then I can help';
   $('lineWrap').hidden = !(helper && q.help.kind === 'pads');
   if (helper) drawLine($('line'), q);
-  $('qcount').textContent = `${game.i + 1}/${game.total}`;
+  $('qcount').textContent = game.endless ? `${game.results.filter(r => r.ok).length} done` : `${game.i + 1}/${game.total}`;
   updateDots();
 }
 function renderSum(el, q, typed, boxState) {
@@ -1504,6 +1641,7 @@ function right() {
   // A gold star first time, a silver star for fixing it on her own. Both keep her run going.
   if (first || second) { g.stars++; g.streak++; g.bestStreak = Math.max(g.bestStreak, g.streak); }
   if (first) {
+    recordFact(q, (performance.now() - g.qStart) / 1000, g);
     markHit(q);
     state.totals.right++; if (MILESTONES.includes(state.totals.right)) (g.milestones = g.milestones || []).push(state.totals.right);
     save();
@@ -1522,7 +1660,7 @@ function right() {
 function wrong() {
   const g = game, q = g.q; g.attempts++;
   if (g.given == null) g.given = g.typed;
-  if (!g.missed) { g.missed = true; markMiss(q); }
+  if (!g.missed) { g.missed = true; markMiss(q); markFactSlow(q); save(); }
   if (g.timed) { g.streak = 0; setStreak(); }
   flash('bad'); sfx.bad(); g.typed = '';
   if (g.timed) {
@@ -1572,7 +1710,7 @@ async function endRound() {
   const my = ++endToken;
   const correct = g.results.filter(r => r.ok).length, perfect = correct === g.total;
   const fixed = g.results.filter(r => r.second).length, helpedN = g.results.filter(r => r.helped).length;
-  const ratio = (correct + fixed) / g.total;
+  let ratio = (correct + fixed) / g.total;
   // Brave brain: no frog help in the whole round earns 2 bonus stars.
   const braveAll = !g.timed && helpedN === 0 && g.results.length === g.total && g.total >= 5;
   if (braveAll) g.stars += 2;
@@ -1589,7 +1727,8 @@ async function endRound() {
     used = g.timeUp ? g.limit : Math.min(g.limit, (performance.now() - g.t0) / 1000);
     beat = perfect && !g.timeUp;
     const b = state.bests[g.mode];
-    if (!b || correct > b.correct || (correct === b.correct && used < b.time)) { state.bests[g.mode] = { correct, time: Math.round(used * 10) / 10 }; record = !!b || correct > 0; }
+    if (g.endless) { if (!b || correct > b.correct) { state.bests[g.mode] = { correct, time: g.limit }; record = correct > 0; } ratio = record ? 1 : 0.7; }
+    else if (!b || correct > b.correct || (correct === b.correct && used < b.time)) { state.bests[g.mode] = { correct, time: Math.round(used * 10) / 10 }; record = !!b || correct > 0; }
   }
   state.totals.rounds++;
   if (perfect && g.mode !== 'retry') state.totals.perfect++;
@@ -1604,28 +1743,32 @@ async function endRound() {
   // Words
   let title;
   if (g.mode === 'retry') title = perfect ? `You fixed them all, ${NAME}!` : `Getting better, ${NAME}!`;
+  else if (g.endless) title = record ? `New sprint record, ${NAME}!` : `${correct} in a minute, ${NAME}!`;
   else if (g.timed) title = beat ? `${NAME} beat the clock!` : g.timeUp ? `Time's up! Great try, ${NAME}!` : ratio >= 0.9 ? `Super speedy, ${NAME}!` : `All done, ${NAME}!`;
   else title = perfect ? `Perfect, ${NAME}! Every single one!` : ratio >= 0.8 ? `Fantastic hopping, ${NAME}!` : ratio >= 0.5 ? `Great work, ${NAME}!` : `Good try, ${NAME}! Keep hopping!`;
   $('resTitle').textContent = title;
   setTimeout(() => { if (my === endToken) speak(title); }, 400);
-  $('resLine').textContent = g.timed
+  $('resLine').textContent = g.endless ? `You did ${correct} sum${correct === 1 ? '' : 's'} right in one minute!`
+    : g.timed
     ? (beat ? `All ${g.total} right in ${fmt(used)}, with ${fmt(g.limit - used)} to spare!` : `${correct} right out of ${g.total} in ${fmt(used)}.`)
     : perfect ? `All ${g.total} right first time!`
     : [`${correct} right first time`, fixed ? `${fixed} fixed on a second go` : '', helpedN ? `${helpedN} learned with ${state.frogName}` : ''].filter(Boolean).join(', ') + '.';
   const b = state.bests[g.mode];
   $('resBest').hidden = !g.timed || !b;
-  if (g.timed && b) $('resBest').textContent = `Your best for ${CLOCKS[g.mode].name}: ${b.correct} right` + (b.correct === 20 ? ` in ${fmt(b.time)}` : '');
+  if (g.timed && b) $('resBest').textContent = g.endless ? `Your best sprint: ${b.correct} in a minute` : `Your best for ${CLOCKS[g.mode].name}: ${b.correct} right` + (b.correct === 20 ? ` in ${fmt(b.time)}` : '');
   $('resBanners').innerHTML = '';
   const banners = [];
   if (record) banners.push(['New record!', '']);
   if (braveAll) banners.push(['Brave brain! Every sum on your own! +2 stars', 'gold']);
   else if (!g.timed && g.total - helpedN > 0) banners.push([`Brave brain: ${g.total - helpedN} sums on your own!`, 'alt']);
+  if (g.newGold) banners.push([`⚡ ${g.newGold} new gold fact${g.newGold === 1 ? '' : 's'}!`, 'gold']);
   if (fixed) banners.push([`You fixed ${fixed} mistake${fixed === 1 ? '' : 's'}! Your brain grew!`, 'gold']);
   if (newStreak) banners.push([`Best run ever: ${newStreak} in a row!`, 'alt']);
   (g.milestones || []).forEach(m => banners.push([`${m} sums right!`, 'gold']));
   const starRow = $('resStars');
-  starRow.classList.toggle('many', g.total > 12);
-  let s = ''; for (let i = 0; i < g.total; i++) s += '<svg class="star-off"><use href="#starSym"/></svg>';
+  const shown = g.endless ? Math.max(1, g.results.length) : g.total;
+  starRow.classList.toggle('many', shown > 12);
+  let s = ''; for (let i = 0; i < shown; i++) s += '<svg class="star-off"><use href="#starSym"/></svg>';
   starRow.innerHTML = s;
   $('resSticker').hidden = true;
   const jk = JOKES[state.joke];
@@ -1643,7 +1786,7 @@ async function endRound() {
     const r = g.results[i];
     stars[i].setAttribute('class', (r.ok ? 'star-on' : r.second ? 'star-silver' : r.helped ? 'star-frog' : 'star-off') + ' lit');
     if (r.ok || r.second || r.helped) sfx.ding(r.ok ? i : r.second ? i - 2 : i - 5);
-    await wait(reduced ? 0 : (g.total > 12 ? 70 : 120)); if (my !== endToken) return;
+    await wait(reduced ? 0 : (shown > 12 ? 70 : 120)); if (my !== endToken) return;
   }
   const great = beat || ratio >= 0.9, hasPic = !!getPic();
   if (great) { sfx.fanfare(); burst(innerWidth / 2, innerHeight * 0.35, 120, { emoji: PARTY }); if (!hasPic) parade(); }
@@ -1869,10 +2012,12 @@ function openRecords() {
   const t = state.totals, tiles = [
     [t.right, 'sums right first time'], [t.rounds, 'rounds played'], [t.perfect, 'perfect rounds'],
     [t.bestStreak, 'best run in a row'], [state.days.best || state.days.count || 0, 'most days in a row'], [state.stars, 'stars collected'],
+    [goldTotal() + ' / ' + ALL_PAIRS.length, 'fast facts gold'],
   ];
   $('recTiles').innerHTML = tiles.map(([n, l]) => `<div class="tile"><b>${n}</b><span>${l}</span></div>`).join('');
   $('recClock').innerHTML = Object.entries(CLOCKS).map(([id, c]) => {
     const b = state.bests[id];
+    if (c.endless) return `<div class="tile"><b>${b ? b.correct : '–'}</b><span>${c.name}: sums in a minute</span></div>`;
     return `<div class="tile"><b>${!b ? '–' : b.correct === 20 ? fmt(b.time) : b.correct + '/20'}</b><span>${c.name}${b && b.correct === 20 ? ': all 20' : ''}</span></div>`;
   }).join('');
   const found = SURPRISES.filter(x => state.seen[x.id]).length;
@@ -1919,6 +2064,8 @@ $('bookBack').addEventListener('click', goHome);
 $('wardBtn').addEventListener('click', openWardrobe);
 $('wardBack').addEventListener('click', goHome);
 $('recBtn').addEventListener('click', openRecords);
+$('factsBtn').addEventListener('click', openFacts);
+$('factsBack').addEventListener('click', goHome);
 $('recBack').addEventListener('click', goHome);
 $('hero').addEventListener('click', () => {
   const h = $('hero'); h.classList.remove('hop'); void h.offsetWidth; h.classList.add('hop');
@@ -1964,7 +2111,7 @@ $('buildNote').textContent = BUILD ? `Game version: ${BUILD}` : '';
 refreshHome(); show('home');
 checkForUpdate();
 // Test hook: only used by automated tests, never set in normal play.
-if (window.__frogTest) window.__frogTest({ runSurprise, SURPRISES, state, getGame: () => game });
+if (window.__frogTest) window.__frogTest({ runSurprise, SURPRISES, state, getGame: () => game, FAMILIES });
 })();
 </script>
 <!-- game:end -->

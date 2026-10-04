@@ -8,7 +8,13 @@ Her name is set once, as `NAME` near the top of the script in `index.html`. It a
 
 ## Games
 
-**Beat the clock:** 20 adding and taking-away sums up to 20, against a timer: Warm-up (3 minutes), Test speed (2 minutes) or Lightning (1½ minutes). It starts with a 3-2-1-Go countdown and keeps a personal best for each.
+**Beat the clock:** sums up to 20 against a timer, with a 3-2-1-Go countdown and a personal best for each:
+- **Sprint:** as many as she can in 1 minute. The score only counts up, so there's never an unfinished test, just a best to beat.
+- **Warm-up** (20 sums in 3 minutes), **Test speed** (20 in 2 minutes) and **Lightning** (20 in 1½ minutes).
+
+**Speed builders:** short rounds (12 sums) on one family of key facts at a time, in the order to learn them: Bonds to 10, Doubles, Near doubles, Add and take 10, Bonds to 20, Cross 10. Each round opens with the trick for that family, and mixes adding, taking away and missing numbers from the same facts.
+
+**Fast facts:** every up-to-20 sum is timed. Adding, taking away and missing-number versions all count as the same fact (8 + 5, 13 − 5 and 5 + ☐ = 13). A fact goes gold when she gets it right first time in 4 seconds or less, three times. The Fast facts page shows the 52 key facts by family, with each row's progress and a Practise button, and gold facts are celebrated at the end of a round. Facts she has tried but is still slow at come back more often in every up-to-20 mode, including Beat the clock.
 
 **Up to 20 (practice with help):** adding, taking away, missing numbers, or a mix of all three.
 
