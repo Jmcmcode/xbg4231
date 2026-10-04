@@ -22,6 +22,18 @@ Her name is set once, as `NAME` near the top of the script in `index.html`. It a
 - Stars build up her level, and the frog unlocks a new outfit at each level: bow tie, sunglasses, party hat, superhero cape, crown and gold medal.
 - A daily streak counter shows how many days in a row she has played.
 
+## Surprises, dress-up and records
+
+- **Random surprises:** about one right answer in six or seven (never two close together) triggers something rare instead of the usual animal: Fly Snack (the frog's tongue catches a fly, then it burps), Giant Boing, Sneezy Cow, Duck Stampede, Golden Fly (tap it for 3 bonus stars), Disco Frog, Dino Stomp, and a Fireworks Finale at the end of good rounds. Three are there from the start; the rest unlock with levels. Ones she hasn't found yet come up more often, and the records page shows which she's found.
+- **Slapstick on wrong answers:** sometimes the frog falls in the pond with a splash, the monkey blows a raspberry, or the frog goes "Whoooops!" with a slide whistle. It's always followed by "have another go".
+- **Dress-up room:** she names her frog and chooses its colour (green, pink, purple, blue and orange from the start; gold and rainbow unlock late) and which unlocked outfits it wears.
+- **Records:** sums right, rounds played, perfect rounds, best streak, most days in a row, stars, best Beat the clock times, and surprises found.
+- **Milestones:** banners and cheers at 25, 50, 100, 150, 200 sums right and beyond, for a new best streak, and for golden fly bonus stars.
+- **Jokes:** 65, never repeating until she has seen them all.
+- **Tap the frog** on the home screen and it jumps and makes a silly noise.
+
+Beat the clock stays quick: no surprises or slapstick during the timed sums, only at the end.
+
 ## Learning from mistakes
 
 - First wrong answer: "have another go". Second wrong answer: the frog shows the jumps and says the answer.

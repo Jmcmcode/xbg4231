@@ -42,7 +42,10 @@ button:disabled{opacity:.5;cursor:default}
 /* Home */
 .home{align-items:center}
 .brand{display:flex;align-items:center;gap:18px;justify-content:center;width:min(980px,100%)}
+.hero{display:flex;flex-direction:column;align-items:center;gap:2px;flex:none;cursor:pointer}
 .hero-frog{width:clamp(100px,16vw,140px);height:auto;flex:none;animation:idle 3s ease-in-out infinite}
+.hero.hop .hero-frog{animation:heroHop .6s ease}
+.frog-name{font-family:var(--display);font-weight:800;font-size:18px;color:var(--frog-dark);background:var(--paper);border-radius:999px;padding:0 12px;box-shadow:0 3px 0 var(--shade)}
 .brand-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
 h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);line-height:.95;margin:0;color:var(--frog-dark);text-wrap:balance}
 .hello{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(20px,2.8vw,26px);color:var(--berry);line-height:1}
@@ -193,6 +196,79 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 .slot.empty{background:transparent;box-shadow:none;border:3px dashed var(--shade);color:var(--shade);font-size:22px;font-family:var(--display);font-weight:800}
 .slot.gold{border:5px solid var(--sun)}
 .book-note{margin:0;color:var(--ink-soft);font-weight:700;text-align:center}
+.book-top h2{font-family:var(--display);font-weight:800;font-size:clamp(30px,5.5vw,48px);margin:0;color:var(--frog-dark);text-align:center;text-wrap:balance}
+
+/* Dress-up room */
+.wardrobe,.records{align-items:center}
+.ward-body{display:grid;gap:20px;width:min(900px,100%);grid-template-columns:minmax(0,1fr);align-items:start}
+@media (min-width:760px){.ward-body{grid-template-columns:minmax(220px,0.8fr) minmax(0,1.2fr)}}
+.ward-frog{background:var(--paper);border-radius:32px;box-shadow:0 8px 0 var(--shade);display:grid;place-items:center;padding:20px}
+.ward-frog svg{width:min(240px,60vw);height:auto;animation:idle 2.4s ease-in-out infinite}
+.ward-controls{display:flex;flex-direction:column;gap:10px;min-width:0}
+.sub-h{margin:6px 0 0;font-family:var(--display);font-weight:800;font-size:24px;color:var(--ink)}
+.sub-h span{font-family:var(--body);font-size:.75em;color:var(--ink-soft)}
+.name-input{font-family:var(--display);font-weight:800;font-size:28px;color:var(--ink);background:var(--paper);border:3px solid var(--shade);border-radius:18px;padding:6px 16px;width:100%;max-width:360px;-webkit-user-select:text;user-select:text}
+.name-input:focus{outline:4px solid var(--sun);outline-offset:2px}
+.swatches{display:flex;flex-wrap:wrap;gap:12px}
+.swatch{width:62px;height:62px;border-radius:50%;box-shadow:0 4px 0 var(--shade);border:4px solid var(--paper);position:relative}
+.swatch[aria-pressed="true"]{border-color:var(--ink);transform:scale(1.08)}
+.swatch:disabled{opacity:.35}
+.swatch .lock{position:absolute;inset:auto 0 -22px 0;font-size:12px;font-weight:700;color:var(--ink-soft);white-space:nowrap}
+.outfits{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.outfit{display:flex;align-items:center;gap:10px;background:var(--paper);border-radius:18px;padding:10px 12px;box-shadow:0 4px 0 var(--shade);font-weight:700;font-size:17px;text-align:left;border:3px solid transparent}
+.outfit .ic{font-size:30px;line-height:1}
+.outfit small{display:block;font-size:13px;color:var(--ink-soft)}
+.outfit[aria-pressed="true"]{border-color:var(--frog);background:#F2FAE9}
+.outfit:disabled{opacity:.5}
+
+/* Records */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;width:min(900px,100%)}
+.tile{background:var(--paper);border-radius:22px;padding:12px 16px;box-shadow:0 5px 0 var(--shade);display:flex;flex-direction:column;gap:2px}
+.tile b{font-family:var(--display);font-weight:800;font-size:34px;line-height:1.1;color:var(--frog-dark);font-variant-numeric:tabular-nums}
+.tile span{font-weight:700;color:var(--ink-soft);font-size:16px}
+.records .sub-h{width:min(900px,100%)}
+.surprises{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;width:min(900px,100%)}
+.sur{display:flex;align-items:center;gap:12px;background:var(--paper);border-radius:20px;padding:10px 14px;box-shadow:0 5px 0 var(--shade);font-weight:700}
+.sur .ic{font-size:38px;line-height:1}
+.sur small{display:block;color:var(--ink-soft);font-size:14px}
+.sur.unfound{background:transparent;box-shadow:none;border:3px dashed var(--shade);color:var(--ink-soft)}
+
+/* Results banners */
+.banners{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.banner.alt{background:var(--berry);box-shadow:0 4px 0 #7E3F76}
+.banner.gold{background:var(--sun);color:var(--ink);box-shadow:0 4px 0 var(--sun-dark)}
+
+/* Surprises */
+.fun{position:fixed;inset:0;z-index:62;pointer-events:none;overflow:hidden}
+.fun-svg{position:absolute;inset:0}
+.fun-frog{position:absolute;left:50%;bottom:3%;width:min(220px,40vw);height:auto;transform:translateX(-50%)}
+.fun-frog.gulp{animation:gulp .5s ease}
+.fun-frog.giant{width:min(360px,60vw);bottom:0;animation:boing 2.1s ease-in-out forwards}
+.fun-frog.dance{width:min(300px,50vw);bottom:8%;animation:dance .47s ease-in-out infinite alternate}
+.fun-frog.fall{left:50%;top:-30%;bottom:auto;animation:fall .7s cubic-bezier(.5,0,1,.6) forwards}
+.fun-say{position:absolute;left:50%;top:14%;transform:translateX(-50%);font-family:var(--display);font-weight:800;font-size:clamp(34px,7vw,64px);color:var(--paper);-webkit-text-stroke:3px var(--ink);text-shadow:0 6px 0 var(--ink);white-space:nowrap;text-align:center}
+.fun-big{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:min(200px,32vw);line-height:1}
+.fun-big.jolt{animation:jolt .5s ease}
+.stampede{position:absolute;inset:0}
+.stampede .row{position:absolute;left:0;display:flex;gap:28px;font-size:72px;line-height:1;animation:stampede 2.4s linear forwards;white-space:nowrap}
+.stampede .row span{display:inline-block;animation:bob .22s ease-in-out infinite alternate}
+.stampede.dino .row{font-size:110px;animation-duration:2.8s}
+.golden{position:absolute;left:0;top:0;width:96px;height:96px;border-radius:50%;font-size:58px;line-height:96px;text-align:center;pointer-events:auto;background:radial-gradient(circle,rgba(255,214,90,.95) 0 35%,rgba(255,198,58,.35) 60%,transparent 70%);filter:drop-shadow(0 0 12px #FFC63A);touch-action:manipulation}
+.golden.away{transition:transform .6s ease-in;transform:translate(120vw,-40vh)!important}
+.disco-bg{position:absolute;inset:0;background:conic-gradient(from 0deg,#FF5DA2,#FFC63A,#4FD18B,#3AB0FF,#A65AFF,#FF5DA2);opacity:.82;animation:hue 1.6s linear infinite}
+.disco-ball{position:absolute;left:50%;top:-10px;font-size:110px;transform:translateX(-50%);animation:swing 1s ease-in-out infinite alternate;transform-origin:top center}
+body.quake #app{animation:quake .25s linear 6}
+
+@keyframes heroHop{0%,100%{transform:translateY(0) scale(1)}30%{transform:translateY(-34px) scale(1.05,0.95)}60%{transform:translateY(0) scale(1.1,0.9)}}
+@keyframes gulp{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15,0.9)}}
+@keyframes boing{0%{transform:translate(-50%,110%)}18%{transform:translate(-50%,-38%)}32%{transform:translate(-50%,0) scale(1.08,.92)}48%{transform:translate(-50%,-24%)}60%{transform:translate(-50%,0) scale(1.06,.94)}72%{transform:translate(-50%,-12%)}82%{transform:translate(-50%,0)}100%{transform:translate(-50%,110%)}}
+@keyframes dance{from{transform:translateX(-50%) rotate(-12deg) translateY(0)}to{transform:translateX(-50%) rotate(12deg) translateY(-24px)}}
+@keyframes fall{from{transform:translateX(-50%) rotate(0)}to{transform:translate(-50%,calc(100vh + 30%)) rotate(200deg)}}
+@keyframes jolt{0%{transform:translate(-50%,-50%)}30%{transform:translate(-50%,-50%) scale(1.25) rotate(-8deg)}60%{transform:translate(-56%,-50%) rotate(6deg)}100%{transform:translate(-50%,-50%)}}
+@keyframes stampede{from{transform:translateX(100vw)}to{transform:translateX(-110%)}}
+@keyframes hue{from{filter:hue-rotate(0deg)}to{filter:hue-rotate(360deg)}}
+@keyframes swing{from{transform:translateX(-50%) rotate(-12deg)}to{transform:translateX(-50%) rotate(12deg)}}
+@keyframes quake{0%,100%{transform:translate(0,0)}25%{transform:translate(-5px,3px)}50%{transform:translate(4px,-3px)}75%{transform:translate(-3px,-2px)}}
 
 /* Celebrations */
 #fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
@@ -234,6 +310,10 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
+    <linearGradient id="rainbowGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF5D73"/><stop offset=".2" stop-color="#FF9F43"/><stop offset=".4" stop-color="#FFD93D"/>
+      <stop offset=".6" stop-color="#4FD18B"/><stop offset=".8" stop-color="#3AA0FF"/><stop offset="1" stop-color="#A65AFF"/>
+    </linearGradient>
     <symbol id="frogSym" viewBox="-44 -72 88 100"></symbol>
     <symbol id="starSym" viewBox="0 0 24 24">
       <path d="M12 2.2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17.1l-6.1 3.5 1.5-6.8L2.2 9.2l6.9-.7z" stroke-linejoin="round"/>
@@ -249,7 +329,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 <main id="app">
   <section id="home" class="screen home">
     <div class="brand">
-      <svg class="hero-frog" viewBox="-44 -72 88 100" aria-hidden="true"><use href="#frogSym" x="-44" y="-72" width="88" height="100"/></svg>
+      <button class="hero" id="hero" aria-label="Tap the frog"><svg class="hero-frog" viewBox="-44 -72 88 100" aria-hidden="true"><use href="#frogSym" x="-44" y="-72" width="88" height="100"/></svg><span class="frog-name" id="heroName">Hoppy</span></button>
       <div class="brand-text">
         <p class="hello" id="hello">Hello, Rosalie!</p>
         <h1>Rosalie's Frog Hop</h1>
@@ -284,7 +364,9 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
       </div>
     </div>
     <div class="home-foot">
+      <button id="wardBtn" class="chip">Dress up <span id="wardName">Hoppy</span></button>
       <button id="bookBtn" class="chip">Sticker book &middot; <b id="stickerCount">0</b></button>
+      <button id="recBtn" class="chip">Records</button>
       <span id="dayChip" class="chip flame" hidden></span>
       <button id="soundBtn" class="chip">Sound: on</button>
     </div>
@@ -319,7 +401,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
   </section>
 
   <section id="results" class="screen results" hidden>
-    <div class="banner" id="resBanner" hidden>New record!</div>
+    <div class="banners" id="resBanners"></div>
     <h2 id="resTitle"></h2>
     <div class="starrow" id="resStars"></div>
     <p class="res-line" id="resLine"></p>
@@ -372,6 +454,38 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
     </div>
   </section>
 
+  <section id="wardrobe" class="screen wardrobe" hidden>
+    <div class="book-top">
+      <button id="wardBack" class="chip">Home</button>
+      <h2 id="wardTitle">Dress up Hoppy</h2>
+      <span style="width:84px"></span>
+    </div>
+    <div class="ward-body">
+      <div class="ward-frog"><svg viewBox="-44 -72 88 100" aria-hidden="true"><use href="#frogSym" x="-44" y="-72" width="88" height="100"/></svg></div>
+      <div class="ward-controls">
+        <label class="sub-h" for="frogName">Your frog's name</label>
+        <input id="frogName" class="name-input" maxlength="14" autocomplete="off" autocapitalize="words" spellcheck="false">
+        <h3 class="sub-h">Colour</h3>
+        <div class="swatches" id="swatches"></div>
+        <h3 class="sub-h" style="margin-top:22px">Outfits</h3>
+        <div class="outfits" id="outfits"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="records" class="screen records" hidden>
+    <div class="book-top">
+      <button id="recBack" class="chip">Home</button>
+      <h2>Rosalie's records</h2>
+      <span style="width:84px"></span>
+    </div>
+    <div class="tiles" id="recTiles"></div>
+    <h3 class="sub-h">Beat the clock</h3>
+    <div class="tiles" id="recClock"></div>
+    <h3 class="sub-h">Surprises found <span id="surCount"></span></h3>
+    <div class="surprises" id="recSurprises"></div>
+  </section>
+
   <section id="book" class="screen book" hidden>
     <div class="book-top">
       <button id="bookBack" class="chip">Home</button>
@@ -384,6 +498,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 </main>
 
 <canvas id="fx" aria-hidden="true"></canvas>
+<div class="fun" id="fun" hidden></div>
 <div class="buddy" id="buddy" aria-hidden="true"><span class="face"></span><span class="bubble"></span></div>
 <div class="toast" id="toast" aria-hidden="true"></div>
 <div class="parade" id="parade" hidden aria-hidden="true"></div>
@@ -393,6 +508,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
     <svg viewBox="-44 -72 88 100" aria-hidden="true"><use href="#frogSym" x="-44" y="-72" width="88" height="100"/></svg>
     <h2 id="lvTitle"></h2>
     <p id="lvGift"></p>
+    <p id="lvUnlock" hidden></p>
     <button id="lvBtn" class="key go">Ribbit!</button>
   </div>
 </div>
@@ -410,13 +526,34 @@ const CLOCKS = {
 };
 const LEVELS = [
   { at: 0, name: 'Tadpole' },
-  { at: 15, name: 'Froglet', item: 'bow', gift: 'a bow tie' },
-  { at: 40, name: 'Hopper', item: 'glasses', gift: 'cool sunglasses' },
-  { at: 80, name: 'Leaper', item: 'hat', gift: 'a party hat' },
-  { at: 140, name: 'Super Frog', item: 'cape', gift: 'a superhero cape' },
-  { at: 220, name: 'Frog Royalty', item: 'crown', gift: 'a golden crown' },
-  { at: 320, name: 'Frog Legend', item: 'medal', gift: 'a gold medal' },
+  { at: 15, name: 'Froglet', item: 'bow', gift: 'a bow tie', unlock: 'the Duck Stampede surprise' },
+  { at: 40, name: 'Hopper', item: 'glasses', gift: 'cool sunglasses', unlock: 'the Golden Fly surprise' },
+  { at: 80, name: 'Leaper', item: 'hat', gift: 'a party hat', unlock: 'the Disco Frog surprise' },
+  { at: 140, name: 'Super Frog', item: 'cape', gift: 'a superhero cape', unlock: 'the Dino Stomp surprise' },
+  { at: 220, name: 'Frog Royalty', item: 'crown', gift: 'a golden crown', unlock: 'Fireworks and a gold frog colour' },
+  { at: 320, name: 'Frog Legend', item: 'medal', gift: 'a gold medal', unlock: 'a rainbow frog colour' },
 ];
+const OUTFITS = { bow: ['🎀', 'Bow tie'], glasses: ['🕶️', 'Sunglasses'], hat: ['🎉', 'Party hat'], cape: ['🦸', 'Cape'], crown: ['👑', 'Crown'], medal: ['🏅', 'Gold medal'] };
+const PALETTES = {
+  green: { name: 'Green', at: 0, body: '#4FA83D', dark: '#2E7524', belly: '#CDEB9A', css: '#4FA83D' },
+  pink: { name: 'Pink', at: 0, body: '#F28DB2', dark: '#C2557F', belly: '#FFD9E7', css: '#F28DB2' },
+  purple: { name: 'Purple', at: 0, body: '#9B6BD0', dark: '#6A3FA0', belly: '#E4D5F6', css: '#9B6BD0' },
+  blue: { name: 'Blue', at: 0, body: '#4DA3D9', dark: '#2B6E9E', belly: '#D2ECF9', css: '#4DA3D9' },
+  orange: { name: 'Orange', at: 0, body: '#F39A3B', dark: '#C06A12', belly: '#FFE3BF', css: '#F39A3B' },
+  gold: { name: 'Gold', at: 220, body: '#E8B923', dark: '#9C7404', belly: '#FFF2BF', css: '#E8B923' },
+  rainbow: { name: 'Rainbow', at: 320, body: 'url(#rainbowGrad)', dark: '#7E3F76', belly: '#FFF8E1', css: 'linear-gradient(135deg,#FF5D73,#FFD93D,#4FD18B,#3AA0FF,#A65AFF)' },
+};
+const SURPRISES = [
+  { id: 'fly', name: 'Fly Snack', e: '🪰', at: 0 },
+  { id: 'boing', name: 'Giant Boing', e: '🐸', at: 0 },
+  { id: 'sneeze', name: 'Sneezy Cow', e: '🐮', at: 0 },
+  { id: 'ducks', name: 'Duck Stampede', e: '🦆', at: 15 },
+  { id: 'golden', name: 'Golden Fly', e: '✨', at: 40 },
+  { id: 'disco', name: 'Disco Frog', e: '🪩', at: 80 },
+  { id: 'dino', name: 'Dino Stomp', e: '🦖', at: 140 },
+  { id: 'fireworks', name: 'Fireworks Finale', e: '🎆', at: 220 },
+];
+const MILESTONES = [25, 50, 100, 150, 200, 300, 400, 500, 750, 1000, 1500, 2000, 3000];
 const JOKES = [
   ['What do you call a frog that parks in the wrong place?', 'Toad away!'],
   ['Why are frogs so happy?', 'They eat whatever bugs them!'],
@@ -440,6 +577,48 @@ const JOKES = [
   ["Why don't elephants use computers?", "They're scared of the mouse!"],
   ['What do you call a dinosaur that is never late?', 'A prontosaurus!'],
   ['Why did the banana go to the doctor?', "It wasn't peeling well!"],
+  ['What do frogs order at a restaurant?', 'French flies!'],
+  ['Why did the frog take the bus to work?', 'His car got toad!'],
+  ['What is a frog\'s favourite flower?', 'A croakus!'],
+  ['What do you call a frog with no legs?', 'Unhoppy!'],
+  ['Where do frogs leave their coats?', 'In the croakroom!'],
+  ['What happens when a frog\'s car breaks down?', 'It gets toad away!'],
+  ['Why are maths books always tired?', 'They are full of problems to work out!'],
+  ['Why did the two 4s skip lunch?', 'They already 8!'],
+  ['What did the zero say to the eight?', 'Nice belt!'],
+  ['Why should you never talk to pi?', 'It goes on and on forever!'],
+  ['What do you call a number that can\'t sit still?', 'A roamin\' numeral!'],
+  ['Why is 10 scared of 11?', 'Because 11 is bigger and they had a fight!'],
+  ['What do you call a sheep with no legs?', 'A cloud!'],
+  ['What do you call a fish with no eyes?', 'A fsh!'],
+  ['What do you call a cow that can play an instrument?', 'A moo-sician!'],
+  ['Why do bees have sticky hair?', 'Because they use honeycombs!'],
+  ['What do you call a pig that knows karate and maths?', 'A pork chop with a calculator!'],
+  ['What is a cat\'s favourite colour?', 'Purr-ple!'],
+  ['Where do sheep get their hair cut?', 'At the baa-baa shop!'],
+  ['What do you get if you cross a cow and a duck?', 'Milk and quackers!'],
+  ['Why did the chicken join a band?', 'Because it had drumsticks!'],
+  ['What do you call a duck that loves fireworks?', 'A fire-quacker!'],
+  ['What did the duck say when she bought lipstick?', 'Put it on my bill!'],
+  ['Why do ducks have feathers?', 'To cover their butt-quacks!'],
+  ['What do elephants wear to the beach?', 'Trunks!'],
+  ['What kind of key opens a banana?', 'A mon-key!'],
+  ['What is a dog\'s favourite pizza?', 'Pupperoni!'],
+  ['What do you call a dinosaur with a big vocabulary?', 'A thesaurus!'],
+  ['What do you call a lazy kangaroo?', 'A pouch potato!'],
+  ['Why couldn\'t the pony sing?', 'She was a little horse!'],
+  ['What do you call a snowman in summer?', 'A puddle!'],
+  ['What do you call a bear in the rain?', 'A drizzly bear!'],
+  ['Why did the cookie go to the doctor?', 'It was feeling crummy!'],
+  ['What did one plate say to the other?', 'Dinner is on me!'],
+  ['Why did the student eat her homework?', 'The teacher said it was a piece of cake!'],
+  ['What has ears but cannot hear?', 'A cornfield!'],
+  ['What do you call a train full of toffee?', 'A chew-chew train!'],
+  ['Why did the scarecrow win a prize?', 'He was outstanding in his field!'],
+  ['What do you call a penguin in the desert?', 'Lost!'],
+  ['How does a penguin build its house?', 'Igloos it together!'],
+  ['What is an owl\'s favourite game?', 'Hoo-dunnit!'],
+  ['Why did the frog read so many books?', 'He was looking for a good ribbit!'],
 ];
 const NAME = 'Rosalie';
 // Adds her name to some cheers: "Brilliant!" -> "Brilliant, Rosalie!"
@@ -475,6 +654,11 @@ function load() {
     bests: s.bests && typeof s.bests === 'object' ? s.bests : {},
     days: s.days && typeof s.days === 'object' ? s.days : { last: '', count: 0 },
     joke: Number(s.joke) || 0,
+    jokesSeen: Array.isArray(s.jokesSeen) ? s.jokesSeen : [],
+    frogName: typeof s.frogName === 'string' && s.frogName.trim() ? s.frogName.trim().slice(0, 14) : 'Hoppy',
+    look: s.look && typeof s.look === 'object' ? { color: s.look.color || 'green', wear: s.look.wear && typeof s.look.wear === 'object' ? s.look.wear : {} } : { color: 'green', wear: {} },
+    totals: Object.assign({ right: 0, rounds: 0, perfect: 0, bestStreak: 0 }, s.totals && typeof s.totals === 'object' ? s.totals : {}),
+    seen: s.seen && typeof s.seen === 'object' ? s.seen : {},
   };
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
@@ -485,6 +669,7 @@ function bumpDay() {
   if (state.days.last === today) return;
   state.days.count = state.days.last === yest ? state.days.count + 1 : 1;
   state.days.last = today;
+  state.days.best = Math.max(state.days.best || 0, state.days.count);
 }
 function dayStreak() {
   const today = dayKey(new Date()), yest = dayKey(new Date(Date.now() - 864e5));
@@ -493,17 +678,19 @@ function dayStreak() {
 
 /* ---------- the frog and its outfits ---------- */
 const levelAt = stars => LEVELS.filter(l => stars >= l.at).pop();
-function frogSVG(stars) {
-  const items = LEVELS.filter(l => l.item && stars >= l.at).map(l => l.item), has = k => items.includes(k);
+const unlocked = (at, stars = state.stars) => stars >= at;
+function frogSVG(look, stars) {
+  const pal = PALETTES[look.color] && unlocked(PALETTES[look.color].at, stars) ? PALETTES[look.color] : PALETTES.green;
+  const items = LEVELS.filter(l => l.item && stars >= l.at && look.wear[l.item] !== false).map(l => l.item), has = k => items.includes(k);
   let s = '';
   if (has('cape')) s += '<path d="M-24 -10 Q-48 16 -40 27 L40 27 Q48 16 24 -10 Z" fill="#D9574A"/>';
-  s += '<ellipse cx="-22" cy="19" rx="14" ry="7" fill="#2E7524"/><ellipse cx="22" cy="19" rx="14" ry="7" fill="#2E7524"/>' +
-    '<ellipse cx="0" cy="4" rx="32" ry="22" fill="#4FA83D"/><ellipse cx="0" cy="11" rx="20" ry="11" fill="#CDEB9A"/>' +
-    '<circle cx="-15" cy="-19" r="12" fill="#4FA83D"/><circle cx="15" cy="-19" r="12" fill="#4FA83D"/>' +
+  s += `<ellipse cx="-22" cy="19" rx="14" ry="7" fill="${pal.dark}"/><ellipse cx="22" cy="19" rx="14" ry="7" fill="${pal.dark}"/>` +
+    `<ellipse cx="0" cy="4" rx="32" ry="22" fill="${pal.body}"/><ellipse cx="0" cy="11" rx="20" ry="11" fill="${pal.belly}"/>` +
+    `<circle cx="-15" cy="-19" r="12" fill="${pal.body}"/><circle cx="15" cy="-19" r="12" fill="${pal.body}"/>` +
     '<circle cx="-15" cy="-20" r="8" fill="#fff"/><circle cx="15" cy="-20" r="8" fill="#fff"/>' +
     '<circle cx="-13" cy="-19" r="4" fill="#1D3836"/><circle cx="17" cy="-19" r="4" fill="#1D3836"/>' +
     '<circle cx="-23" cy="1" r="4" fill="#F29A8C" opacity=".75"/><circle cx="23" cy="1" r="4" fill="#F29A8C" opacity=".75"/>' +
-    '<path d="M-13 -1 Q0 10 13 -1" stroke="#2E7524" stroke-width="3.5" fill="none" stroke-linecap="round"/>';
+    `<path d="M-13 -1 Q0 10 13 -1" stroke="${pal.dark}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
   if (has('bow')) s += '<path d="M0 14 L-12 7 L-12 21 Z M0 14 L12 7 L12 21 Z" fill="#A65A9C"/><circle cx="0" cy="14" r="3.5" fill="#7E3F76"/>';
   if (has('medal')) s += '<path d="M10 4 L16 15 L22 4" stroke="#3A86A8" stroke-width="3" fill="none"/><circle cx="16" cy="18" r="6" fill="#FFC63A" stroke="#B97F05" stroke-width="1.5"/>';
   if (has('glasses')) s += '<rect x="-26" y="-27" width="21" height="13" rx="6" fill="#1D3836"/><rect x="5" y="-27" width="21" height="13" rx="6" fill="#1D3836"/>' +
@@ -513,7 +700,7 @@ function frogSVG(stars) {
   else if (has('hat')) s += '<path d="M-11 -29 L11 -29 L2 -62 Z" fill="#3A86A8"/><path d="M-7 -40 L8 -40 M-2 -51 L5 -51" stroke="#FFC63A" stroke-width="3"/><circle cx="2" cy="-63" r="5" fill="#D9574A"/>';
   return s;
 }
-function updateFrog() { $('frogSym').innerHTML = frogSVG(state.stars); }
+function updateFrog() { $('frogSym').innerHTML = frogSVG(state.look, state.stars); }
 
 /* ---------- sounds, all made in the browser ---------- */
 // iPad Safari: 'playback' lets sounds play even when the iPad is on silent,
@@ -579,6 +766,27 @@ const sfx = {
   drumroll: () => { for (let i = 0; i < 14; i++) noise({ at: i * 0.055, dur: 0.05, vol: 0.05 + i * 0.006, bp: 300 }); },
   laugh: () => [0, 0.16, 0.32].forEach((at, i) => voice({ type: 'square', f: [[0, 520 - i * 40], [0.1, 380 - i * 40]], dur: 0.12, vol: 0.05, at, lp: 1400 })),
   tick: () => voice({ type: 'square', f: [[0, 1200]], dur: 0.03, vol: 0.03 }),
+  burp: () => voice({ type: 'sawtooth', f: [[0, 120], [0.35, 70]], dur: 0.45, vol: 0.16, lp: 380, vib: 22 }),
+  raspberry: () => { voice({ type: 'sawtooth', f: [[0, 95], [0.5, 80]], dur: 0.55, vol: 0.12, lp: 900, vib: 38 }); noise({ dur: 0.5, vol: 0.05, bp: 700 }); },
+  slideDown: () => voice({ f: [[0, 1100], [0.6, 200]], dur: 0.65, vol: 0.12 }),
+  slideUp: () => voice({ f: [[0, 250], [0.45, 1200]], dur: 0.5, vol: 0.11 }),
+  splash: () => { noise({ dur: 0.5, vol: 0.18, bp: 900 }); noise({ at: 0.08, dur: 0.4, vol: 0.1, bp: 2500 }); voice({ f: [[0, 300], [0.12, 90]], dur: 0.15, vol: 0.14 }); },
+  ah: k => voice({ type: 'triangle', f: [[0, 300 + k * 90], [0.3, 340 + k * 110]], dur: 0.35, vol: 0.1 }),
+  sneeze: () => { noise({ dur: 0.35, vol: 0.22, bp: 3200 }); voice({ type: 'square', f: [[0, 700], [0.25, 260]], dur: 0.3, vol: 0.08, lp: 2200 }); },
+  buzz: dur => voice({ type: 'sawtooth', f: [[0, 230], [dur, 260]], dur, vol: 0.035, lp: 1800, vib: 45 }),
+  sparkle: () => [0, 7, 12, 16, 19, 24].forEach((st, i) => voice({ f: [[0, NOTE(st + 12)]], dur: 0.12, vol: 0.07, at: i * 0.05 })),
+  pop: () => voice({ f: [[0, 900], [0.08, 300]], dur: 0.09, vol: 0.12 }),
+  stomp: at => { voice({ f: [[0, 90], [0.2, 35]], dur: 0.25, vol: 0.3, at }); noise({ at, dur: 0.2, vol: 0.1, bp: 150 }); },
+  disco: () => {
+    const beat = 60 / 128, bass = [0, 0, 7, 7, 5, 5, 3, 5];
+    for (let i = 0; i < 8; i++) {
+      voice({ f: [[0, 150], [0.12, 45]], dur: 0.16, vol: 0.28, at: i * beat });
+      noise({ at: i * beat + beat / 2, dur: 0.05, vol: 0.06, bp: 8000 });
+      voice({ type: 'sawtooth', f: [[0, NOTE(bass[i] - 36)]], dur: beat * 0.9, vol: 0.09, lp: 700, at: i * beat });
+      if (i % 2 === 1) voice({ type: 'square', f: [[0, NOTE(bass[i] + 12)]], dur: 0.1, vol: 0.04, at: i * beat + beat * 0.75 });
+    }
+  },
+  firework: at => { voice({ f: [[0, 400], [0.4, 1400]], dur: 0.4, vol: 0.04, at }); noise({ at: at + 0.4, dur: 0.6, vol: 0.18, bp: 600 }); },
 };
 const ANIMALS = [
   { e: '🐸', say: ['Ribbit!', 'Hop-tastic!', 'Toad-ally right!'], snd: () => { voice({ type: 'sawtooth', f: [[0, 170], [0.07, 140]], dur: 0.09, vol: 0.13, lp: 900 }); voice({ type: 'sawtooth', f: [[0, 200], [0.08, 150]], dur: 0.12, vol: 0.13, lp: 900, at: 0.14 }); } },
@@ -616,8 +824,14 @@ function runFx() { if (!fxRaf) { fxSize(); fxRaf = requestAnimationFrame(stepFx)
 function stepFx() {
   fctx.clearRect(0, 0, innerWidth, innerHeight);
   const H = innerHeight + 60;
-  parts = parts.filter(p => p.y < H);
+  parts = parts.filter(p => p.y < H && (p.life == null || p.life > 0));
   for (const p of parts) {
+    if (p.dot) {
+      p.life--; p.vy += p.g; p.vx *= 0.98; p.vy *= 0.98; p.x += p.vx; p.y += p.vy;
+      fctx.globalAlpha = Math.max(0, p.life / p.max); fctx.fillStyle = p.c;
+      fctx.beginPath(); fctx.arc(p.x, p.y, p.rad, 0, Math.PI * 2); fctx.fill(); fctx.globalAlpha = 1;
+      continue;
+    }
     p.vy = Math.min(p.vy + p.g, p.g < 0.1 ? 5 : 30); p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
     fctx.save(); fctx.translate(p.x, p.y); fctx.rotate(p.e ? p.r * 0.2 : p.r);
     if (p.e) { fctx.font = p.s + 'px serif'; fctx.textAlign = 'center'; fctx.textBaseline = 'middle'; fctx.fillText(p.e, 0, 0); }
@@ -627,16 +841,25 @@ function stepFx() {
   if (parts.length) fxRaf = requestAnimationFrame(stepFx);
   else { fxRaf = 0; fctx.clearRect(0, 0, innerWidth, innerHeight); }
 }
+function firework(x, y) {
+  if (reduced) return;
+  const c = pick(['#FFC63A', '#FF5DA2', '#4FD18B', '#3AB0FF', '#A65AFF', '#FF8A3D']), n = 70;
+  for (let i = 0; i < n; i++) { const a = (i / n) * Math.PI * 2, sp = 3 + Math.random() * 4; parts.push({ dot: true, x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, g: 0.05, life: 70, max: 70, rad: 3.5, c: Math.random() < 0.8 ? c : '#FFFDF5' }); }
+  runFx();
+}
+async function fireworksShow(n) {
+  for (let i = 0; i < n; i++) { sfx.firework(0); await wait(400); firework(innerWidth * (0.15 + Math.random() * 0.7), innerHeight * (0.15 + Math.random() * 0.35)); await wait(250); }
+}
 function centreOf(el) { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }
 let buddyT = 0;
-function buddy(animal, text) {
+function buddy(animal, text, snd) {
   animal = animal || pick(ANIMALS);
   const b = $('buddy');
   b.querySelector('.face').textContent = animal.e;
   b.querySelector('.bubble').textContent = text || named(pick(animal.say), 0.35);
   b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
   clearTimeout(buddyT); buddyT = setTimeout(() => b.classList.remove('show'), 1850);
-  setTimeout(() => animal.snd(), 160);
+  setTimeout(() => (snd || animal.snd)(), 160);
 }
 function toast(text) {
   const t = $('toast'); t.textContent = text;
@@ -656,6 +879,129 @@ function plusOne() {
   const [x, y] = centreOf(box), el = document.createElement('div');
   el.className = 'plus1'; el.textContent = '+1'; el.style.left = x + 'px'; el.style.top = y + 'px';
   document.body.appendChild(el); setTimeout(() => el.remove(), 950);
+}
+
+/* ---------- surprises ---------- */
+const frogUse = cls => `<svg class="fun-frog ${cls}" viewBox="-44 -72 88 100"><use href="#frogSym" x="-44" y="-72" width="88" height="100"/></svg>`;
+function funShow(html) { const f = $('fun'); f.innerHTML = html; f.hidden = false; return f; }
+function funHide() { const f = $('fun'); f.hidden = true; f.innerHTML = ''; document.body.classList.remove('quake'); }
+function funSay(t) { const el = $('fun').querySelector('.fun-say'); if (el) el.textContent = t; }
+function tween(ms, fn) {
+  return new Promise(res => {
+    if (reduced) { fn(1); return res(); }
+    const t0 = performance.now();
+    (function f() { const t = Math.min(1, (performance.now() - t0) / ms); fn(t); if (t < 1) requestAnimationFrame(f); else res(); })();
+  });
+}
+async function flyCatch() {
+  const W = innerWidth, H = innerHeight;
+  funShow(`<svg class="fun-svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><line id="tongue" stroke="#E8607A" stroke-width="12" stroke-linecap="round" x1="0" y1="0" x2="0" y2="0" opacity="0"/><text id="flyE" font-size="54" text-anchor="middle" dominant-baseline="middle">🪰</text></svg>${frogUse('')}<div class="fun-say">Bzzzz...</div>`);
+  const frog = $('fun').querySelector('.fun-frog'), r = frog.getBoundingClientRect();
+  const mx = r.left + r.width / 2, my = r.top + r.height * 0.74, ex = Math.min(W - 60, mx + 150), ey = H * 0.4;
+  const fly = $('flyE'), tongue = $('tongue');
+  let fx = 0, fy = 0;
+  sfx.buzz(1.5);
+  await tween(1500, t => { fx = -40 + (ex + 40) * t; fy = ey + Math.sin(t * 15) * 60 * (1 - t * 0.7); fly.setAttribute('x', fx); fly.setAttribute('y', fy); });
+  tongue.setAttribute('x1', mx); tongue.setAttribute('y1', my); tongue.setAttribute('opacity', '1');
+  sfx.slideUp();
+  await tween(140, t => { tongue.setAttribute('x2', mx + (fx - mx) * t); tongue.setAttribute('y2', my + (fy - my) * t); });
+  await tween(220, t => { const x = fx + (mx - fx) * t, y = fy + (my - fy) * t; tongue.setAttribute('x2', x); tongue.setAttribute('y2', y); fly.setAttribute('x', x); fly.setAttribute('y', y); });
+  fly.remove(); tongue.remove(); frog.classList.add('gulp');
+  funSay(`Gulp! ${state.frogName} ate a fly!`); sfx.pop();
+  await wait(550); sfx.burp(); funSay('BURRRP!');
+  await wait(900); funHide();
+}
+async function giantBoing() {
+  funShow(`${frogUse('giant')}<div class="fun-say">BOING!</div>`);
+  sfx.boing(); await wait(650); funSay('BOING! BOING!'); sfx.boing(); await wait(550); funSay('BOING! BOING! BOING!'); sfx.boing();
+  await wait(950); funHide();
+}
+async function sneezyCow() {
+  funShow(`<div class="fun-big" id="cow">🐮</div><div class="fun-say">Ah...</div>`);
+  sfx.ah(0); await wait(500); funSay('Ah... ah...'); sfx.ah(1); await wait(500); funSay('Ah... ah... AAAH...'); sfx.ah(2); await wait(600);
+  funSay('AH-CHOO!'); sfx.sneeze(); $('cow').classList.add('jolt');
+  const [x, y] = centreOf($('cow')); burst(x, y, 60, { emoji: ['💦', '✨', '🌼'], power: 16 });
+  await wait(1000); funHide();
+}
+async function duckStampede() {
+  const row = n => Array.from({ length: n }, () => '<span>🦆</span>').join('');
+  funShow(`<div class="stampede"><div class="row" style="top:22%">${row(8)}</div><div class="row" style="top:44%;animation-delay:.25s">${row(9)}</div><div class="row" style="top:66%;animation-delay:.5s">${row(8)}</div></div><div class="fun-say">DUCK STAMPEDE!</div>`);
+  for (let i = 0; i < 12; i++) setTimeout(() => ANIMALS[1].snd(), i * 200 + Math.random() * 120);
+  await wait(3000); funHide();
+}
+async function dinoStomp() {
+  const row = n => Array.from({ length: n }, (_, i) => `<span>${i % 2 ? '🦕' : '🦖'}</span>`).join('');
+  funShow(`<div class="stampede dino"><div class="row" style="top:40%">${row(6)}</div></div><div class="fun-say">DINO STOMP!</div>`);
+  ANIMALS[9].snd(); if (!reduced) document.body.classList.add('quake');
+  for (let i = 0; i < 6; i++) sfx.stomp(0.3 + i * 0.42);
+  await wait(3100); funHide();
+}
+async function discoFrog() {
+  funShow(`<div class="disco-bg"></div><div class="disco-ball">🪩</div>${frogUse('dance')}<div class="fun-say">DISCO FROG!</div>`);
+  sfx.disco(); await wait(3800); funHide();
+}
+async function goldenFly(g) {
+  funShow(`<button class="golden" id="golden" aria-label="Catch the golden fly">🪰</button><div class="fun-say">Golden fly! Tap it!</div>`);
+  const btn = $('golden'), W = innerWidth, H = innerHeight;
+  let caught = false, x = W * 0.15, y = H * 0.35, tx = W * 0.6, ty = H * 0.3, lastT = 0;
+  const grab = e => { e.preventDefault(); e.stopPropagation(); caught = true; };
+  btn.addEventListener('pointerdown', grab); btn.addEventListener('click', grab);
+  sfx.sparkle(); sfx.buzz(4);
+  const t0 = performance.now();
+  await new Promise(res => {
+    (function step() {
+      const el = performance.now() - t0;
+      if (caught || el > 4500 || game !== g) return res();
+      if (el - lastT > 650) { lastT = el; tx = 40 + Math.random() * (W - 140); ty = 90 + Math.random() * (H * 0.55); }
+      if (!reduced) { x += (tx - x) * 0.05; y += (ty - y) * 0.05; }
+      btn.style.transform = `translate(${x}px, ${y}px)`;
+      requestAnimationFrame(step);
+    })();
+  });
+  if (caught) {
+    g.stars += 3; g.bonus = (g.bonus || 0) + 3; $('starCount').textContent = g.stars;
+    const [bx, by] = centreOf(btn); burst(bx, by, 50, { emoji: ['⭐', '✨'] });
+    btn.remove(); funSay('+3 bonus stars!'); sfx.fanfare();
+    await wait(1400);
+  } else {
+    btn.classList.add('away'); funSay('It got away! Next time!'); sfx.slideUp();
+    await wait(1000);
+  }
+  funHide();
+}
+const SURPRISE_RUN = { fly: flyCatch, boing: giantBoing, sneeze: sneezyCow, ducks: duckStampede, golden: goldenFly, disco: discoFrog, dino: dinoStomp };
+function pickSurprise(g) {
+  if (g.timed || g.i - (g.lastSurprise ?? -9) < 3) return null;
+  const pool = SURPRISES.filter(x => SURPRISE_RUN[x.id] && unlocked(x.at, state.stars + g.stars));
+  const unseen = pool.filter(x => !state.seen[x.id]);
+  const chance = Object.keys(state.seen).length === 0 ? 0.35 : unseen.length ? 0.2 : 0.15;
+  if (Math.random() > chance) return null;
+  g.lastSurprise = g.i;
+  return pick(pool.flatMap(x => state.seen[x.id] ? [x] : [x, x, x]));
+}
+// Returns true if this was the first time she found it.
+function markSeen(id) { const fresh = !state.seen[id]; state.seen[id] = true; save(); return fresh; }
+async function runSurprise(sur, g) {
+  const fresh = markSeen(sur.id);
+  await SURPRISE_RUN[sur.id](g);
+  if (fresh && game === g) {
+    const found = SURPRISES.filter(x => state.seen[x.id]).length;
+    say(`New surprise found: ${sur.name}! (${found} of ${SURPRISES.length})`); sfx.tada();
+    await wait(1400);
+  }
+}
+async function pondSplash() {
+  funShow(frogUse('fall'));
+  await wait(620); sfx.splash();
+  burst(innerWidth / 2, innerHeight - 20, 50, { emoji: ['💦', '💧'], power: 18 });
+  await wait(500); funHide();
+}
+// A silly reaction to a first wrong answer. Returns the message to show.
+function slapstick() {
+  const r = Math.random();
+  if (r < 0.34) { pondSplash(); return `SPLASH! ${state.frogName} fell in the pond! Have another go!`; }
+  if (r < 0.67) { buddy(ANIMALS[7], 'Pbbbbt!', sfx.raspberry); return pick([`Not quite, ${NAME}! Have another go!`, 'Oops! Try again!']); }
+  buddy(ANIMALS[0], 'Whoooops!', sfx.slideDown); return pick([`So close, ${NAME}! One more go!`, 'Whoops! Have another go!']);
 }
 
 /* ---------- frog helper plans ---------- */
@@ -927,7 +1273,8 @@ function refreshHome() {
   $('lvName').textContent = lv.name;
   $('lvStars').textContent = `${state.stars} star${state.stars === 1 ? '' : 's'}`;
   $('lvFill').style.width = next ? Math.round((state.stars - lv.at) / (next.at - lv.at) * 100) + '%' : '100%';
-  $('lvNext').textContent = next ? `${next.at - state.stars} more stars and your frog gets ${next.gift}!` : 'Your frog has every outfit. Frog Legend!';
+  $('lvNext').textContent = next ? `${next.at - state.stars} more stars and ${state.frogName} gets ${next.gift}!` : `${state.frogName} has every outfit. Frog Legend!`;
+  $('heroName').textContent = state.frogName; $('wardName').textContent = state.frogName;
   const d = dayStreak(), chip = $('dayChip');
   chip.hidden = d < 2; chip.textContent = `🔥 ${d} days in a row`;
   $('clockModes').innerHTML = Object.entries(CLOCKS).map(([id, c]) => {
@@ -1125,8 +1472,8 @@ function check() {
 }
 function streakParty() {
   const s = game.streak;
-  if (s === 3) toast('3 in a row!');
   if (s === 5 || s === 10) speak(`${s} in a row, ${NAME}! Amazing!`);
+  if (s === 3) toast('3 in a row!');
   else if (s === 5) { toast('5 in a row!'); parade(); burst(innerWidth / 2, innerHeight * 0.3, 70, { emoji: PARTY }); }
   else if (s === 10) { toast('10 in a row!'); parade(); rain(120, PARTY); }
   else if (s === 15) { toast('15! Unstoppable!'); rain(140, PARTY); }
@@ -1136,7 +1483,12 @@ function streakParty() {
 function right() {
   const g = game, q = g.q, first = g.attempts === 0;
   g.locked = true; hopToken++;
-  if (first) { g.stars++; g.streak++; g.bestStreak = Math.max(g.bestStreak, g.streak); markHit(q); }
+  let milestone = 0;
+  if (first) {
+    g.stars++; g.streak++; g.bestStreak = Math.max(g.bestStreak, g.streak); markHit(q);
+    state.totals.right++; if (MILESTONES.includes(state.totals.right)) { milestone = state.totals.right; (g.milestones = g.milestones || []).push(milestone); }
+    save();
+  }
   g.results.push({ q, ok: first, given: g.given });
   $('starCount').textContent = g.stars; setStreak(); updateDots();
   flash('good');
@@ -1149,18 +1501,25 @@ function right() {
     return;
   }
   sfx.good(g.streak);
-  if (first) {
-    buddy(); burst(cx, cy, 36, { emoji: Math.random() < 0.5 ? PARTY : null }); streakParty();
-    say(named(pick(["That's right!", 'Brilliant!', 'Super hopping!', 'Yes! Well done!', 'You got it!', 'Fantastic!', 'Smashed it!'])));
-  } else say(`Yes, ${NAME}! Now you know that one.`);
-  setTimeout(next, first ? 1500 : 1600);
+  if (!first) { say(`Yes, ${NAME}! Now you know that one.`); setTimeout(next, 1600); return; }
+  say(named(pick(["That's right!", 'Brilliant!', 'Super hopping!', 'Yes! Well done!', 'You got it!', 'Fantastic!', 'Smashed it!', 'Ribbiting!', 'Hoppily correct!'])));
+  burst(cx, cy, 36, { emoji: Math.random() < 0.5 ? PARTY : null });
+  const sur = milestone ? null : pickSurprise(g);
+  if (milestone) { toast(`${milestone} sums right!`); speak(`${milestone} sums right, ${NAME}! Wow!`); rain(100, PARTY); }
+  else if (!sur) { buddy(); streakParty(); }
+  (async () => {
+    if (sur) { await wait(450); await runSurprise(sur, g); } else await wait(1500);
+    if (game === g) next();
+  })();
 }
 function wrong() {
   const g = game, q = g.q; g.attempts++;
   if (g.given == null) g.given = g.typed;
   if (!g.missed) { g.missed = true; markMiss(q); }
   g.streak = 0; setStreak();
-  flash('bad'); sfx.bad(); g.typed = '';
+  flash('bad'); g.typed = '';
+  const silly = !g.timed && g.attempts === 1 && Math.random() < 0.6;
+  if (!silly) sfx.bad();
   if (g.timed) {
     g.locked = true; g.revealed = true; g.typed = String(q.ans);
     g.results.push({ q, ok: false, given: g.given }); renderQ();
@@ -1168,7 +1527,10 @@ function wrong() {
     setTimeout(next, 1100); return;
   }
   renderQ();
-  if (g.attempts === 1) { say(pick([`Not quite, ${NAME}. Have another go!`, 'Oops! Try again!', `So close, ${NAME}! One more go!`])); return; }
+  if (g.attempts === 1) {
+    say(silly ? slapstick() : pick([`Not quite, ${NAME}. Have another go!`, 'Oops! Try again!', `So close, ${NAME}! One more go!`]));
+    return;
+  }
   if (g.attempts === 2) {
     runHelp(q, $('line'), say, $('helpBtn')).then(ok => { if (ok && game === g && g.q === q && !g.locked) say(q.help.reveal); });
     return;
@@ -1208,7 +1570,13 @@ async function endRound() {
     const b = state.bests[g.mode];
     if (!b || correct > b.correct || (correct === b.correct && used < b.time)) { state.bests[g.mode] = { correct, time: Math.round(used * 10) / 10 }; record = !!b || correct > 0; }
   }
-  state.joke = (state.joke + 1) % JOKES.length;
+  state.totals.rounds++;
+  if (perfect && g.mode !== 'retry') state.totals.perfect++;
+  const newStreak = g.bestStreak > state.totals.bestStreak && g.bestStreak >= 3 ? g.bestStreak : 0;
+  state.totals.bestStreak = Math.max(state.totals.bestStreak, g.bestStreak);
+  let unseenJokes = JOKES.map((_, i) => i).filter(i => !state.jokesSeen.includes(i));
+  if (!unseenJokes.length) { state.jokesSeen = []; unseenJokes = JOKES.map((_, i) => i); }
+  state.joke = pick(unseenJokes); state.jokesSeen.push(state.joke);
   save(); updateFrog();
   lastGame = g;
 
@@ -1225,7 +1593,12 @@ async function endRound() {
   const b = state.bests[g.mode];
   $('resBest').hidden = !g.timed || !b;
   if (g.timed && b) $('resBest').textContent = `Your best for ${CLOCKS[g.mode].name}: ${b.correct} right` + (b.correct === 20 ? ` in ${fmt(b.time)}` : '');
-  $('resBanner').hidden = true;
+  $('resBanners').innerHTML = '';
+  const banners = [];
+  if (record) banners.push(['New record!', '']);
+  if (newStreak) banners.push([`Best streak ever: ${newStreak} in a row!`, 'alt']);
+  (g.milestones || []).forEach(m => banners.push([`${m} sums right!`, 'gold']));
+  if (g.bonus) banners.push([`+${g.bonus} golden fly stars!`, 'gold']);
   const starRow = $('resStars');
   starRow.classList.toggle('many', g.total > 12);
   let s = ''; for (let i = 0; i < g.total; i++) s += '<svg class="star-off"><use href="#starSym"/></svg>';
@@ -1249,7 +1622,11 @@ async function endRound() {
   if (beat || ratio >= 0.9) { sfx.fanfare(); rain(140, PARTY); parade(); }
   else if (ratio >= 0.6) { sfx.fanfare(); burst(innerWidth / 2, innerHeight * 0.35, 90, { emoji: PARTY }); }
   else buddy(pick(ANIMALS), pick(['Practice makes purr-fect!', 'Keep hopping!', "You're getting there!"]));
-  if (record) { await wait(500); if (my !== endToken) return; $('resBanner').hidden = false; sfx.tada(); }
+  if (unlocked(220, state.stars) && ratio >= 0.6) { const fresh = markSeen('fireworks'); fireworksShow(4); if (fresh) banners.push(['New surprise: Fireworks Finale!', 'alt']); }
+  for (const [text, cls] of banners) {
+    await wait(550); if (my !== endToken) return;
+    const el = document.createElement('div'); el.className = 'banner ' + cls; el.textContent = text; $('resBanners').appendChild(el); sfx.tada();
+  }
   if (got) {
     await wait(700); if (my !== endToken) return;
     sfx.drumroll(); await wait(reduced ? 300 : 850); if (my !== endToken) return;
@@ -1268,7 +1645,8 @@ function levelUp(lv) {
   return new Promise(res => {
     $('lvTitle').textContent = `Level up, ${NAME}! You're a ${lv.name}!`;
     speak(`Level up, ${NAME}! You're a ${lv.name}!`);
-    $('lvGift').textContent = `Your frog got ${lv.gift}!`;
+    $('lvGift').textContent = `${state.frogName} got ${lv.gift}!`;
+    $('lvUnlock').hidden = !lv.unlock; $('lvUnlock').textContent = lv.unlock ? `New: ${lv.unlock}!` : '';
     $('levelup').hidden = false; sfx.fanfare(); setTimeout(() => ANIMALS[0].snd(), 900); rain(120, ['⭐', '🎉', '🐸', '✨']);
     $('lvBtn').onclick = () => { $('levelup').hidden = true; sfx.boing(); res(); };
   });
@@ -1276,7 +1654,7 @@ function levelUp(lv) {
 
 /* ---------- review the tricky ones ---------- */
 let rev = null;
-function clearFx() { parts = []; $('parade').hidden = true; $('buddy').classList.remove('show'); }
+function clearFx() { parts = []; $('parade').hidden = true; $('buddy').classList.remove('show'); funHide(); }
 function startReview() {
   clearFx();
   rev = { items: uniqueMissed(lastGame), i: 0 };
@@ -1320,6 +1698,63 @@ function openBook() {
     : `${n} of ${STICKERS.length} stickers. Finish a round to win the next one. Get every sum right for a gold one.`;
   show('book');
 }
+/* ---------- dress-up room ---------- */
+// Whether an outfit is showing: the crown and party hat can't both be worn, and the crown wins.
+function wearing(k) {
+  const lv = LEVELS.find(l => l.item === k), on = unlocked(lv.at) && state.look.wear[k] !== false;
+  return k === 'hat' ? on && !wearing('crown') : on;
+}
+function openWardrobe() { renderWardrobe(); $('frogName').value = state.frogName; show('wardrobe'); }
+function renderWardrobe() {
+  $('wardTitle').textContent = `Dress up ${state.frogName}`;
+  $('swatches').innerHTML = Object.entries(PALETTES).map(([id, p]) => {
+    const ok = unlocked(p.at), lv = LEVELS.filter(l => l.at <= p.at).pop();
+    return `<button class="swatch" data-color="${id}" style="background:${p.css}" aria-label="${p.name}" aria-pressed="${state.look.color === id}" ${ok ? '' : 'disabled'}>${ok ? '' : `<span class="lock">🔒 ${lv.name}</span>`}</button>`;
+  }).join('');
+  $('outfits').innerHTML = LEVELS.filter(l => l.item).map(l => {
+    const [ic, name] = OUTFITS[l.item], ok = unlocked(l.at), on = wearing(l.item);
+    return `<button class="outfit" data-item="${l.item}" aria-pressed="${on}" ${ok ? '' : 'disabled'}><span class="ic">${ok ? ic : '🔒'}</span><span>${name}<small>${ok ? (on ? 'Wearing it' : 'Tap to wear') : `Reach ${l.name}`}</small></span></button>`;
+  }).join('');
+  updateFrog();
+}
+$('swatches').addEventListener('click', e => {
+  const b = e.target.closest('.swatch'); if (!b || b.disabled) return;
+  state.look.color = b.dataset.color; save(); renderWardrobe(); sfx.sparkle();
+});
+$('outfits').addEventListener('click', e => {
+  const b = e.target.closest('.outfit'); if (!b || b.disabled) return;
+  const k = b.dataset.item, on = wearing(k);
+  state.look.wear[k] = !on;
+  if (!on && k === 'crown') state.look.wear.hat = false;
+  if (!on && k === 'hat') state.look.wear.crown = false;
+  save(); renderWardrobe(); on ? sfx.slideDown() : sfx.boing();
+});
+$('frogName').addEventListener('input', e => {
+  const v = e.target.value.replace(/[<>]/g, '').trim().slice(0, 14);
+  state.frogName = v || 'Hoppy'; save(); $('wardTitle').textContent = `Dress up ${state.frogName}`;
+});
+
+/* ---------- records ---------- */
+function openRecords() {
+  const t = state.totals, tiles = [
+    [t.right, 'sums right first time'], [t.rounds, 'rounds played'], [t.perfect, 'perfect rounds'],
+    [t.bestStreak, 'best streak in a row'], [state.days.best || state.days.count || 0, 'most days in a row'], [state.stars, 'stars collected'],
+  ];
+  $('recTiles').innerHTML = tiles.map(([n, l]) => `<div class="tile"><b>${n}</b><span>${l}</span></div>`).join('');
+  $('recClock').innerHTML = Object.entries(CLOCKS).map(([id, c]) => {
+    const b = state.bests[id];
+    return `<div class="tile"><b>${!b ? '–' : b.correct === 20 ? fmt(b.time) : b.correct + '/20'}</b><span>${c.name}${b && b.correct === 20 ? ': all 20' : ''}</span></div>`;
+  }).join('');
+  const found = SURPRISES.filter(x => state.seen[x.id]).length;
+  $('surCount').textContent = `${found} of ${SURPRISES.length}`;
+  $('recSurprises').innerHTML = SURPRISES.map(x => {
+    if (state.seen[x.id]) return `<div class="sur"><span class="ic">${x.e}</span><span>${x.name}</span></div>`;
+    const lv = LEVELS.filter(l => l.at <= x.at).pop();
+    return `<div class="sur unfound"><span class="ic">${unlocked(x.at) ? '❓' : '🔒'}</span><span>???<small>${unlocked(x.at) ? 'Keep playing to find it!' : `Reach ${lv.name}`}</small></span></div>`;
+  }).join('');
+  show('records');
+}
+
 function goHome() { clearFx(); stopTimer(); hopToken++; endToken++; game = null; $('overlay').hidden = true; refreshHome(); show('home'); }
 
 /* ---------- wiring ---------- */
@@ -1351,6 +1786,14 @@ $('revHome').addEventListener('click', goHome);
 $('revHome2').addEventListener('click', goHome);
 $('bookBtn').addEventListener('click', openBook);
 $('bookBack').addEventListener('click', goHome);
+$('wardBtn').addEventListener('click', openWardrobe);
+$('wardBack').addEventListener('click', goHome);
+$('recBtn').addEventListener('click', openRecords);
+$('recBack').addEventListener('click', goHome);
+$('hero').addEventListener('click', () => {
+  const h = $('hero'); h.classList.remove('hop'); void h.offsetWidth; h.classList.add('hop');
+  pick([ANIMALS[0].snd, sfx.burp, sfx.boing, sfx.raspberry, ANIMALS[0].snd])();
+});
 $('soundBtn').addEventListener('click', () => { state.sound = !state.sound; save(); refreshHome(); if (state.sound) ANIMALS[0].snd(); });
 document.addEventListener('keydown', e => {
   if ($('play').hidden) return;
@@ -1360,6 +1803,8 @@ document.addEventListener('keydown', e => {
 });
 window.addEventListener('resize', () => { if (fxRaf) fxSize(); });
 refreshHome(); show('home');
+// Test hook: only used by automated tests, never set in normal play.
+if (window.__frogTest) window.__frogTest({ runSurprise, SURPRISES, state, getGame: () => game, slapstick });
 })();
 </script>
 <!-- game:end -->
