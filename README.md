@@ -37,9 +37,15 @@ All the fun comes when a round is finished, in this order:
 
 ## Learning from mistakes
 
-- First wrong answer: "have another go". Second wrong answer: the frog shows the jumps and says the answer.
-- At the end of a round, "Let's fix the tricky ones" goes through each sum she got wrong. It shows what she typed and the right answer, a tip for that exact sum (make 10 first, near doubles, take away 10 then add 1 back, count up when the numbers are close, friendly jumps to 100), and the frog can act it out. Then she can try those sums again.
-- Sums she gets wrong are saved on the iPad and come back in later rounds until she gets them right.
+The game is built to make mistakes feel safe, because she's a bit of a perfectionist:
+
+- **Have a go first.** The frog's help button reads "Have a go first, then I can help" until she has tried once. Tapping it early gets a gentle "Your brain can do it" nudge. There's deliberately no limit on help once she's tried.
+- **Mistakes are welcome.** A wrong first answer gets a soft tone, a gentle wiggle and a message like "Good try, Rosalie! Mistakes help your brain grow. Have another go!"
+- **Fixing it counts.** Getting it right on the second go, on her own, earns a silver star (worth a full star) and keeps her run going. If the frog helps, she gets a green "learned with Hoppy" star but no point, and her run restarts.
+- **Second wrong answer:** the frog shows the jumps and says the answer.
+- **End of round:** "Brave brain: 8 sums on your own!", "You fixed 2 mistakes! Your brain grew!", and a round with no frog help at all earns "Brave brain! Every sum on your own!" plus 2 bonus stars.
+- **Learning from the tricky ones:** goes through each sum she got wrong, showing what she typed ("Mistakes help us learn!"), the right answer, a tip for that exact sum (make 10 first, near doubles, take away 10 then add 1 back, count up when the numbers are close, friendly jumps to 100), and the frog acting it out. Then she can try those sums again.
+- Sums she gets wrong are saved on the iPad and come back in later rounds until she gets them right first time.
 
 ## Updates
 

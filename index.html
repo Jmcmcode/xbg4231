@@ -16,7 +16,7 @@
 <body>
 <!-- game:start -->
 <title>Rosalie's Frog Hop</title>
-<meta name="build" content="2026-10-04 18:39:51">
+<meta name="build" content="2026-10-04 19:44:09">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Baloo+2:wght@600;700;800&display=swap">
@@ -90,7 +90,9 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 .dots.many .dot{width:12px;height:12px}
 .dot.now{background:var(--paper);box-shadow:0 0 0 3px var(--ink)}
 .dot.ok{background:var(--sun);box-shadow:0 0 0 2px var(--sun-dark)}
-.dot.miss{background:var(--coral)}
+.dot.miss{background:#F3C9A0}
+.dot.silver{background:#D5DDE1;box-shadow:0 0 0 2px #8E9DA5}
+.dot.frog{background:#8FD07E;box-shadow:0 0 0 2px var(--frog-dark)}
 .left-bits{display:flex;align-items:center;gap:10px}
 .chip.snd{padding:8px 14px;font-size:22px;line-height:1}
 .right-bits{display:flex;align-items:center;gap:10px}
@@ -129,7 +131,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 .box.shown{border-style:solid;border-color:var(--coral);color:var(--coral);background:#FDECEA}
 .box.right,.card.good .box{border-style:solid;border-color:var(--sun-dark);background:#FFF3CC;color:var(--ink)}
 .card.good{animation:pop .5s ease}
-.card.bad .box{animation:shake .45s}
+.card.bad .box{animation:wiggle .5s ease;border-color:var(--sun-dark)}
 .msg{margin:10px 0 0;font-size:clamp(18px,2.5vw,23px);min-height:1.4em;color:var(--ink-soft);font-weight:700;text-wrap:balance}
 .line-wrap{background:rgba(255,253,245,.45);border-radius:24px;padding:6px 8px}
 .line-wrap svg{display:block;width:100%;height:auto;overflow:visible}
@@ -146,6 +148,8 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 .help{align-self:center;background:var(--paper);border-radius:999px;padding:10px 24px;font-family:var(--display);font-weight:700;font-size:22px;box-shadow:0 5px 0 var(--shade);display:flex;align-items:center;gap:10px;min-height:56px}
 .help svg{width:34px;height:38px}
 .help:active{transform:translateY(3px);box-shadow:0 2px 0 var(--shade)}
+.help.locked{background:rgba(255,253,245,.5);box-shadow:none;color:var(--ink-soft);font-size:19px}
+.help.nudge{animation:wiggle .5s ease}
 .pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-content:start}
 .key{font-family:var(--display);font-weight:800;font-size:clamp(32px,5vw,44px);background:var(--paper);border-radius:20px;box-shadow:0 6px 0 var(--shade);min-height:clamp(58px,8.2vh,88px);line-height:1}
 .key:active{transform:translateY(4px);box-shadow:0 2px 0 var(--shade)}
@@ -164,6 +168,8 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 .star-on{fill:var(--sun);stroke:var(--sun-dark);stroke-width:1.2}
 .star-on.lit{animation:starPop .35s cubic-bezier(.3,1.8,.5,1)}
 .star-off{fill:var(--ink-faint)}
+.star-silver{fill:#D5DDE1;stroke:#7F8E96;stroke-width:1.2}
+.star-frog{fill:#A6DC95;stroke:var(--frog-dark);stroke-width:1.2}
 .res-line{font-size:clamp(20px,3vw,26px);margin:0;font-weight:700;text-wrap:balance}
 .res-best{margin:0;font-weight:700;color:var(--ink-soft)}
 .res-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;align-items:stretch;width:min(760px,100%)}
@@ -308,6 +314,7 @@ label.chip{display:inline-flex;align-items:center;cursor:pointer}
 
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
 @keyframes blink{50%{opacity:0}}
 @keyframes pulse{50%{transform:scale(1.12)}}
 @keyframes idle{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-3deg)}}
@@ -429,7 +436,7 @@ label.chip{display:inline-flex;align-items:center;cursor:pointer}
       </div>
     </div>
     <div class="res-actions">
-      <button id="reviewBtn" class="key go">Let's fix the tricky ones</button>
+      <button id="reviewBtn" class="key go">Let's learn from the tricky ones</button>
       <button id="againBtn" class="key go">Play again</button>
       <button id="homeBtn" class="chip">Home</button>
     </div>
@@ -805,7 +812,7 @@ const sfx = {
   good: streak => { const base = Math.min(streak, 8); [0, 4, 7, 12].forEach((s, i) => voice({ type: 'triangle', f: [[0, NOTE(s + base)]], dur: 0.22, vol: 0.12, at: i * 0.07 })); },
   ding: k => voice({ type: 'triangle', f: [[0, NOTE(Math.min(k, 24))]], dur: 0.18, vol: 0.12 }),
   coin: k => { voice({ type: 'square', f: [[0, NOTE(7 + Math.min(k, 12))]], dur: 0.07, vol: 0.05 }); voice({ type: 'square', f: [[0, NOTE(12 + Math.min(k, 12))]], dur: 0.16, vol: 0.05, at: 0.07 }); },
-  bad: () => { voice({ type: 'triangle', f: [[0, 247]], dur: 0.18, vol: 0.12 }); voice({ type: 'triangle', f: [[0, 196]], dur: 0.3, vol: 0.12, at: 0.15 }); },
+  bad: () => { voice({ f: [[0, 440], [0.2, 370]], dur: 0.26, vol: 0.08 }); },
   plip: k => voice({ f: [[0, 420 * Math.pow(2, Math.min(k, 14) / 12)], [0.08, 520 * Math.pow(2, Math.min(k, 14) / 12)]], dur: 0.1, vol: 0.1 }),
   boing: () => voice({ f: [[0, 140], [0.35, 620]], dur: 0.45, vol: 0.14, vib: 14 }),
   whoosh: () => noise({ dur: 0.25, vol: 0.06, bp: 1800 }),
@@ -1440,8 +1447,10 @@ function showQ() {
   renderSum($('sum'), q, '', '');
   const hiding = (q.layout === 'eq' && q.tokens[q.tokens.length - 1] !== '?') || (q.layout === 'words' && !q.text.endsWith('{?}.'));
   say(game.timed ? 'Quick as you can!' : q.layout === 'story' ? 'Read it carefully, then type the answer.' : hiding ? 'What number is hiding in the box?' : 'Type your answer, then tap Check.');
-  $('helpBtn').hidden = !helper; $('helpBtn').disabled = false;
-  $('helpLabel').textContent = q.help.kind === 'pads' ? 'Show me the hops' : 'Show me the jumps';
+  // Help unlocks after her first try, so she trusts her own answer first.
+  game.qHelped = false;
+  $('helpBtn').hidden = !helper; $('helpBtn').disabled = false; $('helpBtn').classList.add('locked');
+  $('helpLabel').textContent = 'Have a go first, then I can help';
   $('lineWrap').hidden = !(helper && q.help.kind === 'pads');
   if (helper) drawLine($('line'), q);
   $('qcount').textContent = `${game.i + 1}/${game.total}`;
@@ -1469,7 +1478,7 @@ function updateDots() {
   let s = '';
   for (let i = 0; i < game.total; i++) {
     const r = game.results[i];
-    s += `<span class="dot ${r ? (r.ok ? 'ok' : 'miss') : (i === game.i ? 'now' : '')}"></span>`;
+    s += `<span class="dot ${r ? (r.ok ? 'ok' : r.second ? 'silver' : r.helped ? 'frog' : 'miss') : (i === game.i ? 'now' : '')}"></span>`;
   }
   $('dots').innerHTML = s;
 }
@@ -1490,47 +1499,63 @@ function check() {
   if (Number(game.typed) === game.q.ans) right(); else wrong();
 }
 function right() {
-  const g = game, q = g.q, first = g.attempts === 0;
+  const g = game, q = g.q, first = g.attempts === 0, helped = !!g.qHelped, second = !first && !helped;
   g.locked = true; hopToken++;
+  // A gold star first time, a silver star for fixing it on her own. Both keep her run going.
+  if (first || second) { g.stars++; g.streak++; g.bestStreak = Math.max(g.bestStreak, g.streak); }
   if (first) {
-    g.stars++; g.streak++; g.bestStreak = Math.max(g.bestStreak, g.streak); markHit(q);
+    markHit(q);
     state.totals.right++; if (MILESTONES.includes(state.totals.right)) (g.milestones = g.milestones || []).push(state.totals.right);
     save();
   }
-  g.results.push({ q, ok: first, given: g.given });
+  g.results.push({ q, ok: first, second, helped, given: g.given });
   $('starCount').textContent = g.stars; setStreak(); updateDots();
   // Keep the sums calm: a chime, a few words and a star. The fun is saved for the end of the round.
   flash('good');
   if (g.timed) { sfx.coin(g.streak); say(pick(['Yes!', 'Correct!', 'Speedy!'])); setTimeout(next, 260); return; }
   sfx.good(g.streak);
-  say(first ? named(pick(["That's right!", 'Brilliant!', 'Super hopping!', 'Yes! Well done!', 'You got it!', 'Fantastic!', 'Smashed it!'])) : `Yes, ${NAME}! Now you know that one.`);
-  setTimeout(next, first ? 1000 : 1400);
+  if (first) say(named(pick(["That's right!", 'Brilliant!', 'Super hopping!', 'Yes! Well done!', 'You got it!', 'Fantastic!', 'Smashed it!'])));
+  else if (second) say(pick([`You fixed it, ${NAME}! That's your brain growing!`, 'Brilliant fix! Mistakes help you learn!', `Yes! You worked it out, ${NAME}!`, 'You fixed it! Silver star!']));
+  else say(`Now you know it, ${NAME}! ${state.frogName} is proud of you.`);
+  setTimeout(next, first ? 1000 : 1500);
 }
 function wrong() {
   const g = game, q = g.q; g.attempts++;
   if (g.given == null) g.given = g.typed;
   if (!g.missed) { g.missed = true; markMiss(q); }
-  g.streak = 0; setStreak();
+  if (g.timed) { g.streak = 0; setStreak(); }
   flash('bad'); sfx.bad(); g.typed = '';
   if (g.timed) {
     g.locked = true; g.revealed = true; g.typed = String(q.ans);
     g.results.push({ q, ok: false, given: g.given }); renderQ();
-    say(`Oops! It was ${q.ans}.`);
+    say(`It was ${q.ans}. Keep going!`);
     setTimeout(next, 1100); return;
   }
   renderQ();
   if (g.attempts === 1) {
-    say(pick([`Not quite, ${NAME}. Have another go!`, 'Oops! Try again!', `So close, ${NAME}! One more go!`]));
+    unlockHelp();
+    say(pick([`Good try, ${NAME}! Mistakes help your brain grow. Have another go!`, "Ooh, a mistake! That's how brains learn. Try again!", "Not quite, and that's OK! One more go!", `Good thinking, ${NAME}! Have another go.`]));
     return;
   }
   if (g.attempts === 2) {
+    g.qHelped = true; g.streak = 0; setStreak();
     runHelp(q, $('line'), say, $('helpBtn')).then(ok => { if (ok && game === g && g.q === q && !g.locked) say(q.help.reveal); });
     return;
   }
   say(q.help.reveal);
 }
+function unlockHelp() {
+  $('helpBtn').classList.remove('locked');
+  $('helpLabel').textContent = game.q.help.kind === 'pads' ? 'Show me the hops' : 'Show me the jumps';
+}
 async function onHelp() {
   const g = game; if (!g || g.locked) return;
+  if (g.attempts === 0) {
+    say(`Have a go first, ${NAME}! Your brain can do it. If it's tricky, I'll help after.`);
+    const h = $('helpBtn'); h.classList.remove('nudge'); void h.offsetWidth; h.classList.add('nudge');
+    return;
+  }
+  g.qHelped = true; g.streak = 0; setStreak();
   const q = g.q, ok = await runHelp(q, $('line'), say, $('helpBtn'));
   if (ok && game === g && g.q === q && !g.locked) say(g.attempts >= 2 ? q.help.reveal : q.help.outro);
 }
@@ -1545,7 +1570,12 @@ async function endRound() {
   const g = game; if (!g || g.ended) return;
   g.ended = true; g.locked = true; stopTimer(); hopToken++;
   const my = ++endToken;
-  const correct = g.results.filter(r => r.ok).length, ratio = correct / g.total, perfect = correct === g.total;
+  const correct = g.results.filter(r => r.ok).length, perfect = correct === g.total;
+  const fixed = g.results.filter(r => r.second).length, helpedN = g.results.filter(r => r.helped).length;
+  const ratio = (correct + fixed) / g.total;
+  // Brave brain: no frog help in the whole round earns 2 bonus stars.
+  const braveAll = !g.timed && helpedN === 0 && g.results.length === g.total && g.total >= 5;
+  if (braveAll) g.stars += 2;
   const prevLv = levelAt(state.stars);
   state.stars += g.stars;
   let got = null, upgraded = false;
@@ -1580,14 +1610,18 @@ async function endRound() {
   setTimeout(() => { if (my === endToken) speak(title); }, 400);
   $('resLine').textContent = g.timed
     ? (beat ? `All ${g.total} right in ${fmt(used)}, with ${fmt(g.limit - used)} to spare!` : `${correct} right out of ${g.total} in ${fmt(used)}.`)
-    : g.mode === 'retry' ? `You got ${correct} out of ${g.total} right this time.` : `You got ${correct} out of ${g.total} right first time.`;
+    : perfect ? `All ${g.total} right first time!`
+    : [`${correct} right first time`, fixed ? `${fixed} fixed on a second go` : '', helpedN ? `${helpedN} learned with ${state.frogName}` : ''].filter(Boolean).join(', ') + '.';
   const b = state.bests[g.mode];
   $('resBest').hidden = !g.timed || !b;
   if (g.timed && b) $('resBest').textContent = `Your best for ${CLOCKS[g.mode].name}: ${b.correct} right` + (b.correct === 20 ? ` in ${fmt(b.time)}` : '');
   $('resBanners').innerHTML = '';
   const banners = [];
   if (record) banners.push(['New record!', '']);
-  if (newStreak) banners.push([`Best streak ever: ${newStreak} in a row!`, 'alt']);
+  if (braveAll) banners.push(['Brave brain! Every sum on your own! +2 stars', 'gold']);
+  else if (!g.timed && g.total - helpedN > 0) banners.push([`Brave brain: ${g.total - helpedN} sums on your own!`, 'alt']);
+  if (fixed) banners.push([`You fixed ${fixed} mistake${fixed === 1 ? '' : 's'}! Your brain grew!`, 'gold']);
+  if (newStreak) banners.push([`Best run ever: ${newStreak} in a row!`, 'alt']);
   (g.milestones || []).forEach(m => banners.push([`${m} sums right!`, 'gold']));
   const starRow = $('resStars');
   starRow.classList.toggle('many', g.total > 12);
@@ -1598,15 +1632,17 @@ async function endRound() {
   $('jokeQ').textContent = jk[0]; $('jokeA').textContent = jk[1]; $('jokeA').hidden = true; $('jokeBtn').hidden = false;
   const missed = uniqueMissed(g);
   $('reviewBtn').hidden = missed.length === 0;
-  $('reviewBtn').textContent = `Let's fix the tricky ones (${missed.length})`;
+  $('reviewBtn').textContent = `Let's learn from the tricky ones (${missed.length})`;
   $('againBtn').classList.toggle('alt', missed.length > 0);
   show('results');
 
   // Show
   await wait(350); if (my !== endToken) return;
   const stars = starRow.querySelectorAll('svg');
-  for (let i = 0; i < correct; i++) {
-    stars[i].setAttribute('class', 'star-on lit'); sfx.ding(i);
+  for (let i = 0; i < g.results.length; i++) {
+    const r = g.results[i];
+    stars[i].setAttribute('class', (r.ok ? 'star-on' : r.second ? 'star-silver' : r.helped ? 'star-frog' : 'star-off') + ' lit');
+    if (r.ok || r.second || r.helped) sfx.ding(r.ok ? i : r.second ? i - 2 : i - 5);
     await wait(reduced ? 0 : (g.total > 12 ? 70 : 120)); if (my !== endToken) return;
   }
   const great = beat || ratio >= 0.9, hasPic = !!getPic();
@@ -1671,7 +1707,7 @@ function showRev() {
   $('revCount').textContent = `Tricky one ${rev.i + 1} of ${n}`;
   renderSum($('revSum'), q, String(q.ans), 'right');
   const you = $('revYou'); you.textContent = '';
-  if (it.given) { you.append('You put '); const s = document.createElement('s'); s.textContent = it.given; you.append(s, `. The answer is ${q.ans}.`); }
+  if (it.given) { you.append('You put '); const s = document.createElement('s'); s.textContent = it.given; you.append(s, `. Mistakes help us learn! The answer is ${q.ans}.`); }
   else you.textContent = `The answer is ${q.ans}.`;
   const tip = tipFor(q);
   $('tipTitle').textContent = tip.title;
@@ -1832,7 +1868,7 @@ $('frogName').addEventListener('input', e => {
 function openRecords() {
   const t = state.totals, tiles = [
     [t.right, 'sums right first time'], [t.rounds, 'rounds played'], [t.perfect, 'perfect rounds'],
-    [t.bestStreak, 'best streak in a row'], [state.days.best || state.days.count || 0, 'most days in a row'], [state.stars, 'stars collected'],
+    [t.bestStreak, 'best run in a row'], [state.days.best || state.days.count || 0, 'most days in a row'], [state.stars, 'stars collected'],
   ];
   $('recTiles').innerHTML = tiles.map(([n, l]) => `<div class="tile"><b>${n}</b><span>${l}</span></div>`).join('');
   $('recClock').innerHTML = Object.entries(CLOCKS).map(([id, c]) => {
