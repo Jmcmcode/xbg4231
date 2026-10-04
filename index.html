@@ -245,7 +245,6 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 .fun-frog.gulp{animation:gulp .5s ease}
 .fun-frog.giant{width:min(360px,60vw);bottom:0;animation:boing 2.1s ease-in-out forwards}
 .fun-frog.dance{width:min(300px,50vw);bottom:8%;animation:dance .47s ease-in-out infinite alternate}
-.fun-frog.fall{left:50%;top:-30%;bottom:auto;animation:fall .7s cubic-bezier(.5,0,1,.6) forwards}
 .fun-say{position:absolute;left:50%;top:14%;transform:translateX(-50%);font-family:var(--display);font-weight:800;font-size:clamp(34px,7vw,64px);color:var(--paper);-webkit-text-stroke:3px var(--ink);text-shadow:0 6px 0 var(--ink);white-space:nowrap;text-align:center}
 .fun-big{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:min(200px,32vw);line-height:1}
 .fun-big.jolt{animation:jolt .5s ease}
@@ -263,7 +262,6 @@ body.quake #app{animation:quake .25s linear 6}
 @keyframes gulp{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15,0.9)}}
 @keyframes boing{0%{transform:translate(-50%,110%)}18%{transform:translate(-50%,-38%)}32%{transform:translate(-50%,0) scale(1.08,.92)}48%{transform:translate(-50%,-24%)}60%{transform:translate(-50%,0) scale(1.06,.94)}72%{transform:translate(-50%,-12%)}82%{transform:translate(-50%,0)}100%{transform:translate(-50%,110%)}}
 @keyframes dance{from{transform:translateX(-50%) rotate(-12deg) translateY(0)}to{transform:translateX(-50%) rotate(12deg) translateY(-24px)}}
-@keyframes fall{from{transform:translateX(-50%) rotate(0)}to{transform:translate(-50%,calc(100vh + 30%)) rotate(200deg)}}
 @keyframes jolt{0%{transform:translate(-50%,-50%)}30%{transform:translate(-50%,-50%) scale(1.25) rotate(-8deg)}60%{transform:translate(-56%,-50%) rotate(6deg)}100%{transform:translate(-50%,-50%)}}
 @keyframes stampede{from{transform:translateX(100vw)}to{transform:translateX(-110%)}}
 @keyframes hue{from{filter:hue-rotate(0deg)}to{filter:hue-rotate(360deg)}}
@@ -276,8 +274,6 @@ body.quake #app{animation:quake .25s linear 6}
 .buddy .face{font-size:96px;line-height:1;filter:drop-shadow(0 6px 0 rgba(29,56,54,.2))}
 .buddy .bubble{background:var(--paper);border-radius:22px;padding:10px 18px;font-family:var(--display);font-weight:800;font-size:28px;color:var(--ink);box-shadow:0 5px 0 var(--shade);margin-bottom:70px;white-space:nowrap}
 .buddy.show{animation:buddy 1.8s ease forwards}
-.toast{position:fixed;left:50%;top:22%;z-index:59;pointer-events:none;font-family:var(--display);font-weight:800;font-size:clamp(40px,8vw,72px);color:var(--sun);-webkit-text-stroke:3px var(--sun-dark);text-shadow:0 6px 0 var(--sun-dark);white-space:nowrap;transform:translate(-50%,0) scale(0)}
-.toast.show{animation:toast 1.6s ease forwards}
 .parade{position:fixed;left:0;right:0;bottom:24%;height:100px;pointer-events:none;z-index:57;overflow:hidden}
 .walkers{position:absolute;left:0;top:10px;display:flex;gap:16px;font-size:64px;line-height:1;animation:walk 3.6s linear forwards}
 .walkers span{display:inline-block;animation:bob .3s ease-in-out infinite alternate}
@@ -300,12 +296,11 @@ body.quake #app{animation:quake .25s linear 6}
 @keyframes stickerIn{0%{transform:scale(.2) rotate(-200deg)}100%{transform:scale(1) rotate(0)}}
 @keyframes starPop{0%{transform:scale(.3)}100%{transform:scale(1)}}
 @keyframes buddy{0%{transform:translateY(150%)}14%{transform:translateY(-8%) rotate(-6deg)}22%{transform:translateY(0) rotate(6deg)}30%{transform:rotate(-5deg)}38%{transform:rotate(4deg)}46%{transform:rotate(0)}82%{transform:translateY(0)}100%{transform:translateY(150%)}}
-@keyframes toast{0%{transform:translate(-50%,0) scale(0) rotate(-10deg)}18%{transform:translate(-50%,0) scale(1.15) rotate(4deg)}30%{transform:translate(-50%,0) scale(1) rotate(0)}80%{transform:translate(-50%,0) scale(1);opacity:1}100%{transform:translate(-50%,-40px) scale(1);opacity:0}}
 @keyframes walk{from{transform:translateX(-100%)}to{transform:translateX(100vw)}}
 @keyframes bob{from{transform:translateY(0) rotate(-8deg)}to{transform:translateY(-18px) rotate(8deg)}}
 @keyframes rise{from{opacity:1;transform:translate(-50%,-50%)}to{opacity:0;transform:translate(-50%,-180%)}}
 @keyframes zoom{0%{transform:scale(2.4);opacity:0}35%{transform:scale(1);opacity:1}100%{transform:scale(.9)}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.buddy.show,.toast.show{transform:translate(0,0)}.toast.show{transform:translate(-50%,0)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.buddy.show{transform:translate(0,0)}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -500,7 +495,6 @@ body.quake #app{animation:quake .25s linear 6}
 <canvas id="fx" aria-hidden="true"></canvas>
 <div class="fun" id="fun" hidden></div>
 <div class="buddy" id="buddy" aria-hidden="true"><span class="face"></span><span class="bubble"></span></div>
-<div class="toast" id="toast" aria-hidden="true"></div>
 <div class="parade" id="parade" hidden aria-hidden="true"></div>
 <div class="overlay" id="overlay" hidden><div class="overlay-t" id="overlayT"></div></div>
 <div class="overlay" id="levelup" hidden>
@@ -770,7 +764,6 @@ const sfx = {
   raspberry: () => { voice({ type: 'sawtooth', f: [[0, 95], [0.5, 80]], dur: 0.55, vol: 0.12, lp: 900, vib: 38 }); noise({ dur: 0.5, vol: 0.05, bp: 700 }); },
   slideDown: () => voice({ f: [[0, 1100], [0.6, 200]], dur: 0.65, vol: 0.12 }),
   slideUp: () => voice({ f: [[0, 250], [0.45, 1200]], dur: 0.5, vol: 0.11 }),
-  splash: () => { noise({ dur: 0.5, vol: 0.18, bp: 900 }); noise({ at: 0.08, dur: 0.4, vol: 0.1, bp: 2500 }); voice({ f: [[0, 300], [0.12, 90]], dur: 0.15, vol: 0.14 }); },
   ah: k => voice({ type: 'triangle', f: [[0, 300 + k * 90], [0.3, 340 + k * 110]], dur: 0.35, vol: 0.1 }),
   sneeze: () => { noise({ dur: 0.35, vol: 0.22, bp: 3200 }); voice({ type: 'square', f: [[0, 700], [0.25, 260]], dur: 0.3, vol: 0.08, lp: 2200 }); },
   buzz: dur => voice({ type: 'sawtooth', f: [[0, 230], [dur, 260]], dur, vol: 0.035, lp: 1800, vib: 45 }),
@@ -861,11 +854,6 @@ function buddy(animal, text, snd) {
   clearTimeout(buddyT); buddyT = setTimeout(() => b.classList.remove('show'), 1850);
   setTimeout(() => (snd || animal.snd)(), 160);
 }
-function toast(text) {
-  const t = $('toast'); t.textContent = text;
-  t.classList.remove('show'); void t.offsetWidth; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 1650);
-}
 let paradeT = 0;
 function parade() {
   if (reduced) return;
@@ -873,12 +861,6 @@ function parade() {
   p.innerHTML = `<div class="walkers">${shuffle(ANIMALS.map(a => a.e)).slice(0, 8).map((e, i) => `<span style="animation-delay:-${i * 0.07}s">${e}</span>`).join('')}</div>`;
   p.hidden = false; clearTimeout(paradeT); paradeT = setTimeout(() => { p.hidden = true; }, 3700);
   [0, 0.3, 0.6, 0.9, 1.2, 1.5].forEach((at, i) => voice({ type: 'triangle', f: [[0, NOTE([0, 4, 7, 4, 9, 7][i] - 12)]], dur: 0.18, vol: 0.1, at }));
-}
-function plusOne() {
-  const box = document.querySelector('#sum .box'); if (!box || reduced) return;
-  const [x, y] = centreOf(box), el = document.createElement('div');
-  el.className = 'plus1'; el.textContent = '+1'; el.style.left = x + 'px'; el.style.top = y + 'px';
-  document.body.appendChild(el); setTimeout(() => el.remove(), 950);
 }
 
 /* ---------- surprises ---------- */
@@ -960,6 +942,7 @@ async function goldenFly(g) {
   });
   if (caught) {
     g.stars += 3; g.bonus = (g.bonus || 0) + 3; $('starCount').textContent = g.stars;
+    if (g.ended) { state.stars += 3; save(); updateFrog(); }
     const [bx, by] = centreOf(btn); burst(bx, by, 50, { emoji: ['⭐', '✨'] });
     btn.remove(); funSay('+3 bonus stars!'); sfx.fanfare();
     await wait(1400);
@@ -970,38 +953,18 @@ async function goldenFly(g) {
   funHide();
 }
 const SURPRISE_RUN = { fly: flyCatch, boing: giantBoing, sneeze: sneezyCow, ducks: duckStampede, golden: goldenFly, disco: discoFrog, dino: dinoStomp };
-function pickSurprise(g) {
-  if (g.timed || g.i - (g.lastSurprise ?? -9) < 3) return null;
-  const pool = SURPRISES.filter(x => SURPRISE_RUN[x.id] && unlocked(x.at, state.stars + g.stars));
-  const unseen = pool.filter(x => !state.seen[x.id]);
-  const chance = Object.keys(state.seen).length === 0 ? 0.35 : unseen.length ? 0.2 : 0.15;
-  if (Math.random() > chance) return null;
-  g.lastSurprise = g.i;
+// One surprise at the end of every round. Ones she hasn't found yet are three times as likely.
+function pickSurprise() {
+  const pool = SURPRISES.filter(x => SURPRISE_RUN[x.id] && unlocked(x.at));
   return pick(pool.flatMap(x => state.seen[x.id] ? [x] : [x, x, x]));
 }
 // Returns true if this was the first time she found it.
 function markSeen(id) { const fresh = !state.seen[id]; state.seen[id] = true; save(); return fresh; }
+// Plays a surprise. Returns true if it was the first time she found it.
 async function runSurprise(sur, g) {
   const fresh = markSeen(sur.id);
   await SURPRISE_RUN[sur.id](g);
-  if (fresh && game === g) {
-    const found = SURPRISES.filter(x => state.seen[x.id]).length;
-    say(`New surprise found: ${sur.name}! (${found} of ${SURPRISES.length})`); sfx.tada();
-    await wait(1400);
-  }
-}
-async function pondSplash() {
-  funShow(frogUse('fall'));
-  await wait(620); sfx.splash();
-  burst(innerWidth / 2, innerHeight - 20, 50, { emoji: ['💦', '💧'], power: 18 });
-  await wait(500); funHide();
-}
-// A silly reaction to a first wrong answer. Returns the message to show.
-function slapstick() {
-  const r = Math.random();
-  if (r < 0.34) { pondSplash(); return `SPLASH! ${state.frogName} fell in the pond! Have another go!`; }
-  if (r < 0.67) { buddy(ANIMALS[7], 'Pbbbbt!', sfx.raspberry); return pick([`Not quite, ${NAME}! Have another go!`, 'Oops! Try again!']); }
-  buddy(ANIMALS[0], 'Whoooops!', sfx.slideDown); return pick([`So close, ${NAME}! One more go!`, 'Whoops! Have another go!']);
+  return fresh;
 }
 
 /* ---------- frog helper plans ---------- */
@@ -1363,7 +1326,7 @@ function say(t) { $('msg').textContent = t; }
 function flash(cls) { const c = $('card'); c.classList.remove('good', 'bad'); void c.offsetWidth; c.classList.add(cls); }
 
 async function startRound(mode, qs) {
-  hopToken++; endToken++;
+  hopToken++; endToken++; clearFx(); $('levelup').hidden = true;
   const timed = !!CLOCKS[mode];
   game = { mode, timed, qs: qs || buildRound(mode), i: 0, stars: 0, streak: 0, bestStreak: 0, results: [], limit: timed ? CLOCKS[mode].secs : 0 };
   game.total = game.qs.length;
@@ -1470,56 +1433,29 @@ function check() {
   if (!game.typed) { say('Type a number first.'); return; }
   if (Number(game.typed) === game.q.ans) right(); else wrong();
 }
-function streakParty() {
-  const s = game.streak;
-  if (s === 5 || s === 10) speak(`${s} in a row, ${NAME}! Amazing!`);
-  if (s === 3) toast('3 in a row!');
-  else if (s === 5) { toast('5 in a row!'); parade(); burst(innerWidth / 2, innerHeight * 0.3, 70, { emoji: PARTY }); }
-  else if (s === 10) { toast('10 in a row!'); parade(); rain(120, PARTY); }
-  else if (s === 15) { toast('15! Unstoppable!'); rain(140, PARTY); }
-  else if (s === 20) { toast('20 in a row!!'); parade(); rain(180, PARTY); }
-  else if (s > 5 && s % 5 === 0) { toast(`${s} in a row!`); burst(innerWidth / 2, innerHeight * 0.3, 60, { emoji: PARTY }); }
-}
 function right() {
   const g = game, q = g.q, first = g.attempts === 0;
   g.locked = true; hopToken++;
-  let milestone = 0;
   if (first) {
     g.stars++; g.streak++; g.bestStreak = Math.max(g.bestStreak, g.streak); markHit(q);
-    state.totals.right++; if (MILESTONES.includes(state.totals.right)) { milestone = state.totals.right; (g.milestones = g.milestones || []).push(milestone); }
+    state.totals.right++; if (MILESTONES.includes(state.totals.right)) (g.milestones = g.milestones || []).push(state.totals.right);
     save();
   }
   g.results.push({ q, ok: first, given: g.given });
   $('starCount').textContent = g.stars; setStreak(); updateDots();
+  // Keep the sums calm: a chime, a few words and a star. The fun is saved for the end of the round.
   flash('good');
-  const [cx, cy] = centreOf($('card'));
-  if (g.timed) {
-    sfx.coin(g.streak); plusOne(); burst(cx, cy, 14, { power: 9 });
-    if (g.streak && g.streak % 5 === 0) { buddy(); toast(`${g.streak} in a row!`); }
-    say(pick(['Yes!', 'Zoom!', 'Speedy!', 'Correct!', 'Ribbit!']));
-    setTimeout(next, 260);
-    return;
-  }
+  if (g.timed) { sfx.coin(g.streak); say(pick(['Yes!', 'Correct!', 'Speedy!'])); setTimeout(next, 260); return; }
   sfx.good(g.streak);
-  if (!first) { say(`Yes, ${NAME}! Now you know that one.`); setTimeout(next, 1600); return; }
-  say(named(pick(["That's right!", 'Brilliant!', 'Super hopping!', 'Yes! Well done!', 'You got it!', 'Fantastic!', 'Smashed it!', 'Ribbiting!', 'Hoppily correct!'])));
-  burst(cx, cy, 36, { emoji: Math.random() < 0.5 ? PARTY : null });
-  const sur = milestone ? null : pickSurprise(g);
-  if (milestone) { toast(`${milestone} sums right!`); speak(`${milestone} sums right, ${NAME}! Wow!`); rain(100, PARTY); }
-  else if (!sur) { buddy(); streakParty(); }
-  (async () => {
-    if (sur) { await wait(450); await runSurprise(sur, g); } else await wait(1500);
-    if (game === g) next();
-  })();
+  say(first ? named(pick(["That's right!", 'Brilliant!', 'Super hopping!', 'Yes! Well done!', 'You got it!', 'Fantastic!', 'Smashed it!'])) : `Yes, ${NAME}! Now you know that one.`);
+  setTimeout(next, first ? 1000 : 1400);
 }
 function wrong() {
   const g = game, q = g.q; g.attempts++;
   if (g.given == null) g.given = g.typed;
   if (!g.missed) { g.missed = true; markMiss(q); }
   g.streak = 0; setStreak();
-  flash('bad'); g.typed = '';
-  const silly = !g.timed && g.attempts === 1 && Math.random() < 0.6;
-  if (!silly) sfx.bad();
+  flash('bad'); sfx.bad(); g.typed = '';
   if (g.timed) {
     g.locked = true; g.revealed = true; g.typed = String(q.ans);
     g.results.push({ q, ok: false, given: g.given }); renderQ();
@@ -1528,7 +1464,7 @@ function wrong() {
   }
   renderQ();
   if (g.attempts === 1) {
-    say(silly ? slapstick() : pick([`Not quite, ${NAME}. Have another go!`, 'Oops! Try again!', `So close, ${NAME}! One more go!`]));
+    say(pick([`Not quite, ${NAME}. Have another go!`, 'Oops! Try again!', `So close, ${NAME}! One more go!`]));
     return;
   }
   if (g.attempts === 2) {
@@ -1556,7 +1492,6 @@ async function endRound() {
   const correct = g.results.filter(r => r.ok).length, ratio = correct / g.total, perfect = correct === g.total;
   const prevLv = levelAt(state.stars);
   state.stars += g.stars;
-  const lv = levelAt(state.stars);
   let got = null, upgraded = false;
   if (g.mode !== 'retry') {
     if (state.stickers.length < STICKERS.length) { got = { i: state.stickers.length, gold: perfect }; state.stickers.push(got); }
@@ -1598,7 +1533,6 @@ async function endRound() {
   if (record) banners.push(['New record!', '']);
   if (newStreak) banners.push([`Best streak ever: ${newStreak} in a row!`, 'alt']);
   (g.milestones || []).forEach(m => banners.push([`${m} sums right!`, 'gold']));
-  if (g.bonus) banners.push([`+${g.bonus} golden fly stars!`, 'gold']);
   const starRow = $('resStars');
   starRow.classList.toggle('many', g.total > 12);
   let s = ''; for (let i = 0; i < g.total; i++) s += '<svg class="star-off"><use href="#starSym"/></svg>';
@@ -1619,10 +1553,16 @@ async function endRound() {
     stars[i].setAttribute('class', 'star-on lit'); sfx.ding(i);
     await wait(reduced ? 0 : (g.total > 12 ? 70 : 120)); if (my !== endToken) return;
   }
-  if (beat || ratio >= 0.9) { sfx.fanfare(); rain(140, PARTY); parade(); }
+  if (beat || ratio >= 0.9) { sfx.fanfare(); burst(innerWidth / 2, innerHeight * 0.35, 120, { emoji: PARTY }); parade(); }
   else if (ratio >= 0.6) { sfx.fanfare(); burst(innerWidth / 2, innerHeight * 0.35, 90, { emoji: PARTY }); }
   else buddy(pick(ANIMALS), pick(['Practice makes purr-fect!', 'Keep hopping!', "You're getting there!"]));
-  if (unlocked(220, state.stars) && ratio >= 0.6) { const fresh = markSeen('fireworks'); fireworksShow(4); if (fresh) banners.push(['New surprise: Fireworks Finale!', 'alt']); }
+  if (unlocked(220, state.stars) && ratio >= 0.6) { const fresh = markSeen('fireworks'); fireworksShow(4); if (fresh) banners.push(['New surprise found: Fireworks Finale!', 'alt']); }
+  // Bonus surprise, every round, once the parade has gone
+  await wait(reduced ? 600 : 3300); if (my !== endToken) return;
+  const sur = pickSurprise();
+  if (await runSurprise(sur, g)) banners.push([`New surprise found: ${sur.name}! (${SURPRISES.filter(x => state.seen[x.id]).length} of ${SURPRISES.length})`, 'alt']);
+  if (my !== endToken) return;
+  if (g.bonus) banners.push([`+${g.bonus} golden fly stars!`, 'gold']);
   for (const [text, cls] of banners) {
     await wait(550); if (my !== endToken) return;
     const el = document.createElement('div'); el.className = 'banner ' + cls; el.textContent = text; $('resBanners').appendChild(el); sfx.tada();
@@ -1635,7 +1575,8 @@ async function endRound() {
     st.hidden = false; sfx.tada();
     const [x, y] = centreOf(st.querySelector('.big')); burst(x, y, 50, { emoji: ['⭐', '✨'] });
   }
-  if (lv.at > prevLv.at) { await wait(1200); if (my !== endToken) return; await levelUp(lv); }
+  const lvNow = levelAt(state.stars);
+  if (lvNow.at > prevLv.at) { await wait(1200); if (my !== endToken) return; await levelUp(lvNow); }
 }
 function uniqueMissed(g) {
   const seen = new Set();
@@ -1804,7 +1745,7 @@ document.addEventListener('keydown', e => {
 window.addEventListener('resize', () => { if (fxRaf) fxSize(); });
 refreshHome(); show('home');
 // Test hook: only used by automated tests, never set in normal play.
-if (window.__frogTest) window.__frogTest({ runSurprise, SURPRISES, state, getGame: () => game, slapstick });
+if (window.__frogTest) window.__frogTest({ runSurprise, SURPRISES, state, getGame: () => game });
 })();
 </script>
 <!-- game:end -->
