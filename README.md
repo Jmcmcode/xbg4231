@@ -41,6 +41,10 @@ All the fun comes when a round is finished, in this order:
 - At the end of a round, "Let's fix the tricky ones" goes through each sum she got wrong. It shows what she typed and the right answer, a tip for that exact sum (make 10 first, near doubles, take away 10 then add 1 back, count up when the numbers are close, friendly jumps to 100), and the frog can act it out. Then she can try those sums again.
 - Sums she gets wrong are saved on the iPad and come back in later rounds until she gets them right.
 
+## Updates
+
+Each commit stamps `index.html` with a build time (`<meta name="build">`, set by a local pre-commit hook). When the home screen is showing, the game fetches a fresh copy of itself and, if the build is newer, reloads. It never reloads mid-round. The Records page shows the current version.
+
 ## Putting it on the iPad
 
 It's a single page, `index.html`, plus its home-screen icons (`apple-touch-icon.png`, `icon-192.png`, `icon-512.png`) and `manifest.webmanifest`. There's no build step. It's hosted on GitHub Pages from this branch. Open it in Safari, tap **Share → Add to Home Screen**, and it opens full-screen like an app, with the frog icon and the name "Rosalie's Sums". Sounds play through the iPad speaker, so check the volume and that silent mode is off.

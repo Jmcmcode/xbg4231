@@ -16,6 +16,7 @@
 <body>
 <!-- game:start -->
 <title>Rosalie's Frog Hop</title>
+<meta name="build" content="2026-10-04 18:39:51">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Baloo+2:wght@600;700;800&display=swap">
@@ -512,6 +513,7 @@ label.chip{display:inline-flex;align-items:center;cursor:pointer}
     <div class="tiles" id="recClock"></div>
     <h3 class="sub-h">Surprises found <span id="surCount"></span></h3>
     <div class="surprises" id="recSurprises"></div>
+    <p class="book-note" id="buildNote"></p>
   </section>
 
   <section id="book" class="screen book" hidden>
@@ -1907,7 +1909,24 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'Enter') { e.preventDefault(); check(); }
 });
 window.addEventListener('resize', () => { if (fxRaf) fxSize(); });
+/* ---------- staying up to date ---------- */
+// iPads can keep an old copy of the game for a while. When the home screen is showing,
+// fetch a fresh copy of the page and, if it's a newer build, reload. Never mid-round.
+const BUILD = (document.querySelector('meta[name="build"]') || {}).content || '';
+async function checkForUpdate() {
+  if (!/^https?:/.test(location.protocol) || $('home').hidden) return;
+  try {
+    const r = await fetch(location.pathname + '?check=' + Date.now(), { cache: 'no-store' });
+    if (!r.ok) return;
+    const m = (await r.text()).match(/<meta name="build" content="([^"]+)">/);
+    if (m && m[1] !== BUILD && !$('home').hidden) location.replace(location.pathname + '?v=' + encodeURIComponent(m[1]));
+  } catch (e) {}
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) checkForUpdate(); });
+$('buildNote').textContent = BUILD ? `Game version: ${BUILD}` : '';
+
 refreshHome(); show('home');
+checkForUpdate();
 // Test hook: only used by automated tests, never set in normal play.
 if (window.__frogTest) window.__frogTest({ runSurprise, SURPRISES, state, getGame: () => game });
 })();
