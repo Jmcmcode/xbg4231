@@ -497,15 +497,28 @@ function frogSVG(stars) {
 function updateFrog() { $('frogSym').innerHTML = frogSVG(state.stars); }
 
 /* ---------- sounds, all made in the browser ---------- */
-let ac = null;
+// iPad Safari: 'playback' lets sounds play even when the iPad is on silent,
+// and the context has to be started from inside a tap before it makes any noise.
+try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+let ac = null, out = null;
 function audio() {
   if (!state.sound) return null;
   try {
-    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
-    if (ac.state === 'suspended') ac.resume();
+    if (!ac) {
+      ac = new (window.AudioContext || window.webkitAudioContext)();
+      const boost = ac.createGain(), comp = ac.createDynamicsCompressor();
+      boost.gain.value = 2.2; boost.connect(comp); comp.connect(ac.destination); out = boost;
+    }
+    if (ac.state !== 'running') ac.resume();
     return ac;
   } catch (e) { return null; }
 }
+function unlockAudio() {
+  const a = audio(); if (!a) return;
+  try { const b = a.createBuffer(1, 1, 22050), src = a.createBufferSource(); src.buffer = b; src.connect(a.destination); src.start(0); } catch (e) {}
+}
+['touchend', 'pointerdown', 'click', 'keydown'].forEach(ev => document.addEventListener(ev, unlockAudio, { capture: true, passive: true }));
+document.addEventListener('visibilitychange', () => { if (!document.hidden && ac && ac.state !== 'running') ac.resume(); });
 function voice({ type = 'sine', f = [[0, 440]], dur = 0.3, vol = 0.14, at = 0, lp = 0, bp = 0, vib = 0 }) {
   const a = audio(); if (!a) return;
   const t = a.currentTime + at, o = a.createOscillator(), g = a.createGain();
@@ -518,7 +531,7 @@ function voice({ type = 'sine', f = [[0, 440]], dur = 0.3, vol = 0.14, at = 0, l
   g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
   g.gain.setValueAtTime(vol, t + Math.max(0.02, dur - 0.06));
   g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-  node.connect(g); g.connect(a.destination); o.start(t); o.stop(t + dur + 0.05);
+  node.connect(g); g.connect(out); o.start(t); o.stop(t + dur + 0.05);
 }
 function noise({ at = 0, dur = 0.2, vol = 0.1, bp = 1200 }) {
   const a = audio(); if (!a) return;
@@ -527,7 +540,7 @@ function noise({ at = 0, dur = 0.2, vol = 0.1, bp = 1200 }) {
   const src = a.createBufferSource(), fl = a.createBiquadFilter(), g = a.createGain();
   src.buffer = buf; fl.type = 'bandpass'; fl.frequency.value = bp;
   g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-  src.connect(fl); fl.connect(g); g.connect(a.destination); src.start(t);
+  src.connect(fl); fl.connect(g); g.connect(out); src.start(t);
 }
 const NOTE = k => 523.25 * Math.pow(2, k / 12);
 const sfx = {
@@ -1308,7 +1321,7 @@ $('revHome').addEventListener('click', goHome);
 $('revHome2').addEventListener('click', goHome);
 $('bookBtn').addEventListener('click', openBook);
 $('bookBack').addEventListener('click', goHome);
-$('soundBtn').addEventListener('click', () => { state.sound = !state.sound; save(); refreshHome(); if (state.sound) sfx.tap(); });
+$('soundBtn').addEventListener('click', () => { state.sound = !state.sound; save(); refreshHome(); if (state.sound) ANIMALS[0].snd(); });
 document.addEventListener('keydown', e => {
   if ($('play').hidden) return;
   if (/^[0-9]$/.test(e.key)) press(e.key);
