@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Frog Hop">
+<meta name="theme-color" content="#C4EBE1">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
+</head>
+<body>
+<!-- game:start -->
+<title>Frog Hop Sums</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Baloo+2:wght@600;700;800&display=swap">
+<style>
+/* Layout: one-screen pond app. Question card and frog number line sit above a chunky keypad; side by side when the iPad is landscape. */
+:root{
+  --water:#C4EBE1; --water-deep:#93D3C4; --shade:#7FBDAE; --paper:#FFFDF5;
+  --ink:#1D3836; --ink-soft:#4B6A66; --ink-faint:rgba(29,56,54,.16);
+  --frog:#4FA83D; --frog-dark:#2E7524; --lake:#3A86A8; --sun:#FFC63A; --sun-dark:#B97F05; --coral:#D9574A; --berry:#A65A9C;
+  --display:"Baloo 2","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
+  --body:"Andika","Trebuchet MS",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:linear-gradient(180deg,var(--water) 0%,var(--water-deep) 100%);background-color:var(--water);color:var(--ink);font-family:var(--body);font-size:18px;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation;-webkit-appearance:none;appearance:none}
+button:focus-visible{outline:4px solid var(--ink);outline-offset:3px}
+button:disabled{opacity:.5;cursor:default}
+#app{height:100%;max-width:1120px;margin:0 auto;padding-inline:16px;padding-block:14px;display:flex;flex-direction:column}
+.screen{flex:1;min-height:0;display:flex;flex-direction:column;gap:18px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+
+/* Home */
+.home{align-items:center}
+.brand{display:flex;align-items:center;gap:18px;justify-content:center;flex-wrap:wrap;text-align:left;padding-top:6px}
+.hero-frog{width:clamp(96px,16vw,140px);height:auto;flex:none}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(42px,7.5vw,72px);line-height:.95;margin:0;color:var(--frog-dark);text-wrap:balance}
+.tag{margin:6px 0 0;font-size:clamp(17px,2.4vw,22px);color:var(--ink-soft);font-weight:700}
+.groups{display:grid;gap:20px;width:min(980px,100%)}
+@media (min-width:900px) and (orientation:landscape){.groups{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.group{display:flex;flex-direction:column;gap:10px;min-width:0}
+.group-h{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(22px,3vw,28px);color:var(--ink)}
+.group-h span{font-family:var(--body);font-weight:700;font-size:.7em;color:var(--ink-soft);margin-left:6px}
+.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.mode{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--paper);border-radius:22px;box-shadow:0 6px 0 var(--shade);font-family:var(--display);font-weight:700;font-size:clamp(19px,2.6vw,25px);line-height:1.1;text-align:left;min-height:80px;transition:transform .08s}
+.mode:active{transform:translateY(4px);box-shadow:0 2px 0 var(--shade)}
+.mode small{display:block;font-family:var(--body);font-size:15px;font-weight:700;color:var(--ink-soft);margin-top:2px}
+.mode.wide{grid-column:1/-1;justify-content:center;background:var(--sun);box-shadow:0 6px 0 var(--sun-dark)}
+.mode.wide:active{box-shadow:0 2px 0 var(--sun-dark)}
+.sym{flex:none;width:50px;height:50px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:30px;font-weight:800;color:#fff;line-height:1}
+.s-add{background:var(--frog)} .s-sub{background:var(--lake)} .s-miss{background:var(--berry)} .s-test{background:var(--ink)}
+.s-words{background:var(--lake);font-size:24px} .s-three{background:var(--frog)} .s-story{background:var(--coral);font-size:38px;padding-top:12px}
+.s-mix{background:var(--frog-dark)}
+.home-foot{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.chip{background:var(--paper);border-radius:999px;padding:10px 20px;font-weight:700;font-size:18px;box-shadow:0 4px 0 var(--shade);min-height:48px}
+.chip:active{transform:translateY(3px);box-shadow:0 1px 0 var(--shade)}
+.remember{margin:0;color:var(--ink-soft);font-weight:700;text-align:center;font-size:16px}
+
+/* Play */
+.bar{display:flex;align-items:center;gap:12px;justify-content:space-between;flex:none}
+.dots{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.dot{width:16px;height:16px;border-radius:50%;background:var(--ink-faint)}
+.dot.now{background:var(--paper);box-shadow:0 0 0 3px var(--ink)}
+.dot.ok{background:var(--sun);box-shadow:0 0 0 2px var(--sun-dark)}
+.dot.miss{background:var(--coral)}
+.score{display:flex;align-items:center;gap:4px;font-family:var(--display);font-weight:800;font-size:28px;min-width:76px;justify-content:flex-end;font-variant-numeric:tabular-nums}
+.score svg{width:32px;height:32px}
+.stage{flex:1;min-height:0;display:grid;gap:16px;grid-template-columns:minmax(0,1fr);align-content:start}
+@media (min-width:900px) and (orientation:landscape){.stage{grid-template-columns:minmax(0,1.45fr) minmax(280px,1fr)}}
+.left{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--paper);border-radius:28px;padding:18px 20px 14px;box-shadow:0 8px 0 var(--shade);text-align:center;container-type:inline-size}
+.sum{font-family:var(--display);font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.sum.eq{display:flex;justify-content:center;align-items:center;gap:.2em;line-height:1.15;font-size:56px;font-size:clamp(34px,calc(150cqi / var(--n,8)),112px)}
+.sum.words{font-family:var(--body);font-weight:700;font-size:clamp(24px,3.6vw,38px);line-height:1.7;text-wrap:balance;padding-block:6px}
+.sum.story{font-family:var(--body);font-weight:700;font-size:clamp(20px,2.7vw,29px);line-height:1.45;text-align:left;font-variant-numeric:normal}
+.story-t{margin:0;text-wrap:pretty}
+.story-a{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:12px;font-family:var(--display);font-weight:800;font-size:clamp(40px,6vw,60px)}
+.unit{font-size:.55em;color:var(--ink-soft)}
+.sum.col{display:flex;justify-content:center;font-size:clamp(44px,8vw,72px);line-height:1.1}
+.col{display:grid;justify-items:end}
+.col .row{display:flex;gap:.35em;align-items:center}
+.col i{font-style:normal;color:var(--ink-soft)}
+.col .rule{width:100%;height:5px;background:var(--ink);border-radius:3px;margin-block:6px}
+.box{display:inline-flex;align-items:center;justify-content:center;min-width:1.6em;height:1.15em;padding-inline:.15em;border:.06em dashed var(--frog);border-radius:.22em;background:#F2FAE9;color:var(--frog-dark);vertical-align:middle;line-height:1}
+.sum.words .box{min-width:2.6em;height:1.4em;border-width:3px;font-family:var(--display);font-weight:800;font-size:1.1em;margin-inline:.1em}
+.sum.col .box{min-width:2.2em}
+.story-a .box{min-width:2.4em;border-width:4px}
+.box.empty::after{content:"";width:4px;height:.6em;background:var(--frog-dark);border-radius:2px;animation:blink 1s steps(1) infinite}
+.box.shown{border-style:solid;border-color:var(--coral);color:var(--coral);background:#FDECEA}
+.card.good .box{border-style:solid;border-color:var(--sun-dark);background:#FFF3CC;color:var(--ink)}
+.card.good{animation:pop .5s ease}
+.card.bad .box{animation:shake .45s}
+.msg{margin:10px 0 0;font-size:clamp(18px,2.5vw,23px);min-height:1.4em;color:var(--ink-soft);font-weight:700;text-wrap:balance}
+.line-wrap{background:rgba(255,253,245,.45);border-radius:24px;padding:6px 8px}
+.line-wrap svg{display:block;width:100%;height:auto;overflow:visible}
+#line .water{stroke:#8CCDBE;stroke-width:28;stroke-linecap:round;fill:none}
+#line .lily{fill:#7CC46A;stroke:#4E9A40;stroke-width:2}
+#line .lily.ten{fill:var(--sun);stroke:var(--sun-dark)}
+#line text{font-family:var(--display);font-weight:700;font-size:26px;fill:var(--ink-soft);text-anchor:middle}
+#line text.st{fill:var(--ink);font-weight:800;font-size:30px}
+#line text.later{opacity:0}
+#line .base{stroke:var(--ink-soft);stroke-width:4;stroke-linecap:round;fill:none}
+#line .tick{stroke:var(--ink-soft);stroke-width:4;stroke-linecap:round;fill:none}
+#line .arc{fill:none;stroke:var(--sun-dark);stroke-width:4;stroke-linecap:round;stroke-dasharray:2 10}
+#line text.hopn{font-size:20px;fill:var(--sun-dark)}
+#line text.jumpn{font-size:30px;font-weight:800;fill:var(--sun-dark)}
+.help{align-self:center;background:var(--paper);border-radius:999px;padding:12px 26px;font-family:var(--display);font-weight:700;font-size:22px;box-shadow:0 5px 0 var(--shade);display:flex;align-items:center;gap:10px;min-height:56px}
+.help svg{width:34px;height:30px}
+.help:active{transform:translateY(3px);box-shadow:0 2px 0 var(--shade)}
+.pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-content:start}
+.key{font-family:var(--display);font-weight:800;font-size:clamp(32px,5vw,44px);background:var(--paper);border-radius:20px;box-shadow:0 6px 0 var(--shade);min-height:clamp(60px,8.4vh,88px);line-height:1}
+.key:active{transform:translateY(4px);box-shadow:0 2px 0 var(--shade)}
+.key.zero{grid-column:span 2}
+.key.del{font-size:24px;color:var(--ink-soft)}
+.key.go{grid-column:1/-1;background:var(--frog);color:#fff;box-shadow:0 6px 0 var(--frog-dark);font-size:clamp(28px,4.2vw,38px)}
+.key.go:active{box-shadow:0 2px 0 var(--frog-dark)}
+
+/* Results */
+.results{align-items:center;justify-content:center;text-align:center}
+.results h2,.book h2{font-family:var(--display);font-weight:800;font-size:clamp(38px,7vw,62px);line-height:1.05;margin:0;color:var(--frog-dark);text-wrap:balance}
+.starrow{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.starrow svg{width:clamp(26px,6vw,46px);height:clamp(26px,6vw,46px)}
+.star-on{fill:var(--sun);stroke:var(--sun-dark);stroke-width:1.2}
+.star-off{fill:var(--ink-faint)}
+.res-line{font-size:clamp(20px,3vw,26px);margin:0;font-weight:700}
+.newsticker{display:flex;align-items:center;gap:16px;background:var(--paper);border-radius:24px;padding:12px 22px;box-shadow:0 6px 0 var(--shade);font-weight:700;font-size:21px;text-align:left}
+.newsticker .big{font-size:58px;line-height:1;animation:stickerIn .7s cubic-bezier(.3,1.6,.5,1)}
+.practise{background:rgba(255,253,245,.6);border-radius:20px;padding:12px 20px;max-width:680px;width:100%;text-align:left}
+.practise h3{margin:0 0 4px;font-family:var(--display);font-size:22px}
+.practise ul{margin:0;padding-left:1.2em;font-size:19px;line-height:1.5}
+.res-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;align-items:center}
+.res-actions .key{padding-inline:40px;grid-column:auto;min-height:68px}
+
+/* Sticker book */
+.book{align-items:center}
+.book-top{display:flex;justify-content:space-between;align-items:center;gap:12px;width:min(760px,100%)}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:12px;width:min(760px,100%)}
+.slot{aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-size:40px;background:var(--paper);box-shadow:0 4px 0 var(--shade)}
+.slot.empty{background:transparent;box-shadow:none;border:3px dashed var(--shade);color:var(--shade);font-size:22px;font-family:var(--display);font-weight:800}
+.slot.gold{border:5px solid var(--sun)}
+.book-note{margin:0;color:var(--ink-soft);font-weight:700;text-align:center}
+
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.035)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+@keyframes blink{50%{opacity:0}}
+@keyframes stickerIn{from{transform:scale(.3) rotate(-25deg)}to{transform:scale(1) rotate(0)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="frogSym" viewBox="-44 -46 88 74">
+      <ellipse cx="-22" cy="19" rx="14" ry="7" fill="#2E7524"/>
+      <ellipse cx="22" cy="19" rx="14" ry="7" fill="#2E7524"/>
+      <ellipse cx="0" cy="4" rx="32" ry="22" fill="#4FA83D"/>
+      <ellipse cx="0" cy="11" rx="20" ry="11" fill="#CDEB9A"/>
+      <circle cx="-15" cy="-19" r="12" fill="#4FA83D"/>
+      <circle cx="15" cy="-19" r="12" fill="#4FA83D"/>
+      <circle cx="-15" cy="-20" r="8" fill="#ffffff"/>
+      <circle cx="15" cy="-20" r="8" fill="#ffffff"/>
+      <circle cx="-13" cy="-19" r="4" fill="#1D3836"/>
+      <circle cx="17" cy="-19" r="4" fill="#1D3836"/>
+      <circle cx="-23" cy="1" r="4" fill="#F29A8C" opacity=".75"/>
+      <circle cx="23" cy="1" r="4" fill="#F29A8C" opacity=".75"/>
+      <path d="M-13 -1 Q0 10 13 -1" stroke="#2E7524" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="starSym" viewBox="0 0 24 24">
+      <path d="M12 2.2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17.1l-6.1 3.5 1.5-6.8L2.2 9.2l6.9-.7z" stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main id="app">
+  <section id="home" class="screen home">
+    <div class="brand">
+      <svg class="hero-frog" viewBox="0 0 88 74" aria-hidden="true"><use href="#frogSym"/></svg>
+      <div>
+        <h1>Frog Hop Sums</h1>
+        <p class="tag">Pick a game. The frog helps with the tricky ones.</p>
+      </div>
+    </div>
+    <div class="groups">
+      <div class="group">
+        <h2 class="group-h">Up to 20 <span>for the test</span></h2>
+        <div class="modes">
+          <button class="mode" data-mode="add"><span class="sym s-add">+</span><span>Adding</span></button>
+          <button class="mode" data-mode="sub"><span class="sym s-sub">&minus;</span><span>Taking away</span></button>
+          <button class="mode" data-mode="miss20"><span class="sym s-miss">?</span><span>Missing numbers</span></button>
+          <button class="mode" data-mode="mix20"><span class="sym s-mix">&plusmn;</span><span>Mix them up</span></button>
+          <button class="mode wide" data-mode="test"><span class="sym s-test">&check;</span><span>Practice test<small>10 sums, no helper frog</small></span></button>
+        </div>
+      </div>
+      <div class="group">
+        <h2 class="group-h">Bigger sums <span>like the homework</span></h2>
+        <div class="modes">
+          <button class="mode" data-mode="words"><span class="sym s-words">Aa</span><span>Word sums</span></button>
+          <button class="mode" data-mode="missbig"><span class="sym s-miss">?</span><span>Missing numbers</span></button>
+          <button class="mode" data-mode="three"><span class="sym s-three">3</span><span>Add three numbers</span></button>
+          <button class="mode" data-mode="story"><span class="sym s-story">&ldquo;</span><span>Story sums</span></button>
+          <button class="mode wide" data-mode="hwmix"><span class="sym s-mix">+</span><span>Homework mix<small>A bit of everything</small></span></button>
+        </div>
+      </div>
+    </div>
+    <div class="home-foot">
+      <button id="bookBtn" class="chip">Sticker book &middot; <b id="stickerCount">0</b></button>
+      <button id="soundBtn" class="chip">Sound: on</button>
+    </div>
+    <p class="remember" id="remember" hidden></p>
+  </section>
+
+  <section id="play" class="screen play" hidden>
+    <header class="bar">
+      <button id="quitBtn" class="chip">Home</button>
+      <div class="dots" id="dots" aria-label="Progress"></div>
+      <div class="score" aria-label="Stars"><svg class="star-on"><use href="#starSym"/></svg><b id="starCount">0</b></div>
+    </header>
+    <div class="stage">
+      <div class="left">
+        <div class="card" id="card">
+          <div class="sum eq" id="sum"></div>
+          <p class="msg" id="msg" aria-live="polite"></p>
+        </div>
+        <div class="line-wrap" id="lineWrap"><svg id="line" viewBox="0 -10 1000 190" role="img" aria-label="Number line"></svg></div>
+        <button id="helpBtn" class="help"><svg viewBox="0 0 88 74" aria-hidden="true"><use href="#frogSym"/></svg><span id="helpLabel">Show me the hops</span></button>
+      </div>
+      <div class="pad" id="pad"></div>
+    </div>
+  </section>
+
+  <section id="results" class="screen results" hidden>
+    <h2 id="resTitle"></h2>
+    <div class="starrow" id="resStars"></div>
+    <p class="res-line" id="resLine"></p>
+    <div class="newsticker" id="resSticker"></div>
+    <div class="practise" id="resPractise"></div>
+    <div class="res-actions">
+      <button id="againBtn" class="key go">Play again</button>
+      <button id="homeBtn" class="chip">Home</button>
+    </div>
+  </section>
+
+  <section id="book" class="screen book" hidden>
+    <div class="book-top">
+      <button id="bookBack" class="chip">Home</button>
+      <h2>Sticker book</h2>
+      <span style="width:84px"></span>
+    </div>
+    <p class="book-note" id="bookNote"></p>
+    <div class="slots" id="slots"></div>
+  </section>
+</main>
+
+<script>
+(() => {
+'use strict';
+const ROUND = 10, KEY = 'froghop.v1';
+const STICKERS = ['🐸','🦆','🐞','🦋','🐢','🐟','🐌','🌻','🐝','🦔','🦉','🐿️','🐛','🦢','🌷','🍄','🐠','🦊','🐇','🌈','🐳','🦜','🐙','⭐'];
+const PRAISE = ["Ribbit! That's right!", 'Brilliant!', 'Super hopping!', 'Yes! Well done!', 'You got it!', 'Fantastic!'];
+const HW = ['words', 'missbig', 'three', 'story'];
+const reduced = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+const $ = id => document.getElementById(id);
+const rnd = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const wait = ms => new Promise(r => setTimeout(r, ms));
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+/* ---------- saved progress (stickers, tricky sums, sound) ---------- */
+function load() {
+  let s = null;
+  try { s = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
+  s = s && typeof s === 'object' ? s : {};
+  return {
+    stickers: Array.isArray(s.stickers) ? s.stickers : [],
+    tricky: s.tricky && typeof s.tricky === 'object' ? s.tricky : {},
+    sound: s.sound !== false,
+  };
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+const state = load();
+
+/* ---------- sounds (made in the browser, no files) ---------- */
+let ac = null;
+function audio() {
+  if (!state.sound) return null;
+  try {
+    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+    if (ac.state === 'suspended') ac.resume();
+    return ac;
+  } catch (e) { return null; }
+}
+function tone(f, at, dur, type, vol) {
+  const a = audio(); if (!a) return;
+  const t = a.currentTime + at, o = a.createOscillator(), g = a.createGain();
+  o.type = type || 'sine'; o.frequency.setValueAtTime(f, t);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol || 0.14, t + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + dur + 0.05);
+}
+const sfx = {
+  tap: () => tone(660, 0, 0.06, 'sine', 0.05),
+  good: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.08, 0.25, 'triangle', 0.13)),
+  bad: () => { tone(247, 0, 0.18, 'triangle', 0.12); tone(196, 0.15, 0.3, 'triangle', 0.12); },
+  plip: k => tone(420 * Math.pow(2, Math.min(k, 14) / 12), 0, 0.1, 'sine', 0.1),
+  fanfare: () => [523, 659, 784, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.11, 0.3, 'triangle', 0.13)),
+};
+
+/* ---------- frog helper plans ---------- */
+// Adding an amount: hundreds, then tens, then ones (bridging through the next ten).
+function jumpsAdd(v, amt) {
+  const steps = [], h = Math.floor(amt / 100) * 100, t = Math.floor(amt % 100 / 10) * 10, o = amt % 10;
+  if (h) { steps.push([v, v + h]); v += h; }
+  if (t) { steps.push([v, v + t]); v += t; }
+  if (o) {
+    const nt = Math.floor(v / 10) * 10 + 10;
+    if (v % 10 && v + o > nt) { steps.push([v, nt]); steps.push([nt, v + o]); }
+    else steps.push([v, v + o]);
+  }
+  return steps;
+}
+// Counting up from start to end in friendly jumps: next ten, next hundred, hundreds, tens, ones.
+function jumpsUp(start, end) {
+  const gap = end - start;
+  if ((gap % 10 === 0 && gap < 100) || gap % 100 === 0) return [[start, end]];
+  const steps = []; let v = start;
+  if (v % 10 && Math.floor(v / 10) * 10 + 10 <= end) { const n = Math.floor(v / 10) * 10 + 10; steps.push([v, n]); v = n; }
+  if (v % 100 && Math.floor(v / 100) * 100 + 100 <= end) { const n = Math.floor(v / 100) * 100 + 100; steps.push([v, n]); v = n; }
+  const H = Math.floor(end / 100) * 100; if (H > v) { steps.push([v, H]); v = H; }
+  const T = Math.floor(end / 10) * 10; if (T > v) { steps.push([v, T]); v = T; }
+  if (end > v) steps.push([v, end]);
+  return steps;
+}
+function addHelp(x, y) {
+  const s = Math.max(x, y), amt = Math.min(x, y), steps = jumpsAdd(s, amt), end = s + amt;
+  return {
+    kind: 'jumps', start: s, end, steps, labels: steps.map(([f, t]) => '+' + (t - f)), showEnd: false,
+    intro: (x < y ? `Start on the bigger number, ${s}. ` : `Start on ${s}. `) + `Add ${amt} in jumps.`,
+    outro: 'Where did the frog land?',
+    reveal: `The frog landed on ${end}. Type ${end}.`,
+  };
+}
+function upHelp(start, end) {
+  const steps = jumpsUp(start, end), gap = end - start, parts = steps.map(([f, t]) => t - f), multi = steps.length > 1;
+  return {
+    kind: 'jumps', start, end, steps, labels: parts.map(p => '+' + p), showEnd: true,
+    intro: `Start on ${start}. Jump up to ${end}${multi ? ' using friendly numbers' : ''}.`,
+    outro: multi ? `Add up the jumps: ${parts.join(' + ')}.` : 'How big was the jump?',
+    reveal: multi ? `${parts.join(' + ')} = ${gap}. Type ${gap}.` : `The jump was ${gap}. Type ${gap}.`,
+  };
+}
+const fill = (tokens, ans) => tokens.map(t => t === '?' ? ans : t).join(' ');
+
+/* ---------- question makers ---------- */
+// Up to 20: adding, taking away, missing numbers. Half of them cross 10, the tricky bit.
+function smallQ(mode, type, missing) {
+  const bridge = Math.random() < 0.5;
+  let a, b, c, start, end;
+  for (let t = 0; t < 80; t++) {
+    if (type === 'add') { c = rnd(5, 20); a = rnd(2, c - 2); b = c - a; }
+    else { a = rnd(5, 20); b = rnd(2, a - 1); c = a - b; }
+    start = (type === 'add' && !missing) ? Math.max(a, b) : a; end = c;
+    const crosses = (start < 10 && end > 10) || (start > 10 && end < 10);
+    if (!bridge || crosses) break;
+  }
+  const op = type === 'add' ? '+' : '−';
+  const tokens = missing ? [a, op, '?', '=', c] : [a, op, b, '=', '?'];
+  const ans = missing ? b : c, n = Math.abs(end - start), dir = Math.sign(end - start);
+  const steps = []; for (let k = 0; k < n; k++) steps.push([start + dir * k, start + dir * (k + 1)]);
+  let intro;
+  if (missing) intro = `Start on ${start}. Count the hops to ${end}.`;
+  else if (type === 'add' && a < b) intro = `Start on the bigger number, ${start}, and hop ${n} forward.`;
+  else intro = `Start on ${start} and hop ${n} ${dir > 0 ? 'forward' : 'back'}.`;
+  return {
+    mode, layout: 'eq', tokens, ans, key: mode + '|' + tokens.join(' '), solved: fill(tokens, ans),
+    help: {
+      kind: 'pads', start, end, steps, labels: steps.map((s, i) => String(i + 1)), showEnd: missing, intro,
+      outro: missing ? 'How many hops did the frog do?' : 'Where did the frog land?',
+      reveal: missing ? `That was ${ans} hops. Type ${ans}.` : `The frog landed on ${ans}. Type ${ans}.`,
+    },
+  };
+}
+
+// Numbers like the homework sheet: 43 + 18, 70 + 44, 300 + 61, 600 + 400, 75 + 25.
+function bigPair() {
+  const r = Math.random(); let a, b;
+  if (r < 0.45) { a = rnd(12, 89); b = rnd(11, 49); }
+  else if (r < 0.6) { a = rnd(2, 9) * 10; b = rnd(21, 59); }
+  else if (r < 0.72) { a = rnd(1, 8) * 100; b = rnd(11, 89); }
+  else if (r < 0.84) { a = rnd(1, 9) * 100; b = rnd(1, 6) * 100; }
+  else { const target = pick([100, 100, 100, 200, 300]); a = rnd(Math.max(11, target - 89), target - 11); if (a % 10 === 0) a++; b = target - a; }
+  return { a, b, c: a + b };
+}
+const WORD = [
+  { t: 'The total of {a} and {b} is {?}.', miss: 'c' },
+  { t: '{a} plus {?} equals {c}.', miss: 'b' },
+  { t: '{?} add {b} equals {c}.', miss: 'a' },
+  { t: 'The sum of {a} and {?} is {c}.', miss: 'b' },
+  { t: '{a} and {b} altogether is {?}.', miss: 'c' },
+  { t: 'Add {?} to {a} to make {c}.', miss: 'b' },
+  { t: '{a} plus {b} equals {?}.', miss: 'c' },
+  { t: 'Add {b} to {?} to make {c}.', miss: 'a' },
+  { t: '{?} and {b} altogether is {c}.', miss: 'a' },
+  { t: 'The sum of {a} and {b} is {?}.', miss: 'c' },
+];
+function wordQ() {
+  const T = pick(WORD), v = bigPair(), ans = v[T.miss];
+  const text = T.t.replace(/\{([abc])\}/g, (m, k) => String(v[k]));
+  const help = T.miss === 'c' ? addHelp(v.a, v.b) : upHelp(T.miss === 'a' ? v.b : v.a, v.c);
+  return { mode: 'words', layout: 'words', text, ans, key: 'words|' + text, solved: text.replace('{?}', ans), help };
+}
+
+// Missing numbers: 68 + ? = 100, ? + 16 = 300, 158 + ? = 165, ? + 19 = 84, ? + 800 = 2000 ...
+function missQ() {
+  const r = Math.random(); let a, c;
+  if (r < 0.22) { c = 100; a = rnd(11, 89); if (a % 10 === 0) a++; }
+  else if (r < 0.38) { c = rnd(2, 9) * 100; a = Math.random() < 0.5 ? c - rnd(11, 99) : rnd(11, 59); }
+  else if (r < 0.52) { a = rnd(101, 899); c = a + rnd(4, 49); }
+  else if (r < 0.76) { a = rnd(11, 89); c = a + rnd(11, 59); }
+  else if (r < 0.88) { a = rnd(21, 79); c = a + rnd(1, 2) * 100 + rnd(1, 9) * 10; }
+  else if (Math.random() < 0.5) { a = rnd(1, 9) * 100; c = pick([1000, 2000]); }
+  else { a = rnd(1, 9) * 100; c = a + rnd(11, 89); }
+  const b = c - a;
+  const tokens = Math.random() < 0.5 ? ['?', '+', a, '=', c] : [a, '+', '?', '=', c];
+  return { mode: 'missbig', layout: 'eq', tokens, ans: b, key: 'missbig|' + tokens.join(' '), solved: fill(tokens, b), help: upHelp(a, c) };
+}
+
+// Three numbers where two of them make a whole ten: 15 + 35 + 14, 16 + 4 + 9.
+function threeQ() {
+  const col = Math.random() < 0.4; let x, y, z;
+  if (col) { x = rnd(1, 19); if (x % 10 === 0) x++; y = (10 - x % 10) + 10 * rnd(0, 1); z = rnd(3, 19); }
+  else { x = rnd(11, 49); if (x % 10 === 0) x++; y = (10 - x % 10) + 10 * rnd(1, 3); z = rnd(11, 29); }
+  const nums = shuffle([x, y, z]), pair = x + y, sum = pair + z, steps = jumpsAdd(pair, z);
+  const help = {
+    kind: 'jumps', start: pair, end: sum, steps, labels: steps.map(([f, t]) => '+' + (t - f)), showEnd: false,
+    pre: `Find two numbers that make a whole ten: ${x} + ${y} = ${pair}.`,
+    intro: `Now start on ${pair} and add ${z}.`,
+    outro: 'Where did the frog land?',
+    reveal: `${pair} + ${z} = ${sum}. Type ${sum}.`,
+  };
+  const tokens = [nums[0], '+', nums[1], '+', nums[2], '=', '?'];
+  return { mode: 'three', layout: col ? 'col' : 'eq', tokens, nums, ans: sum, key: 'three|' + nums.join('+'), solved: fill(tokens, sum), help };
+}
+
+const STORIES = [
+  { t: 'A circus clown is fired {a} m on Monday and {b} m on Tuesday. How far is he fired altogether?', u: 'm' },
+  { t: 'A frog hops {a} cm, then hops {b} cm more. How far does it hop altogether?', u: 'cm' },
+  { t: 'There are {a} children in Class 3 and {b} children in Class 4. How many children is that altogether?', u: 'children' },
+  { t: 'A bus has {a} people on it. {b} more people get on. How many people are on the bus now?', u: 'people' },
+  { t: 'A shop sells {a} apples on Saturday and {b} apples on Sunday. How many apples is that in total?', u: 'apples' },
+  { t: 'Maya reads {a} pages on Monday and {b} pages on Tuesday. How many pages does she read altogether?', u: 'pages' },
+  { t: 'A train has {a} seats in the first carriage and {b} seats in the second. What is the total number of seats?', u: 'seats' },
+];
+const MISS_STORIES = [
+  { t: 'Leo needs {c} points to win. He has {a} points. How many more points does he need?', u: 'points' },
+  { t: 'A jar holds {c} sweets. There are {a} sweets in it now. How many more sweets will fill it?', u: 'sweets' },
+  { t: 'Ava wants to collect {c} shells. She has found {a}. How many more shells does she need?', u: 'shells' },
+];
+function storyQ() {
+  let T, a, b, c, ans, help, solved;
+  if (Math.random() < 0.3) {
+    T = pick(MISS_STORIES); c = pick([50, 60, 80, 100, 100, 100]); a = rnd(11, c - 6); if (a % 10 === 0) a++;
+    ans = c - a; help = upHelp(a, c); solved = `${a} + ${ans} = ${c}`; b = ans;
+  } else {
+    T = pick(STORIES); a = rnd(12, 59); b = rnd(12, 49); c = a + b;
+    ans = c; help = addHelp(a, b); solved = `${a} + ${b} = ${c}`;
+  }
+  const text = T.t.replace('{a}', a).replace('{b}', b).replace('{c}', c);
+  return { mode: 'story', layout: 'story', text, unit: T.u, ans, key: 'story|' + text, solved: `${solved} ${T.u}`, help };
+}
+
+const GEN = {
+  add: () => smallQ('add', 'add', false),
+  sub: () => smallQ('sub', 'sub', false),
+  miss20: () => smallQ('miss20', pick(['add', 'sub']), true),
+  mix20: () => Math.random() < 0.5 ? GEN.add() : GEN.sub(),
+  words: wordQ, missbig: missQ, three: threeQ, story: storyQ,
+  hwmix: () => pick([wordQ, missQ, threeQ, storyQ])(),
+};
+function fits(mode, q) {
+  if (mode === 'hwmix') return HW.includes(q.mode);
+  if (mode === 'mix20') return q.mode === 'add' || q.mode === 'sub';
+  return q.mode === mode;
+}
+function buildRound(mode) {
+  if (mode === 'test') {
+    return shuffle([GEN.add, GEN.add, GEN.add, GEN.add, GEN.sub, GEN.sub, GEN.sub, GEN.sub, GEN.miss20, GEN.miss20]).map(g => g());
+  }
+  const seen = new Set(), qs = [];
+  // The frog brings back up to 3 sums she found tricky before.
+  const tricky = shuffle(Object.values(state.tricky).map(t => t && t.q).filter(q => q && q.help && fits(mode, q))).slice(0, 3);
+  for (const q of tricky) { seen.add(q.key); qs.push(q); }
+  while (qs.length < ROUND) {
+    let q;
+    for (let t = 0; t < 30; t++) { q = GEN[mode](); if (!seen.has(q.key)) break; }
+    seen.add(q.key); qs.push(q);
+  }
+  return shuffle(qs);
+}
+function markMiss(q) {
+  const t = state.tricky[q.key] || { q, left: 0 };
+  t.left = Math.min(3, t.left + 2); state.tricky[q.key] = t; save();
+}
+function markHit(q) {
+  const t = state.tricky[q.key]; if (!t) return;
+  t.left--; if (t.left <= 0) delete state.tricky[q.key]; save();
+}
+
+/* ---------- screens ---------- */
+function show(id) { document.querySelectorAll('.screen').forEach(s => { s.hidden = s.id !== id; }); }
+function refreshHome() {
+  $('stickerCount').textContent = state.stickers.length;
+  $('soundBtn').textContent = 'Sound: ' + (state.sound ? 'on' : 'off');
+  const n = Object.keys(state.tricky).length, r = $('remember');
+  r.hidden = n === 0;
+  r.textContent = `The frog remembers ${n} tricky sum${n === 1 ? '' : 's'} and will bring ${n === 1 ? 'it' : 'them'} back to practise.`;
+}
+
+/* ---------- number line ---------- */
+const PAD_Y = 118;
+let xOf = () => 0, hopToken = 0;
+function drawLine(q) {
+  const h = q.help; let s = '';
+  if (h.kind === 'pads') {
+    xOf = v => 40 + v * 46;
+    s += `<path d="M14 ${PAD_Y}H986" class="water"/>`;
+    for (let i = 0; i <= 20; i++) {
+      s += `<ellipse class="lily${i === 10 ? ' ten' : ''}" cx="${xOf(i)}" cy="${PAD_Y}" rx="20" ry="8"/>`;
+      s += `<text class="${i === h.start ? 'st' : ''}" x="${xOf(i)}" y="${PAD_Y + 42}">${i}</text>`;
+    }
+  } else {
+    const marks = [h.start, ...h.steps.map(st => st[1])];
+    const sizes = h.steps.map(([f, t]) => Math.sqrt(t - f)), total = sizes.reduce((a, b) => a + b, 0);
+    const minSeg = 110, rem = 840 - minSeg * sizes.length, pos = new Map();
+    let x = 80; pos.set(marks[0], x);
+    sizes.forEach((sz, i) => { x += minSeg + rem * sz / total; pos.set(marks[i + 1], x); });
+    xOf = v => pos.get(v);
+    s += `<path d="M30 ${PAD_Y}H970" class="base"/>`;
+    marks.forEach((v, i) => {
+      const vis = i === 0 || (i === marks.length - 1 && h.showEnd);
+      s += `<path d="M${pos.get(v)} ${PAD_Y - 14}V${PAD_Y + 14}" class="tick"/>`;
+      s += `<text class="${i === 0 ? 'st' : ''}${vis ? '' : ' later'}" data-v="${v}" x="${pos.get(v)}" y="${PAD_Y + 46}">${v}</text>`;
+    });
+  }
+  s += '<g id="arcs"></g>';
+  s += `<g id="frogG" transform="translate(${xOf(h.start)} ${PAD_Y})"><use href="#frogSym" x="-32" y="-52" width="64" height="54"/></g>`;
+  $('line').innerHTML = s;
+}
+function addArc(from, to, label, kind) {
+  const g = $('arcs'); if (!g) return;
+  const x1 = xOf(from), x2 = xOf(to), mx = (x1 + x2) / 2, pads = kind === 'pads';
+  g.insertAdjacentHTML('beforeend',
+    `<path class="arc" d="M${x1} ${PAD_Y - 6}Q${mx} ${pads ? 34 : -32} ${x2} ${PAD_Y - 6}"/>` +
+    `<text class="${pads ? 'hopn' : 'jumpn'}" x="${mx}" y="${pads ? 54 : 30}">${label}</text>`);
+  const t = $('line').querySelector(`text[data-v="${to}"]`); if (t) t.classList.remove('later');
+}
+function animateHop(frog, x1, x2, dur, height) {
+  return new Promise(res => {
+    if (reduced) { frog.setAttribute('transform', `translate(${x2} ${PAD_Y})`); return res(); }
+    const t0 = performance.now();
+    function f(now) {
+      const t = Math.min(1, (now - t0) / dur);
+      frog.setAttribute('transform', `translate(${x1 + (x2 - x1) * t} ${PAD_Y - Math.sin(Math.PI * t) * height})`);
+      if (t < 1) requestAnimationFrame(f); else res();
+    }
+    requestAnimationFrame(f);
+  });
+}
+async function runHelp(q) {
+  const h = q.help, my = ++hopToken;
+  game.hopping = true; $('helpBtn').disabled = true;
+  $('lineWrap').hidden = false; drawLine(q);
+  if (h.pre) { say(h.pre); await wait(reduced ? 1200 : 2200); if (my !== hopToken) return false; }
+  say(h.intro); await wait(reduced ? 400 : 900); if (my !== hopToken) return false;
+  const frog = $('frogG'), pads = h.kind === 'pads', n = h.steps.length;
+  const dur = pads ? (n > 9 ? 250 : 340) : 700, height = pads ? 48 : 66;
+  for (let k = 0; k < n; k++) {
+    const [from, to] = h.steps[k];
+    await animateHop(frog, xOf(from), xOf(to), dur, height);
+    if (my !== hopToken) return false;
+    addArc(from, to, h.labels[k], h.kind); sfx.plip(k);
+    await wait(reduced ? 0 : (pads ? 70 : 250));
+    if (my !== hopToken) return false;
+  }
+  game.hopping = false; $('helpBtn').disabled = false;
+  return true;
+}
+
+/* ---------- playing ---------- */
+let game = null;
+function say(t) { $('msg').textContent = t; }
+function flash(cls) { const c = $('card'); c.classList.remove('good', 'bad'); void c.offsetWidth; c.classList.add(cls); }
+
+function startRound(mode) {
+  game = { mode, qs: buildRound(mode), i: 0, stars: 0, results: [] };
+  $('starCount').textContent = '0';
+  show('play'); showQ();
+}
+function showQ() {
+  hopToken++;
+  Object.assign(game, { q: game.qs[game.i], typed: '', attempts: 0, missed: false, locked: false, hopping: false, revealed: false });
+  const q = game.q, helper = game.mode !== 'test';
+  $('card').classList.remove('good', 'bad');
+  renderQ();
+  const hiding = (q.layout === 'eq' && q.tokens[q.tokens.length - 1] !== '?') || (q.layout === 'words' && !q.text.endsWith('{?}.'));
+  say(q.layout === 'story' ? 'Read it carefully, then type the answer.' : hiding ? 'What number is hiding in the box?' : 'Type your answer, then tap Check.');
+  $('helpBtn').hidden = !helper; $('helpBtn').disabled = false;
+  $('helpLabel').textContent = q.help.kind === 'pads' ? 'Show me the hops' : 'Show me the jumps';
+  $('lineWrap').hidden = !(helper && q.help.kind === 'pads');
+  if (helper) drawLine(q);
+  updateDots();
+}
+function renderQ() {
+  const q = game.q, t = game.typed, el = $('sum');
+  const box = `<span class="box${t ? '' : ' empty'}${game.revealed ? ' shown' : ''}">${t}</span>`;
+  el.className = 'sum ' + q.layout;
+  if (q.layout === 'eq') {
+    const boxChars = q.help.kind === 'pads' ? 2 : 3.5;
+    const n = q.tokens.reduce((s, k) => s + (k === '?' ? boxChars : String(k).length), 0) + q.tokens.length * 0.45;
+    el.style.setProperty('--n', n.toFixed(1));
+    el.innerHTML = q.tokens.map(k => k === '?' ? box : `<span>${k}</span>`).join('');
+  } else if (q.layout === 'col') {
+    el.innerHTML = `<div class="col">${q.nums.map((v, i) => `<span class="row">${i === q.nums.length - 1 ? '<i>+</i>' : ''}<span>${v}</span></span>`).join('')}<span class="rule"></span><span class="row">${box}</span></div>`;
+  } else if (q.layout === 'words') {
+    el.innerHTML = q.text.split('{?}').join(box);
+  } else {
+    el.innerHTML = `<p class="story-t">${q.text}</p><div class="story-a">${box}<span class="unit">${q.unit}</span></div>`;
+  }
+}
+function updateDots() {
+  let s = '';
+  for (let i = 0; i < ROUND; i++) {
+    const r = game.results[i];
+    s += `<span class="dot ${r ? (r.ok ? 'ok' : 'miss') : (i === game.i ? 'now' : '')}"></span>`;
+  }
+  $('dots').innerHTML = s;
+}
+function press(d) {
+  if (!game || game.locked || game.typed.length >= 4) return;
+  game.typed = (game.typed === '0' ? '' : game.typed) + d; sfx.tap(); renderQ();
+}
+function del() { if (!game || game.locked) return; game.typed = game.typed.slice(0, -1); renderQ(); }
+function check() {
+  if (!game || game.locked) return;
+  if (!game.typed) { say('Type a number first.'); return; }
+  if (Number(game.typed) === game.q.ans) right(); else wrong();
+}
+function right() {
+  const q = game.q, first = game.attempts === 0;
+  game.locked = true; hopToken++; game.hopping = false;
+  if (first) { game.stars++; markHit(q); }
+  game.results.push({ q, ok: first });
+  flash('good'); sfx.good();
+  say(first ? pick(PRAISE) : 'Yes! Now you know that one.');
+  $('starCount').textContent = game.stars; updateDots();
+  setTimeout(next, first ? 1200 : 1600);
+}
+function wrong() {
+  const q = game.q; game.attempts++;
+  if (!game.missed) { game.missed = true; markMiss(q); }
+  flash('bad'); sfx.bad(); game.typed = '';
+  if (game.mode === 'test') {
+    game.locked = true; game.revealed = true; game.typed = String(q.ans);
+    game.results.push({ q, ok: false }); renderQ(); updateDots();
+    say(`Not this time. It was ${q.ans}.`);
+    setTimeout(next, 2400); return;
+  }
+  renderQ();
+  if (game.attempts === 1) { say('Not quite. Have another go!'); return; }
+  if (game.attempts === 2 && !game.hopping) {
+    runHelp(q).then(ok => { if (ok && game && game.q === q && !game.locked) say(q.help.reveal); });
+    return;
+  }
+  if (!game.hopping) say(q.help.reveal);
+}
+async function onHelp() {
+  if (!game || game.locked || game.hopping) return;
+  const q = game.q, ok = await runHelp(q);
+  if (ok && game && game.q === q && !game.locked) say(game.attempts >= 2 ? q.help.reveal : q.help.outro);
+}
+function next() {
+  if (!game) return;
+  game.i++;
+  if (game.i >= ROUND) endRound(); else showQ();
+}
+function endRound() {
+  const stars = game.stars, perfect = stars === ROUND;
+  let got = null, upgraded = false;
+  if (state.stickers.length < STICKERS.length) { got = { i: state.stickers.length, gold: perfect }; state.stickers.push(got); }
+  else if (perfect) { got = state.stickers.find(s => !s.gold) || null; if (got) { got.gold = true; upgraded = true; } }
+  save();
+  $('resTitle').textContent = perfect ? 'Perfect! Every single one!' : stars >= 8 ? 'Fantastic hopping!' : stars >= 5 ? 'Great work!' : 'Good try! Keep hopping!';
+  let s = '';
+  for (let i = 0; i < ROUND; i++) s += `<svg class="${i < stars ? 'star-on' : 'star-off'}"><use href="#starSym"/></svg>`;
+  $('resStars').innerHTML = s;
+  $('resLine').textContent = `You got ${stars} out of ${ROUND} right first time.`;
+  const st = $('resSticker');
+  if (got) {
+    st.hidden = false;
+    st.innerHTML = `<span class="big">${STICKERS[got.i]}</span><span>${upgraded ? 'Your sticker turned gold!' : got.gold ? 'A gold sticker for a perfect round!' : 'New sticker for your book!'}</span>`;
+  } else st.hidden = true;
+  const missed = game.results.filter(r => !r.ok);
+  const pr = $('resPractise');
+  pr.hidden = missed.length === 0;
+  pr.innerHTML = `<h3>Sums to practise</h3><ul>${missed.map(r => `<li>${r.q.solved}</li>`).join('')}</ul>`;
+  show('results'); sfx.fanfare();
+}
+function openBook() {
+  let s = '';
+  for (let i = 0; i < STICKERS.length; i++) {
+    const got = state.stickers[i];
+    s += got ? `<div class="slot${got.gold ? ' gold' : ''}">${STICKERS[i]}</div>` : `<div class="slot empty">${i + 1}</div>`;
+  }
+  $('slots').innerHTML = s;
+  const n = state.stickers.length;
+  $('bookNote').textContent = n >= STICKERS.length ? 'Your sticker book is full! Get 10 out of 10 to turn stickers gold.'
+    : `${n} of ${STICKERS.length} stickers. Finish a round to win the next one. Get 10 out of 10 for a gold one.`;
+  show('book');
+}
+
+/* ---------- wiring ---------- */
+const pad = $('pad');
+['1', '2', '3', '4', '5', '6', '7', '8', '9'].forEach(d => pad.insertAdjacentHTML('beforeend', `<button class="key" data-d="${d}">${d}</button>`));
+pad.insertAdjacentHTML('beforeend', '<button class="key zero" data-d="0">0</button><button class="key del" data-act="del" aria-label="Delete">Delete</button><button class="key go" data-act="go">Check</button>');
+pad.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.d) press(b.dataset.d); else if (b.dataset.act === 'del') del(); else check();
+});
+document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => { audio(); startRound(b.dataset.mode); }));
+$('helpBtn').addEventListener('click', onHelp);
+$('quitBtn').addEventListener('click', () => { hopToken++; game = null; refreshHome(); show('home'); });
+$('againBtn').addEventListener('click', () => startRound(game ? game.mode : 'add'));
+$('homeBtn').addEventListener('click', () => { game = null; refreshHome(); show('home'); });
+$('bookBtn').addEventListener('click', openBook);
+$('bookBack').addEventListener('click', () => { refreshHome(); show('home'); });
+$('soundBtn').addEventListener('click', () => { state.sound = !state.sound; save(); refreshHome(); if (state.sound) sfx.tap(); });
+document.addEventListener('keydown', e => {
+  if ($('play').hidden) return;
+  if (/^[0-9]$/.test(e.key)) press(e.key);
+  else if (e.key === 'Backspace') { e.preventDefault(); del(); }
+  else if (e.key === 'Enter') { e.preventDefault(); check(); }
+});
+refreshHome(); show('home');
+})();
+</script>
+<!-- game:end -->
+</body>
+</html>
