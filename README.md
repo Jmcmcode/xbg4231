@@ -32,6 +32,7 @@ All the fun comes when a round is finished, in this order:
 - **Records page:** sums right, rounds played, perfect rounds, best streak, most days in a row, stars, best Beat the clock times, and surprises found (unfound ones show as "???" or locked).
 - **Sticker book**, a daily streak counter, and a frog on the home screen that jumps and makes a silly noise when tapped.
 - **Rosalie's picture:** in the dress-up room you can choose a picture of Rosalie from the iPad's photos. A plain white background is made see-through, and at the end of each round she jumps up from the bottom of the screen and cheers (bigger for great rounds), and appears next to her frog when she levels up. The picture is saved only on that iPad. It is not part of this repository or the website.
+- **Voice:** the spoken praise uses the iPad's own voices. The game picks the most natural English one it can find (preferring British voices marked Enhanced or Premium), and the dress-up room has a chooser with a "Try it" button and a "No voice" option. For the best result, download a voice on the iPad first: Settings → Accessibility → Spoken Content → Voices → English.
 - **Sound switch:** "🔊 Sound on" at the bottom of the home screen, and a speaker button next to Home while playing. It turns off all sound, including the voice, and the iPad remembers the setting.
 
 ## Learning from mistakes

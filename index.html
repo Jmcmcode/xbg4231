@@ -297,6 +297,7 @@ body.quake #app{animation:quake .25s linear 6}
 .pic-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .pic-preview{height:120px;width:auto;max-width:40vw;object-fit:contain;background:var(--paper);border-radius:18px;box-shadow:0 4px 0 var(--shade);padding:4px}
 .pic-note{margin:0;font-size:16px;font-weight:700;color:var(--ink-soft);max-width:520px}
+.voice-sel{font:inherit;font-weight:700;font-size:18px;color:var(--ink);background:var(--paper);border:3px solid var(--shade);border-radius:16px;padding:10px 14px;max-width:100%;min-width:0}
 .vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
 label.chip{display:inline-flex;align-items:center;cursor:pointer}
 @keyframes rosJump{0%{transform:translate(-50%,115%)}22%{transform:translate(-50%,-7%) scale(1.03)}32%{transform:translate(-50%,0)}42%{transform:translate(-50%,-5%)}52%{transform:translate(-50%,0)}84%{transform:translate(-50%,0)}100%{transform:translate(-50%,120%)}}
@@ -490,6 +491,12 @@ label.chip{display:inline-flex;align-items:center;cursor:pointer}
           <button class="chip" id="picRemove" hidden>Remove picture</button>
         </div>
         <p class="pic-note" id="picMsg" hidden></p>
+        <h3 class="sub-h" style="margin-top:22px"><label for="voiceSel">Voice</label></h3>
+        <div class="pic-row">
+          <select id="voiceSel" class="voice-sel"></select>
+          <button class="chip" id="voiceTry">Try it</button>
+        </div>
+        <p class="pic-note" id="voiceNote"></p>
       </div>
     </div>
   </section>
@@ -645,12 +652,30 @@ const NAME = 'Rosalie';
 // Adds her name to some cheers: "Brilliant!" -> "Brilliant, Rosalie!"
 const named = (text, chance = 0.45) => Math.random() < chance ? text.replace(/!$/, `, ${NAME}!`) : text;
 function greeting() { const h = new Date().getHours(); return (h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening') + `, ${NAME}!`; }
-function speak(text) {
-  if (!state.sound || !('speechSynthesis' in window)) return;
+// The voice is the iPad's own text-to-speech. Its high-quality voices ("Enhanced" or "Premium",
+// downloaded in Settings) sound far more natural than the basic ones, so they're preferred.
+const NOVELTY_VOICES = /albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|fred|junior|ralph|grandma|grandpa|eddy|flo\b|reed|rocko|sandy|shelley|deranged|hysterical|pipe/i;
+function voiceScore(v) {
+  if (!/^en/i.test(v.lang) || NOVELTY_VOICES.test(v.name)) return -99;
+  let sc = /en[-_]GB/i.test(v.lang) ? 4 : /en[-_](IE|AU|NZ)/i.test(v.lang) ? 2 : 1;
+  if (/premium/i.test(v.name)) sc += 8; else if (/enhanced|natural|neural/i.test(v.name)) sc += 6;
+  if (/serena|stephanie|kate|martha|arthur|libby|sonia|google uk english female/i.test(v.name)) sc += 2;
+  return sc;
+}
+function englishVoices() {
+  try { return speechSynthesis.getVoices().filter(v => voiceScore(v) > 0).sort((a, b) => voiceScore(b) - voiceScore(a) || a.name.localeCompare(b.name)); } catch (e) { return []; }
+}
+function chosenVoice() {
+  const all = englishVoices();
+  return all.find(v => v.voiceURI === state.voice) || all[0] || null;
+}
+function speak(text, force) {
+  if ((!state.sound || state.voice === 'off') && !force) return;
+  if (!('speechSynthesis' in window)) return;
   try {
-    const u = new SpeechSynthesisUtterance(text), v = speechSynthesis.getVoices().find(x => /en[-_]GB/i.test(x.lang));
-    if (v) u.voice = v;
-    u.lang = 'en-GB'; u.rate = 1; u.pitch = 1.15;
+    const u = new SpeechSynthesisUtterance(text), v = chosenVoice();
+    if (v) { u.voice = v; u.lang = v.lang; } else u.lang = 'en-GB';
+    u.rate = 0.95; u.pitch = 1.05;
     speechSynthesis.cancel(); speechSynthesis.speak(u);
   } catch (e) {}
 }
@@ -680,6 +705,7 @@ function load() {
     look: s.look && typeof s.look === 'object' ? { color: s.look.color || 'green', wear: s.look.wear && typeof s.look.wear === 'object' ? s.look.wear : {} } : { color: 'green', wear: {} },
     totals: Object.assign({ right: 0, rounds: 0, perfect: 0, bestStreak: 0 }, s.totals && typeof s.totals === 'object' ? s.totals : {}),
     seen: s.seen && typeof s.seen === 'object' ? s.seen : {},
+    voice: typeof s.voice === 'string' ? s.voice : '',
   };
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
@@ -1741,13 +1767,34 @@ async function rosalieJump(big, words) {
   return true;
 }
 
+/* ---------- voice chooser ---------- */
+function renderVoices() {
+  const sel = $('voiceSel'), all = englishVoices(), best = all[0];
+  const region = v => /GB/i.test(v.lang) ? 'British' : /US/i.test(v.lang) ? 'American' : /AU/i.test(v.lang) ? 'Australian' : /IE/i.test(v.lang) ? 'Irish' : /IN/i.test(v.lang) ? 'Indian' : /ZA/i.test(v.lang) ? 'South African' : 'English';
+  sel.innerHTML = '';
+  const add = (value, label) => { const o = document.createElement('option'); o.value = value; o.textContent = label; sel.appendChild(o); };
+  all.forEach(v => add(v.voiceURI, `${v.name} (${region(v)})${v === best ? ' ★' : ''}`));
+  add('off', 'No voice');
+  const cur = state.voice === 'off' ? 'off' : (chosenVoice() || {}).voiceURI;
+  if (cur) sel.value = cur;
+  $('voiceTry').disabled = !all.length;
+  const good = all.some(v => /premium|enhanced|natural|neural/i.test(v.name));
+  $('voiceNote').textContent = !all.length
+    ? "This device hasn't offered any voices yet. Try again in a moment."
+    : good ? 'The ★ voice is the most natural one on this iPad.'
+    : 'For a more natural voice, download one on the iPad: Settings → Accessibility → Spoken Content → Voices → English, then pick a British voice marked Enhanced or Premium (such as Serena or Stephanie). Then come back here and choose it.';
+}
+$('voiceSel').addEventListener('change', e => { state.voice = e.target.value; save(); if (state.voice !== 'off') speak(`Brilliant, ${NAME}! You got them all!`, true); });
+$('voiceTry').addEventListener('click', () => speak(`Brilliant, ${NAME}! You got them all!`, true));
+try { speechSynthesis.addEventListener('voiceschanged', () => { if (!$('wardrobe').hidden) renderVoices(); }); } catch (e) {}
+
 /* ---------- dress-up room ---------- */
 // Whether an outfit is showing: the crown and party hat can't both be worn, and the crown wins.
 function wearing(k) {
   const lv = LEVELS.find(l => l.item === k), on = unlocked(lv.at) && state.look.wear[k] !== false;
   return k === 'hat' ? on && !wearing('crown') : on;
 }
-function openWardrobe() { renderWardrobe(); $('frogName').value = state.frogName; $('picMsg').hidden = true; showPicControls(); show('wardrobe'); }
+function openWardrobe() { renderWardrobe(); $('frogName').value = state.frogName; $('picMsg').hidden = true; showPicControls(); renderVoices(); show('wardrobe'); }
 function renderWardrobe() {
   $('wardTitle').textContent = `Dress up ${state.frogName}`;
   $('swatches').innerHTML = Object.entries(PALETTES).map(([id, p]) => {
