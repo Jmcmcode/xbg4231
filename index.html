@@ -28,48 +28,72 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{height:100%}
-body{margin:0;background:linear-gradient(180deg,var(--water) 0%,var(--water-deep) 100%);background-color:var(--water);color:var(--ink);font-family:var(--body);font-size:18px;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+body{margin:0;background:linear-gradient(180deg,var(--water) 0%,var(--water-deep) 100%);background-color:var(--water);color:var(--ink);font-family:var(--body);font-size:18px;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;overflow:hidden}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation;-webkit-appearance:none;appearance:none}
 button:focus-visible{outline:4px solid var(--ink);outline-offset:3px}
 button:disabled{opacity:.5;cursor:default}
 #app{height:100%;max-width:1120px;margin:0 auto;padding-inline:16px;padding-block:14px;display:flex;flex-direction:column}
-.screen{flex:1;min-height:0;display:flex;flex-direction:column;gap:18px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.screen{flex:1;min-height:0;display:flex;flex-direction:column;gap:16px;overflow-y:auto;-webkit-overflow-scrolling:touch}
 
 /* Home */
 .home{align-items:center}
-.brand{display:flex;align-items:center;gap:18px;justify-content:center;flex-wrap:wrap;text-align:left;padding-top:6px}
-.hero-frog{width:clamp(96px,16vw,140px);height:auto;flex:none}
-h1{font-family:var(--display);font-weight:800;font-size:clamp(42px,7.5vw,72px);line-height:.95;margin:0;color:var(--frog-dark);text-wrap:balance}
-.tag{margin:6px 0 0;font-size:clamp(17px,2.4vw,22px);color:var(--ink-soft);font-weight:700}
-.groups{display:grid;gap:20px;width:min(980px,100%)}
-@media (min-width:900px) and (orientation:landscape){.groups{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.brand{display:flex;align-items:center;gap:18px;justify-content:center;width:min(980px,100%)}
+.hero-frog{width:clamp(100px,16vw,140px);height:auto;flex:none;animation:idle 3s ease-in-out infinite}
+.brand-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);line-height:.95;margin:0;color:var(--frog-dark);text-wrap:balance}
+.lv-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.lv-name{font-family:var(--display);font-weight:800;font-size:clamp(20px,2.8vw,26px);color:var(--ink)}
+.lv-stars{font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.lv-track{height:16px;border-radius:999px;background:var(--ink-faint);overflow:hidden;max-width:520px}
+.lv-fill{height:100%;background:var(--sun);border-radius:999px;box-shadow:inset 0 -3px 0 var(--sun-dark);transition:width .6s ease}
+.lv-next{margin:0;font-size:16px;font-weight:700;color:var(--ink-soft)}
+.groups{display:grid;gap:18px;width:min(980px,100%)}
+@media (min-width:900px) and (orientation:landscape){.groups{grid-template-columns:repeat(2,minmax(0,1fr))}.group.clock{grid-column:1/-1}}
 .group{display:flex;flex-direction:column;gap:10px;min-width:0}
 .group-h{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(22px,3vw,28px);color:var(--ink)}
-.group-h span{font-family:var(--body);font-weight:700;font-size:.7em;color:var(--ink-soft);margin-left:6px}
+.group-h span{font-family:var(--body);font-weight:700;font-size:.68em;color:var(--ink-soft);margin-left:6px}
 .modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.mode{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--paper);border-radius:22px;box-shadow:0 6px 0 var(--shade);font-family:var(--display);font-weight:700;font-size:clamp(19px,2.6vw,25px);line-height:1.1;text-align:left;min-height:80px;transition:transform .08s}
+.modes.three-up{grid-template-columns:repeat(3,minmax(0,1fr))}
+.mode{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--paper);border-radius:22px;box-shadow:0 6px 0 var(--shade);font-family:var(--display);font-weight:700;font-size:clamp(19px,2.6vw,25px);line-height:1.1;text-align:left;min-height:76px;transition:transform .08s}
 .mode:active{transform:translateY(4px);box-shadow:0 2px 0 var(--shade)}
 .mode small{display:block;font-family:var(--body);font-size:15px;font-weight:700;color:var(--ink-soft);margin-top:2px}
 .mode.wide{grid-column:1/-1;justify-content:center;background:var(--sun);box-shadow:0 6px 0 var(--sun-dark)}
 .mode.wide:active{box-shadow:0 2px 0 var(--sun-dark)}
+.mode.clocky{flex-direction:column;align-items:flex-start;gap:4px;background:var(--ink);color:var(--paper);box-shadow:0 6px 0 #0E2120}
+.mode.clocky:active{box-shadow:0 2px 0 #0E2120}
+.mode.clocky small{color:#BFE3D9}
+.mode.clocky .best{font-family:var(--body);font-size:14px;font-weight:700;color:var(--sun);margin-top:2px}
+.clock-top{display:flex;align-items:center;gap:10px}
+.clock-ic{width:34px;height:34px;flex:none}
 .sym{flex:none;width:50px;height:50px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:30px;font-weight:800;color:#fff;line-height:1}
-.s-add{background:var(--frog)} .s-sub{background:var(--lake)} .s-miss{background:var(--berry)} .s-test{background:var(--ink)}
+.s-add{background:var(--frog)} .s-sub{background:var(--lake)} .s-miss{background:var(--berry)} .s-mix{background:var(--frog-dark)}
 .s-words{background:var(--lake);font-size:24px} .s-three{background:var(--frog)} .s-story{background:var(--coral);font-size:38px;padding-top:12px}
-.s-mix{background:var(--frog-dark)}
 .home-foot{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 .chip{background:var(--paper);border-radius:999px;padding:10px 20px;font-weight:700;font-size:18px;box-shadow:0 4px 0 var(--shade);min-height:48px}
 .chip:active{transform:translateY(3px);box-shadow:0 1px 0 var(--shade)}
+.chip.flame{background:var(--sun);box-shadow:0 4px 0 var(--sun-dark)}
 .remember{margin:0;color:var(--ink-soft);font-weight:700;text-align:center;font-size:16px}
 
 /* Play */
 .bar{display:flex;align-items:center;gap:12px;justify-content:space-between;flex:none}
-.dots{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.dots{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;flex:1;min-width:0}
 .dot{width:16px;height:16px;border-radius:50%;background:var(--ink-faint)}
+.dots.many .dot{width:12px;height:12px}
 .dot.now{background:var(--paper);box-shadow:0 0 0 3px var(--ink)}
 .dot.ok{background:var(--sun);box-shadow:0 0 0 2px var(--sun-dark)}
 .dot.miss{background:var(--coral)}
-.score{display:flex;align-items:center;gap:4px;font-family:var(--display);font-weight:800;font-size:28px;min-width:76px;justify-content:flex-end;font-variant-numeric:tabular-nums}
+.right-bits{display:flex;align-items:center;gap:10px}
+.streak{font-family:var(--display);font-weight:800;font-size:20px;background:var(--sun);border-radius:999px;padding:2px 12px;box-shadow:0 3px 0 var(--sun-dark);white-space:nowrap}
+.streak.bump{animation:pop .4s ease}
+.score{display:flex;align-items:center;gap:4px;font-family:var(--display);font-weight:800;font-size:28px;min-width:70px;justify-content:flex-end;font-variant-numeric:tabular-nums}
 .score svg{width:32px;height:32px}
+.timer{display:flex;align-items:center;gap:12px;flex:none}
+.tbar{flex:1;height:22px;background:var(--ink-faint);border-radius:999px;overflow:hidden}
+.tfill{height:100%;width:100%;background:var(--frog);border-radius:999px;box-shadow:inset 0 -4px 0 var(--frog-dark)}
+.ttext{font-family:var(--display);font-weight:800;font-size:32px;min-width:84px;text-align:right;font-variant-numeric:tabular-nums}
+.timer.low .tfill{background:var(--coral);box-shadow:inset 0 -4px 0 #A83A2F}
+.timer.low .ttext{color:var(--coral);animation:pulse 1s ease-in-out infinite}
+.qcount{font-family:var(--display);font-weight:800;font-size:22px;color:var(--ink-soft);min-width:60px;font-variant-numeric:tabular-nums}
 .stage{flex:1;min-height:0;display:grid;gap:16px;grid-template-columns:minmax(0,1fr);align-content:start}
 @media (min-width:900px) and (orientation:landscape){.stage{grid-template-columns:minmax(0,1.45fr) minmax(280px,1fr)}}
 .left{display:flex;flex-direction:column;gap:14px;min-width:0}
@@ -92,28 +116,27 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(42px,7.5vw,72px);l
 .story-a .box{min-width:2.4em;border-width:4px}
 .box.empty::after{content:"";width:4px;height:.6em;background:var(--frog-dark);border-radius:2px;animation:blink 1s steps(1) infinite}
 .box.shown{border-style:solid;border-color:var(--coral);color:var(--coral);background:#FDECEA}
-.card.good .box{border-style:solid;border-color:var(--sun-dark);background:#FFF3CC;color:var(--ink)}
+.box.right,.card.good .box{border-style:solid;border-color:var(--sun-dark);background:#FFF3CC;color:var(--ink)}
 .card.good{animation:pop .5s ease}
 .card.bad .box{animation:shake .45s}
 .msg{margin:10px 0 0;font-size:clamp(18px,2.5vw,23px);min-height:1.4em;color:var(--ink-soft);font-weight:700;text-wrap:balance}
 .line-wrap{background:rgba(255,253,245,.45);border-radius:24px;padding:6px 8px}
 .line-wrap svg{display:block;width:100%;height:auto;overflow:visible}
-#line .water{stroke:#8CCDBE;stroke-width:28;stroke-linecap:round;fill:none}
-#line .lily{fill:#7CC46A;stroke:#4E9A40;stroke-width:2}
-#line .lily.ten{fill:var(--sun);stroke:var(--sun-dark)}
-#line text{font-family:var(--display);font-weight:700;font-size:26px;fill:var(--ink-soft);text-anchor:middle}
-#line text.st{fill:var(--ink);font-weight:800;font-size:30px}
-#line text.later{opacity:0}
-#line .base{stroke:var(--ink-soft);stroke-width:4;stroke-linecap:round;fill:none}
-#line .tick{stroke:var(--ink-soft);stroke-width:4;stroke-linecap:round;fill:none}
-#line .arc{fill:none;stroke:var(--sun-dark);stroke-width:4;stroke-linecap:round;stroke-dasharray:2 10}
-#line text.hopn{font-size:20px;fill:var(--sun-dark)}
-#line text.jumpn{font-size:30px;font-weight:800;fill:var(--sun-dark)}
-.help{align-self:center;background:var(--paper);border-radius:999px;padding:12px 26px;font-family:var(--display);font-weight:700;font-size:22px;box-shadow:0 5px 0 var(--shade);display:flex;align-items:center;gap:10px;min-height:56px}
-.help svg{width:34px;height:30px}
+.numline .water{stroke:#8CCDBE;stroke-width:28;stroke-linecap:round;fill:none}
+.numline .lily{fill:#7CC46A;stroke:#4E9A40;stroke-width:2}
+.numline .lily.ten{fill:var(--sun);stroke:var(--sun-dark)}
+.numline text{font-family:var(--display);font-weight:700;font-size:26px;fill:var(--ink-soft);text-anchor:middle}
+.numline text.st{fill:var(--ink);font-weight:800;font-size:30px}
+.numline text.later{opacity:0}
+.numline .base,.numline .tick{stroke:var(--ink-soft);stroke-width:4;stroke-linecap:round;fill:none}
+.numline .arc{fill:none;stroke:var(--sun-dark);stroke-width:4;stroke-linecap:round;stroke-dasharray:2 10}
+.numline text.hopn{font-size:20px;fill:var(--sun-dark)}
+.numline text.jumpn{font-size:30px;font-weight:800;fill:var(--sun-dark)}
+.help{align-self:center;background:var(--paper);border-radius:999px;padding:10px 24px;font-family:var(--display);font-weight:700;font-size:22px;box-shadow:0 5px 0 var(--shade);display:flex;align-items:center;gap:10px;min-height:56px}
+.help svg{width:34px;height:38px}
 .help:active{transform:translateY(3px);box-shadow:0 2px 0 var(--shade)}
 .pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-content:start}
-.key{font-family:var(--display);font-weight:800;font-size:clamp(32px,5vw,44px);background:var(--paper);border-radius:20px;box-shadow:0 6px 0 var(--shade);min-height:clamp(60px,8.4vh,88px);line-height:1}
+.key{font-family:var(--display);font-weight:800;font-size:clamp(32px,5vw,44px);background:var(--paper);border-radius:20px;box-shadow:0 6px 0 var(--shade);min-height:clamp(58px,8.2vh,88px);line-height:1}
 .key:active{transform:translateY(4px);box-shadow:0 2px 0 var(--shade)}
 .key.zero{grid-column:span 2}
 .key.del{font-size:24px;color:var(--ink-soft)}
@@ -122,19 +145,40 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(42px,7.5vw,72px);l
 
 /* Results */
 .results{align-items:center;justify-content:center;text-align:center}
-.results h2,.book h2{font-family:var(--display);font-weight:800;font-size:clamp(38px,7vw,62px);line-height:1.05;margin:0;color:var(--frog-dark);text-wrap:balance}
-.starrow{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.results h2,.book h2,.rev-done h2{font-family:var(--display);font-weight:800;font-size:clamp(38px,7vw,62px);line-height:1.05;margin:0;color:var(--frog-dark);text-wrap:balance}
+.banner{font-family:var(--display);font-weight:800;font-size:26px;background:var(--coral);color:#fff;border-radius:999px;padding:4px 22px;box-shadow:0 4px 0 #A83A2F;animation:pop .6s ease}
+.starrow{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:720px}
 .starrow svg{width:clamp(26px,6vw,46px);height:clamp(26px,6vw,46px)}
+.starrow.many svg{width:clamp(22px,4.4vw,36px);height:clamp(22px,4.4vw,36px)}
 .star-on{fill:var(--sun);stroke:var(--sun-dark);stroke-width:1.2}
+.star-on.lit{animation:starPop .35s cubic-bezier(.3,1.8,.5,1)}
 .star-off{fill:var(--ink-faint)}
-.res-line{font-size:clamp(20px,3vw,26px);margin:0;font-weight:700}
+.res-line{font-size:clamp(20px,3vw,26px);margin:0;font-weight:700;text-wrap:balance}
+.res-best{margin:0;font-weight:700;color:var(--ink-soft)}
+.res-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;align-items:stretch;width:min(760px,100%)}
 .newsticker{display:flex;align-items:center;gap:16px;background:var(--paper);border-radius:24px;padding:12px 22px;box-shadow:0 6px 0 var(--shade);font-weight:700;font-size:21px;text-align:left}
-.newsticker .big{font-size:58px;line-height:1;animation:stickerIn .7s cubic-bezier(.3,1.6,.5,1)}
-.practise{background:rgba(255,253,245,.6);border-radius:20px;padding:12px 20px;max-width:680px;width:100%;text-align:left}
-.practise h3{margin:0 0 4px;font-family:var(--display);font-size:22px}
-.practise ul{margin:0;padding-left:1.2em;font-size:19px;line-height:1.5}
+.newsticker .big{font-size:58px;line-height:1;display:inline-block}
+.newsticker .big.spin{animation:stickerIn .8s cubic-bezier(.3,1.6,.5,1)}
+.joke{flex:1;min-width:260px;background:var(--paper);border-radius:24px;padding:12px 18px;box-shadow:0 6px 0 var(--shade);text-align:left;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.joke b{font-family:var(--display);font-size:20px;color:var(--berry)}
+.joke p{margin:0;font-weight:700;font-size:19px}
+.joke .ans{color:var(--frog-dark);font-size:21px}
 .res-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;align-items:center}
-.res-actions .key{padding-inline:40px;grid-column:auto;min-height:68px}
+.res-actions .key{padding-inline:34px;grid-column:auto;min-height:68px}
+.key.alt{background:var(--paper);color:var(--ink);box-shadow:0 6px 0 var(--shade)}
+
+/* Review */
+.review .bar h2{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(22px,3.4vw,30px)}
+.rev-body{display:flex;flex-direction:column;gap:14px;width:min(860px,100%);margin-inline:auto}
+.rev-you{margin:8px 0 0;font-size:20px;font-weight:700;color:var(--ink-soft)}
+.rev-you s{color:var(--coral);text-decoration-thickness:3px}
+.tip{display:flex;gap:14px;align-items:flex-start;background:var(--paper);border-radius:24px;padding:14px 18px;box-shadow:0 6px 0 var(--shade);border-left:0}
+.tip-frog{width:70px;height:80px;flex:none}
+.tip h3{margin:0 0 6px;font-family:var(--display);font-weight:800;font-size:clamp(22px,3vw,28px);color:var(--frog-dark);text-wrap:balance}
+.tip ol{margin:0;padding-left:1.3em;font-size:clamp(18px,2.4vw,22px);font-weight:700;line-height:1.5}
+.tip li::marker{color:var(--sun-dark);font-family:var(--display)}
+.rev-done{align-items:center;text-align:center;display:flex;flex-direction:column;gap:16px;padding-top:40px}
+.rev-done p{margin:0;font-size:22px;font-weight:700}
 
 /* Sticker book */
 .book{align-items:center}
@@ -145,32 +189,54 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(42px,7.5vw,72px);l
 .slot.gold{border:5px solid var(--sun)}
 .book-note{margin:0;color:var(--ink-soft);font-weight:700;text-align:center}
 
-@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.035)}100%{transform:scale(1)}}
+/* Celebrations */
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
+.buddy{position:fixed;left:16px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:58;pointer-events:none;display:flex;align-items:flex-end;gap:4px;transform:translateY(150%)}
+.buddy .face{font-size:96px;line-height:1;filter:drop-shadow(0 6px 0 rgba(29,56,54,.2))}
+.buddy .bubble{background:var(--paper);border-radius:22px;padding:10px 18px;font-family:var(--display);font-weight:800;font-size:28px;color:var(--ink);box-shadow:0 5px 0 var(--shade);margin-bottom:70px;white-space:nowrap}
+.buddy.show{animation:buddy 1.8s ease forwards}
+.toast{position:fixed;left:50%;top:22%;z-index:59;pointer-events:none;font-family:var(--display);font-weight:800;font-size:clamp(40px,8vw,72px);color:var(--sun);-webkit-text-stroke:3px var(--sun-dark);text-shadow:0 6px 0 var(--sun-dark);white-space:nowrap;transform:translate(-50%,0) scale(0)}
+.toast.show{animation:toast 1.6s ease forwards}
+.parade{position:fixed;left:0;right:0;bottom:24%;height:100px;pointer-events:none;z-index:57;overflow:hidden}
+.walkers{position:absolute;left:0;top:10px;display:flex;gap:16px;font-size:64px;line-height:1;animation:walk 3.6s linear forwards}
+.walkers span{display:inline-block;animation:bob .3s ease-in-out infinite alternate}
+.plus1{position:fixed;z-index:59;pointer-events:none;font-family:var(--display);font-weight:800;font-size:36px;color:var(--sun-dark);text-shadow:0 2px 0 var(--paper);transform:translate(-50%,-50%);animation:rise .9s ease forwards}
+.overlay{position:fixed;inset:0;z-index:70;background:rgba(29,56,54,.6);display:grid;place-items:center}
+.overlay-t{font-family:var(--display);font-weight:800;font-size:clamp(110px,26vw,220px);color:var(--paper);text-shadow:0 10px 0 rgba(0,0,0,.25);line-height:1}
+.overlay-t.small{font-size:clamp(60px,12vw,110px)}
+.overlay-t.zoom{animation:zoom .7s ease}
+.lv-card{background:var(--paper);border-radius:32px;padding:24px 30px;box-shadow:0 10px 0 var(--shade);text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;width:min(480px,calc(100% - 32px))}
+.lv-card svg{width:180px;height:205px;animation:idle 1.2s ease-in-out infinite}
+.lv-card h2{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(32px,6vw,46px);color:var(--frog-dark);line-height:1.05;text-wrap:balance}
+.lv-card p{margin:0 0 8px;font-size:22px;font-weight:700}
+.lv-card .key{padding-inline:40px;min-height:64px}
+
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
 @keyframes blink{50%{opacity:0}}
-@keyframes stickerIn{from{transform:scale(.3) rotate(-25deg)}to{transform:scale(1) rotate(0)}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@keyframes pulse{50%{transform:scale(1.12)}}
+@keyframes idle{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-3deg)}}
+@keyframes stickerIn{0%{transform:scale(.2) rotate(-200deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes starPop{0%{transform:scale(.3)}100%{transform:scale(1)}}
+@keyframes buddy{0%{transform:translateY(150%)}14%{transform:translateY(-8%) rotate(-6deg)}22%{transform:translateY(0) rotate(6deg)}30%{transform:rotate(-5deg)}38%{transform:rotate(4deg)}46%{transform:rotate(0)}82%{transform:translateY(0)}100%{transform:translateY(150%)}}
+@keyframes toast{0%{transform:translate(-50%,0) scale(0) rotate(-10deg)}18%{transform:translate(-50%,0) scale(1.15) rotate(4deg)}30%{transform:translate(-50%,0) scale(1) rotate(0)}80%{transform:translate(-50%,0) scale(1);opacity:1}100%{transform:translate(-50%,-40px) scale(1);opacity:0}}
+@keyframes walk{from{transform:translateX(-100%)}to{transform:translateX(100vw)}}
+@keyframes bob{from{transform:translateY(0) rotate(-8deg)}to{transform:translateY(-18px) rotate(8deg)}}
+@keyframes rise{from{opacity:1;transform:translate(-50%,-50%)}to{opacity:0;transform:translate(-50%,-180%)}}
+@keyframes zoom{0%{transform:scale(2.4);opacity:0}35%{transform:scale(1);opacity:1}100%{transform:scale(.9)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.buddy.show,.toast.show{transform:translate(0,0)}.toast.show{transform:translate(-50%,0)}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <symbol id="frogSym" viewBox="-44 -46 88 74">
-      <ellipse cx="-22" cy="19" rx="14" ry="7" fill="#2E7524"/>
-      <ellipse cx="22" cy="19" rx="14" ry="7" fill="#2E7524"/>
-      <ellipse cx="0" cy="4" rx="32" ry="22" fill="#4FA83D"/>
-      <ellipse cx="0" cy="11" rx="20" ry="11" fill="#CDEB9A"/>
-      <circle cx="-15" cy="-19" r="12" fill="#4FA83D"/>
-      <circle cx="15" cy="-19" r="12" fill="#4FA83D"/>
-      <circle cx="-15" cy="-20" r="8" fill="#ffffff"/>
-      <circle cx="15" cy="-20" r="8" fill="#ffffff"/>
-      <circle cx="-13" cy="-19" r="4" fill="#1D3836"/>
-      <circle cx="17" cy="-19" r="4" fill="#1D3836"/>
-      <circle cx="-23" cy="1" r="4" fill="#F29A8C" opacity=".75"/>
-      <circle cx="23" cy="1" r="4" fill="#F29A8C" opacity=".75"/>
-      <path d="M-13 -1 Q0 10 13 -1" stroke="#2E7524" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-    </symbol>
+    <symbol id="frogSym" viewBox="-44 -72 88 100"></symbol>
     <symbol id="starSym" viewBox="0 0 24 24">
       <path d="M12 2.2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17.1l-6.1 3.5 1.5-6.8L2.2 9.2l6.9-.7z" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="clockSym" viewBox="0 0 24 24">
+      <circle cx="12" cy="13" r="9" fill="#FFFDF5" stroke="#FFC63A" stroke-width="2.5"/>
+      <path d="M12 8v5l3.5 2" stroke="#1D3836" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <path d="M9 2.5h6" stroke="#FFC63A" stroke-width="2.5" stroke-linecap="round"/>
     </symbol>
   </defs>
 </svg>
@@ -178,21 +244,26 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(42px,7.5vw,72px);l
 <main id="app">
   <section id="home" class="screen home">
     <div class="brand">
-      <svg class="hero-frog" viewBox="0 0 88 74" aria-hidden="true"><use href="#frogSym"/></svg>
-      <div>
+      <svg class="hero-frog" viewBox="-44 -72 88 100" aria-hidden="true"><use href="#frogSym" x="-44" y="-72" width="88" height="100"/></svg>
+      <div class="brand-text">
         <h1>Frog Hop Sums</h1>
-        <p class="tag">Pick a game. The frog helps with the tricky ones.</p>
+        <div class="lv-row"><span class="lv-name" id="lvName">Tadpole</span><span class="lv-stars" id="lvStars"></span></div>
+        <div class="lv-track"><div class="lv-fill" id="lvFill" style="width:0%"></div></div>
+        <p class="lv-next" id="lvNext"></p>
       </div>
     </div>
     <div class="groups">
+      <div class="group clock">
+        <h2 class="group-h">Beat the clock <span>20 sums up to 20</span></h2>
+        <div class="modes three-up" id="clockModes"></div>
+      </div>
       <div class="group">
-        <h2 class="group-h">Up to 20 <span>for the test</span></h2>
+        <h2 class="group-h">Up to 20 <span>practice with help</span></h2>
         <div class="modes">
           <button class="mode" data-mode="add"><span class="sym s-add">+</span><span>Adding</span></button>
           <button class="mode" data-mode="sub"><span class="sym s-sub">&minus;</span><span>Taking away</span></button>
           <button class="mode" data-mode="miss20"><span class="sym s-miss">?</span><span>Missing numbers</span></button>
           <button class="mode" data-mode="mix20"><span class="sym s-mix">&plusmn;</span><span>Mix them up</span></button>
-          <button class="mode wide" data-mode="test"><span class="sym s-test">&check;</span><span>Practice test<small>10 sums, no helper frog</small></span></button>
         </div>
       </div>
       <div class="group">
@@ -208,6 +279,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(42px,7.5vw,72px);l
     </div>
     <div class="home-foot">
       <button id="bookBtn" class="chip">Sticker book &middot; <b id="stickerCount">0</b></button>
+      <span id="dayChip" class="chip flame" hidden></span>
       <button id="soundBtn" class="chip">Sound: on</button>
     </div>
     <p class="remember" id="remember" hidden></p>
@@ -217,30 +289,80 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(42px,7.5vw,72px);l
     <header class="bar">
       <button id="quitBtn" class="chip">Home</button>
       <div class="dots" id="dots" aria-label="Progress"></div>
-      <div class="score" aria-label="Stars"><svg class="star-on"><use href="#starSym"/></svg><b id="starCount">0</b></div>
+      <div class="right-bits">
+        <span class="streak" id="streak" hidden></span>
+        <div class="score" aria-label="Stars"><svg class="star-on"><use href="#starSym"/></svg><b id="starCount">0</b></div>
+      </div>
     </header>
+    <div class="timer" id="timer" hidden>
+      <span class="qcount" id="qcount">1/20</span>
+      <div class="tbar"><div class="tfill" id="tfill"></div></div>
+      <span class="ttext" id="ttext">2:00</span>
+    </div>
     <div class="stage">
       <div class="left">
         <div class="card" id="card">
           <div class="sum eq" id="sum"></div>
           <p class="msg" id="msg" aria-live="polite"></p>
         </div>
-        <div class="line-wrap" id="lineWrap"><svg id="line" viewBox="0 -10 1000 190" role="img" aria-label="Number line"></svg></div>
-        <button id="helpBtn" class="help"><svg viewBox="0 0 88 74" aria-hidden="true"><use href="#frogSym"/></svg><span id="helpLabel">Show me the hops</span></button>
+        <div class="line-wrap" id="lineWrap"><svg id="line" class="numline" viewBox="0 -30 1000 210" role="img" aria-label="Number line"></svg></div>
+        <button id="helpBtn" class="help"><svg viewBox="-44 -72 88 100" aria-hidden="true"><use href="#frogSym" x="-44" y="-72" width="88" height="100"/></svg><span id="helpLabel">Show me the hops</span></button>
       </div>
       <div class="pad" id="pad"></div>
     </div>
   </section>
 
   <section id="results" class="screen results" hidden>
+    <div class="banner" id="resBanner" hidden>New record!</div>
     <h2 id="resTitle"></h2>
     <div class="starrow" id="resStars"></div>
     <p class="res-line" id="resLine"></p>
-    <div class="newsticker" id="resSticker"></div>
-    <div class="practise" id="resPractise"></div>
+    <p class="res-best" id="resBest" hidden></p>
+    <div class="res-row">
+      <div class="newsticker" id="resSticker" hidden></div>
+      <div class="joke" id="joke">
+        <b>Joke time!</b>
+        <p id="jokeQ"></p>
+        <button id="jokeBtn" class="chip">Tell me!</button>
+        <p class="ans" id="jokeA" hidden></p>
+      </div>
+    </div>
     <div class="res-actions">
+      <button id="reviewBtn" class="key go">Let's fix the tricky ones</button>
       <button id="againBtn" class="key go">Play again</button>
       <button id="homeBtn" class="chip">Home</button>
+    </div>
+  </section>
+
+  <section id="review" class="screen review" hidden>
+    <header class="bar">
+      <button id="revHome" class="chip">Home</button>
+      <h2 id="revCount">Tricky one 1 of 3</h2>
+      <span style="width:84px"></span>
+    </header>
+    <div class="rev-body" id="revBody">
+      <div class="card">
+        <div class="sum eq" id="revSum"></div>
+        <p class="rev-you" id="revYou"></p>
+      </div>
+      <div class="tip">
+        <svg class="tip-frog" viewBox="-44 -72 88 100" aria-hidden="true"><use href="#frogSym" x="-44" y="-72" width="88" height="100"/></svg>
+        <div><h3 id="tipTitle"></h3><ol id="tipLines"></ol></div>
+      </div>
+      <div class="line-wrap" id="revLineWrap" hidden><svg id="revLine" class="numline" viewBox="0 -30 1000 210" role="img" aria-label="Number line"></svg></div>
+      <p class="msg" id="revMsg" aria-live="polite"></p>
+      <div class="res-actions">
+        <button id="revShow" class="help"><svg viewBox="-44 -72 88 100" aria-hidden="true"><use href="#frogSym" x="-44" y="-72" width="88" height="100"/></svg><span>Show me with the frog</span></button>
+        <button id="revNext" class="key go">Next tip</button>
+      </div>
+    </div>
+    <div class="rev-done" id="revDone" hidden>
+      <h2>Now you know the tricks!</h2>
+      <p>Ready to try those sums again?</p>
+      <div class="res-actions">
+        <button id="retryBtn" class="key go">Try them again</button>
+        <button id="revHome2" class="chip">Home</button>
+      </div>
     </div>
   </section>
 
@@ -255,21 +377,73 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(42px,7.5vw,72px);l
   </section>
 </main>
 
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="buddy" id="buddy" aria-hidden="true"><span class="face"></span><span class="bubble"></span></div>
+<div class="toast" id="toast" aria-hidden="true"></div>
+<div class="parade" id="parade" hidden aria-hidden="true"></div>
+<div class="overlay" id="overlay" hidden><div class="overlay-t" id="overlayT"></div></div>
+<div class="overlay" id="levelup" hidden>
+  <div class="lv-card">
+    <svg viewBox="-44 -72 88 100" aria-hidden="true"><use href="#frogSym" x="-44" y="-72" width="88" height="100"/></svg>
+    <h2 id="lvTitle"></h2>
+    <p id="lvGift"></p>
+    <button id="lvBtn" class="key go">Ribbit!</button>
+  </div>
+</div>
+
 <script>
 (() => {
 'use strict';
-const ROUND = 10, KEY = 'froghop.v1';
+const KEY = 'froghop.v1';
 const STICKERS = ['🐸','🦆','🐞','🦋','🐢','🐟','🐌','🌻','🐝','🦔','🦉','🐿️','🐛','🦢','🌷','🍄','🐠','🦊','🐇','🌈','🐳','🦜','🐙','⭐'];
-const PRAISE = ["Ribbit! That's right!", 'Brilliant!', 'Super hopping!', 'Yes! Well done!', 'You got it!', 'Fantastic!'];
 const HW = ['words', 'missbig', 'three', 'story'];
+const CLOCKS = {
+  t180: { secs: 180, name: 'Warm-up', sub: '20 sums in 3 minutes' },
+  t120: { secs: 120, name: 'Test speed', sub: '20 sums in 2 minutes' },
+  t90: { secs: 90, name: 'Lightning', sub: '20 sums in 1½ minutes' },
+};
+const LEVELS = [
+  { at: 0, name: 'Tadpole' },
+  { at: 15, name: 'Froglet', item: 'bow', gift: 'a bow tie' },
+  { at: 40, name: 'Hopper', item: 'glasses', gift: 'cool sunglasses' },
+  { at: 80, name: 'Leaper', item: 'hat', gift: 'a party hat' },
+  { at: 140, name: 'Super Frog', item: 'cape', gift: 'a superhero cape' },
+  { at: 220, name: 'Frog Royalty', item: 'crown', gift: 'a golden crown' },
+  { at: 320, name: 'Frog Legend', item: 'medal', gift: 'a gold medal' },
+];
+const JOKES = [
+  ['What do you call a frog that parks in the wrong place?', 'Toad away!'],
+  ['Why are frogs so happy?', 'They eat whatever bugs them!'],
+  ["What is a frog's favourite drink?", 'Croaka-Cola!'],
+  ['What do you get if you cross a frog and a rabbit?', 'A bunny ribbit!'],
+  ['What kind of shoes do frogs wear?', 'Open-toad sandals!'],
+  ['Why was 6 afraid of 7?', 'Because 7 8 9!'],
+  ['Why did the maths book look sad?', 'It had too many problems!'],
+  ["What is an owl's favourite subject?", 'Owl-gebra!'],
+  ['What do you call a sleeping dinosaur?', 'A dino-snore!'],
+  ['Why do cows wear bells?', "Because their horns don't work!"],
+  ['What do you call a pig that does karate?', 'A pork chop!'],
+  ['What do you call a bear with no teeth?', 'A gummy bear!'],
+  ['How do bees brush their hair?', 'With a honeycomb!'],
+  ['What do you call a duck that gets top marks?', 'A wise quacker!'],
+  ['Why did the cow cross the road?', 'To get to the udder side!'],
+  ['What do cats eat for breakfast?', 'Mice Krispies!'],
+  ['Why are fish so clever?', 'They live in schools!'],
+  ['What do you call a dog who does magic tricks?', 'A labracadabrador!'],
+  ['Why did the teddy bear say no to pudding?', 'Because it was stuffed!'],
+  ["Why don't elephants use computers?", "They're scared of the mouse!"],
+  ['What do you call a dinosaur that is never late?', 'A prontosaurus!'],
+  ['Why did the banana go to the doctor?', "It wasn't peeling well!"],
+];
 const reduced = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
 const $ = id => document.getElementById(id);
 const rnd = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
 const pick = a => a[Math.floor(Math.random() * a.length)];
 const wait = ms => new Promise(r => setTimeout(r, ms));
 function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const fmt = s => { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
 
-/* ---------- saved progress (stickers, tricky sums, sound) ---------- */
+/* ---------- saved progress ---------- */
 function load() {
   let s = null;
   try { s = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
@@ -278,12 +452,51 @@ function load() {
     stickers: Array.isArray(s.stickers) ? s.stickers : [],
     tricky: s.tricky && typeof s.tricky === 'object' ? s.tricky : {},
     sound: s.sound !== false,
+    stars: Number(s.stars) || 0,
+    bests: s.bests && typeof s.bests === 'object' ? s.bests : {},
+    days: s.days && typeof s.days === 'object' ? s.days : { last: '', count: 0 },
+    joke: Number(s.joke) || 0,
   };
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
 const state = load();
+const dayKey = d => d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+function bumpDay() {
+  const today = dayKey(new Date()), yest = dayKey(new Date(Date.now() - 864e5));
+  if (state.days.last === today) return;
+  state.days.count = state.days.last === yest ? state.days.count + 1 : 1;
+  state.days.last = today;
+}
+function dayStreak() {
+  const today = dayKey(new Date()), yest = dayKey(new Date(Date.now() - 864e5));
+  return (state.days.last === today || state.days.last === yest) ? state.days.count : 0;
+}
 
-/* ---------- sounds (made in the browser, no files) ---------- */
+/* ---------- the frog and its outfits ---------- */
+const levelAt = stars => LEVELS.filter(l => stars >= l.at).pop();
+function frogSVG(stars) {
+  const items = LEVELS.filter(l => l.item && stars >= l.at).map(l => l.item), has = k => items.includes(k);
+  let s = '';
+  if (has('cape')) s += '<path d="M-24 -10 Q-48 16 -40 27 L40 27 Q48 16 24 -10 Z" fill="#D9574A"/>';
+  s += '<ellipse cx="-22" cy="19" rx="14" ry="7" fill="#2E7524"/><ellipse cx="22" cy="19" rx="14" ry="7" fill="#2E7524"/>' +
+    '<ellipse cx="0" cy="4" rx="32" ry="22" fill="#4FA83D"/><ellipse cx="0" cy="11" rx="20" ry="11" fill="#CDEB9A"/>' +
+    '<circle cx="-15" cy="-19" r="12" fill="#4FA83D"/><circle cx="15" cy="-19" r="12" fill="#4FA83D"/>' +
+    '<circle cx="-15" cy="-20" r="8" fill="#fff"/><circle cx="15" cy="-20" r="8" fill="#fff"/>' +
+    '<circle cx="-13" cy="-19" r="4" fill="#1D3836"/><circle cx="17" cy="-19" r="4" fill="#1D3836"/>' +
+    '<circle cx="-23" cy="1" r="4" fill="#F29A8C" opacity=".75"/><circle cx="23" cy="1" r="4" fill="#F29A8C" opacity=".75"/>' +
+    '<path d="M-13 -1 Q0 10 13 -1" stroke="#2E7524" stroke-width="3.5" fill="none" stroke-linecap="round"/>';
+  if (has('bow')) s += '<path d="M0 14 L-12 7 L-12 21 Z M0 14 L12 7 L12 21 Z" fill="#A65A9C"/><circle cx="0" cy="14" r="3.5" fill="#7E3F76"/>';
+  if (has('medal')) s += '<path d="M10 4 L16 15 L22 4" stroke="#3A86A8" stroke-width="3" fill="none"/><circle cx="16" cy="18" r="6" fill="#FFC63A" stroke="#B97F05" stroke-width="1.5"/>';
+  if (has('glasses')) s += '<rect x="-26" y="-27" width="21" height="13" rx="6" fill="#1D3836"/><rect x="5" y="-27" width="21" height="13" rx="6" fill="#1D3836"/>' +
+    '<path d="M-5 -22 H5" stroke="#1D3836" stroke-width="3"/><path d="M-22 -24 h5 M9 -24 h5" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".7"/>';
+  if (has('crown')) s += '<path d="M-15 -29 L-15 -47 L-7 -38 L0 -52 L7 -38 L15 -47 L15 -29 Z" fill="#FFC63A" stroke="#B97F05" stroke-width="2" stroke-linejoin="round"/>' +
+    '<circle cx="0" cy="-35" r="3" fill="#D9574A"/><circle cx="-9" cy="-33" r="2.2" fill="#3A86A8"/><circle cx="9" cy="-33" r="2.2" fill="#3A86A8"/>';
+  else if (has('hat')) s += '<path d="M-11 -29 L11 -29 L2 -62 Z" fill="#3A86A8"/><path d="M-7 -40 L8 -40 M-2 -51 L5 -51" stroke="#FFC63A" stroke-width="3"/><circle cx="2" cy="-63" r="5" fill="#D9574A"/>';
+  return s;
+}
+function updateFrog() { $('frogSym').innerHTML = frogSVG(state.stars); }
+
+/* ---------- sounds, all made in the browser ---------- */
 let ac = null;
 function audio() {
   if (!state.sound) return null;
@@ -293,25 +506,125 @@ function audio() {
     return ac;
   } catch (e) { return null; }
 }
-function tone(f, at, dur, type, vol) {
+function voice({ type = 'sine', f = [[0, 440]], dur = 0.3, vol = 0.14, at = 0, lp = 0, bp = 0, vib = 0 }) {
   const a = audio(); if (!a) return;
   const t = a.currentTime + at, o = a.createOscillator(), g = a.createGain();
-  o.type = type || 'sine'; o.frequency.setValueAtTime(f, t);
+  o.type = type; o.frequency.setValueAtTime(f[0][1], t);
+  for (const [tt, ff] of f.slice(1)) o.frequency.linearRampToValueAtTime(ff, t + tt);
+  let node = o;
+  if (lp || bp) { const fl = a.createBiquadFilter(); fl.type = lp ? 'lowpass' : 'bandpass'; fl.frequency.value = lp || bp; if (bp) fl.Q.value = 3; o.connect(fl); node = fl; }
+  if (vib) { const l = a.createOscillator(), lg = a.createGain(); l.frequency.value = vib; lg.gain.value = f[0][1] * 0.05; l.connect(lg); lg.connect(o.frequency); l.start(t); l.stop(t + dur + 0.05); }
   g.gain.setValueAtTime(0.0001, t);
-  g.gain.exponentialRampToValueAtTime(vol || 0.14, t + 0.02);
+  g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+  g.gain.setValueAtTime(vol, t + Math.max(0.02, dur - 0.06));
   g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-  o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + dur + 0.05);
+  node.connect(g); g.connect(a.destination); o.start(t); o.stop(t + dur + 0.05);
 }
+function noise({ at = 0, dur = 0.2, vol = 0.1, bp = 1200 }) {
+  const a = audio(); if (!a) return;
+  const t = a.currentTime + at, len = Math.floor(a.sampleRate * dur), buf = a.createBuffer(1, len, a.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  const src = a.createBufferSource(), fl = a.createBiquadFilter(), g = a.createGain();
+  src.buffer = buf; fl.type = 'bandpass'; fl.frequency.value = bp;
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  src.connect(fl); fl.connect(g); g.connect(a.destination); src.start(t);
+}
+const NOTE = k => 523.25 * Math.pow(2, k / 12);
 const sfx = {
-  tap: () => tone(660, 0, 0.06, 'sine', 0.05),
-  good: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.08, 0.25, 'triangle', 0.13)),
-  bad: () => { tone(247, 0, 0.18, 'triangle', 0.12); tone(196, 0.15, 0.3, 'triangle', 0.12); },
-  plip: k => tone(420 * Math.pow(2, Math.min(k, 14) / 12), 0, 0.1, 'sine', 0.1),
-  fanfare: () => [523, 659, 784, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.11, 0.3, 'triangle', 0.13)),
+  tap: () => voice({ f: [[0, 660]], dur: 0.05, vol: 0.05 }),
+  good: streak => { const base = Math.min(streak, 8); [0, 4, 7, 12].forEach((s, i) => voice({ type: 'triangle', f: [[0, NOTE(s + base)]], dur: 0.22, vol: 0.12, at: i * 0.07 })); },
+  ding: k => voice({ type: 'triangle', f: [[0, NOTE(Math.min(k, 24))]], dur: 0.18, vol: 0.12 }),
+  coin: k => { voice({ type: 'square', f: [[0, NOTE(7 + Math.min(k, 12))]], dur: 0.07, vol: 0.05 }); voice({ type: 'square', f: [[0, NOTE(12 + Math.min(k, 12))]], dur: 0.16, vol: 0.05, at: 0.07 }); },
+  bad: () => { voice({ type: 'triangle', f: [[0, 247]], dur: 0.18, vol: 0.12 }); voice({ type: 'triangle', f: [[0, 196]], dur: 0.3, vol: 0.12, at: 0.15 }); },
+  plip: k => voice({ f: [[0, 420 * Math.pow(2, Math.min(k, 14) / 12)], [0.08, 520 * Math.pow(2, Math.min(k, 14) / 12)]], dur: 0.1, vol: 0.1 }),
+  boing: () => voice({ f: [[0, 140], [0.35, 620]], dur: 0.45, vol: 0.14, vib: 14 }),
+  whoosh: () => noise({ dur: 0.25, vol: 0.06, bp: 1800 }),
+  beep: hi => voice({ type: 'square', f: [[0, hi ? 880 : 440]], dur: hi ? 0.35 : 0.15, vol: 0.06 }),
+  fanfare: () => [0, 4, 7, 4, 7, 12].forEach((s, i) => voice({ type: 'triangle', f: [[0, NOTE(s)]], dur: i === 5 ? 0.6 : 0.2, vol: 0.13, at: i * 0.12 })),
+  tada: () => { [0, 4, 7, 12].forEach(s => voice({ type: 'triangle', f: [[0, NOTE(s)]], dur: 0.7, vol: 0.08, at: 0.12 })); voice({ type: 'triangle', f: [[0, NOTE(-5)]], dur: 0.1, vol: 0.1 }); },
+  drumroll: () => { for (let i = 0; i < 14; i++) noise({ at: i * 0.055, dur: 0.05, vol: 0.05 + i * 0.006, bp: 300 }); },
+  laugh: () => [0, 0.16, 0.32].forEach((at, i) => voice({ type: 'square', f: [[0, 520 - i * 40], [0.1, 380 - i * 40]], dur: 0.12, vol: 0.05, at, lp: 1400 })),
+  tick: () => voice({ type: 'square', f: [[0, 1200]], dur: 0.03, vol: 0.03 }),
 };
+const ANIMALS = [
+  { e: '🐸', say: ['Ribbit!', 'Hop-tastic!', 'Toad-ally right!'], snd: () => { voice({ type: 'sawtooth', f: [[0, 170], [0.07, 140]], dur: 0.09, vol: 0.13, lp: 900 }); voice({ type: 'sawtooth', f: [[0, 200], [0.08, 150]], dur: 0.12, vol: 0.13, lp: 900, at: 0.14 }); } },
+  { e: '🦆', say: ['Quack-tastic!', 'Quack quack!'], snd: () => [0, 0.2].forEach(at => voice({ type: 'sawtooth', f: [[0, 640], [0.15, 380]], dur: 0.16, vol: 0.1, bp: 1100, at })) },
+  { e: '🐮', say: ['Moo-velous!', 'Udderly brilliant!'], snd: () => voice({ type: 'sawtooth', f: [[0, 150], [0.15, 170], [0.8, 105]], dur: 0.85, vol: 0.13, lp: 700, vib: 5 }) },
+  { e: '🐱', say: ['Purr-fect!', 'Meow-nificent!'], snd: () => voice({ type: 'triangle', f: [[0, 480], [0.15, 820], [0.45, 430]], dur: 0.5, vol: 0.12 }) },
+  { e: '🐶', say: ['Paw-some!', 'Woof woof!'], snd: () => [0, 0.2].forEach(at => voice({ type: 'square', f: [[0, 320], [0.1, 150]], dur: 0.12, vol: 0.07, lp: 1200, at })) },
+  { e: '🦉', say: ['Owl-standing!', 'Hoo-ray!'], snd: () => { voice({ f: [[0, 400], [0.25, 360]], dur: 0.28, vol: 0.15 }); voice({ f: [[0, 400], [0.35, 350]], dur: 0.4, vol: 0.15, at: 0.35 }); } },
+  { e: '🐷', say: ['Oink-credible!', 'Snout-standing!'], snd: () => [0, 0.18].forEach(at => voice({ type: 'square', f: [[0, 220], [0.05, 330], [0.13, 200]], dur: 0.14, vol: 0.07, bp: 900, at })) },
+  { e: '🐵', say: ['Ooh ooh, yes!', "Bananas! That's right!"], snd: () => [0, 0.14, 0.28].forEach((at, i) => voice({ f: [[0, 420 + i * 60], [0.1, 900 + i * 80]], dur: 0.12, vol: 0.12, at })) },
+  { e: '🐝', say: ['Un-bee-lievable!', 'Bee-utiful!'], snd: () => voice({ type: 'sawtooth', f: [[0, 220], [0.6, 240]], dur: 0.6, vol: 0.06, lp: 1500, vib: 30 }) },
+  { e: '🦁', say: ['Roar-some!', 'Grrreat!'], snd: () => voice({ type: 'sawtooth', f: [[0, 110], [0.2, 160], [0.7, 80]], dur: 0.75, vol: 0.13, lp: 500, vib: 12 }) },
+  { e: '🐧', say: ['Ice work!', 'Cool as ice!'], snd: () => [0, 0.1, 0.2].forEach((at, i) => voice({ type: 'square', f: [[0, 900 + i * 120]], dur: 0.06, vol: 0.05, at })) },
+  { e: '🦄', say: ['Magical!', 'Sparkly brilliant!'], snd: () => [0, 4, 7, 11, 14, 19].forEach((s, i) => voice({ f: [[0, NOTE(s + 12)]], dur: 0.15, vol: 0.07, at: i * 0.05 })) },
+  { e: '🐔', say: ['Egg-cellent!', 'Cluck yeah!'], snd: () => [0, 0.12, 0.24, 0.42].forEach((at, i) => voice({ type: 'sawtooth', f: [[0, i === 3 ? 700 : 520], [0.08, i === 3 ? 1000 : 460]], dur: i === 3 ? 0.25 : 0.08, vol: 0.06, bp: 1300, at })) },
+];
+const PARTY = ['🐸', '🦆', '🐮', '🐷', '🐵', '🦄', '🐔', '🐧', '⭐', '🎉'];
+
+/* ---------- celebrations ---------- */
+const fx = $('fx'), fctx = fx.getContext('2d');
+const COLORS = ['#FFC63A', '#4FA83D', '#3A86A8', '#D9574A', '#A65A9C', '#FFFDF5'];
+let parts = [], fxRaf = 0;
+function fxSize() { const d = Math.min(2, window.devicePixelRatio || 1); fx.width = innerWidth * d; fx.height = innerHeight * d; fctx.setTransform(d, 0, 0, d, 0, 0); }
+function burst(x, y, n, opt = {}) {
+  if (reduced) return;
+  for (let i = 0; i < n; i++) parts.push({ x, y, vx: (Math.random() - 0.5) * (opt.spread || 18), vy: -(Math.random() * (opt.power || 14) + 4), g: 0.34, w: 6 + Math.random() * 6, h: 9 + Math.random() * 9, r: Math.random() * 6, vr: (Math.random() - 0.5) * 0.4, c: pick(COLORS), e: opt.emoji && Math.random() < 0.35 ? pick(opt.emoji) : null, s: 30 + Math.random() * 14 });
+  runFx();
+}
+function rain(n, emoji) {
+  if (reduced) return;
+  for (let i = 0; i < n; i++) parts.push({ x: Math.random() * innerWidth, y: -30 - Math.random() * innerHeight * 0.8, vx: (Math.random() - 0.5) * 2, vy: Math.random() * 2 + 2, g: 0.04, w: 7 + Math.random() * 6, h: 10 + Math.random() * 8, r: Math.random() * 6, vr: (Math.random() - 0.5) * 0.15, c: pick(COLORS), e: emoji && Math.random() < 0.45 ? pick(emoji) : null, s: 32 + Math.random() * 18 });
+  runFx();
+}
+function runFx() { if (!fxRaf) { fxSize(); fxRaf = requestAnimationFrame(stepFx); } }
+function stepFx() {
+  fctx.clearRect(0, 0, innerWidth, innerHeight);
+  const H = innerHeight + 60;
+  parts = parts.filter(p => p.y < H);
+  for (const p of parts) {
+    p.vy = Math.min(p.vy + p.g, p.g < 0.1 ? 5 : 30); p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+    fctx.save(); fctx.translate(p.x, p.y); fctx.rotate(p.e ? p.r * 0.2 : p.r);
+    if (p.e) { fctx.font = p.s + 'px serif'; fctx.textAlign = 'center'; fctx.textBaseline = 'middle'; fctx.fillText(p.e, 0, 0); }
+    else { fctx.fillStyle = p.c; fctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); }
+    fctx.restore();
+  }
+  if (parts.length) fxRaf = requestAnimationFrame(stepFx);
+  else { fxRaf = 0; fctx.clearRect(0, 0, innerWidth, innerHeight); }
+}
+function centreOf(el) { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }
+let buddyT = 0;
+function buddy(animal, text) {
+  animal = animal || pick(ANIMALS);
+  const b = $('buddy');
+  b.querySelector('.face').textContent = animal.e;
+  b.querySelector('.bubble').textContent = text || pick(animal.say);
+  b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
+  clearTimeout(buddyT); buddyT = setTimeout(() => b.classList.remove('show'), 1850);
+  setTimeout(() => animal.snd(), 160);
+}
+function toast(text) {
+  const t = $('toast'); t.textContent = text;
+  t.classList.remove('show'); void t.offsetWidth; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1650);
+}
+let paradeT = 0;
+function parade() {
+  if (reduced) return;
+  const p = $('parade');
+  p.innerHTML = `<div class="walkers">${shuffle(ANIMALS.map(a => a.e)).slice(0, 8).map((e, i) => `<span style="animation-delay:-${i * 0.07}s">${e}</span>`).join('')}</div>`;
+  p.hidden = false; clearTimeout(paradeT); paradeT = setTimeout(() => { p.hidden = true; }, 3700);
+  [0, 0.3, 0.6, 0.9, 1.2, 1.5].forEach((at, i) => voice({ type: 'triangle', f: [[0, NOTE([0, 4, 7, 4, 9, 7][i] - 12)]], dur: 0.18, vol: 0.1, at }));
+}
+function plusOne() {
+  const box = document.querySelector('#sum .box'); if (!box || reduced) return;
+  const [x, y] = centreOf(box), el = document.createElement('div');
+  el.className = 'plus1'; el.textContent = '+1'; el.style.left = x + 'px'; el.style.top = y + 'px';
+  document.body.appendChild(el); setTimeout(() => el.remove(), 950);
+}
 
 /* ---------- frog helper plans ---------- */
-// Adding an amount: hundreds, then tens, then ones (bridging through the next ten).
 function jumpsAdd(v, amt) {
   const steps = [], h = Math.floor(amt / 100) * 100, t = Math.floor(amt % 100 / 10) * 10, o = amt % 10;
   if (h) { steps.push([v, v + h]); v += h; }
@@ -323,7 +636,6 @@ function jumpsAdd(v, amt) {
   }
   return steps;
 }
-// Counting up from start to end in friendly jumps: next ten, next hundred, hundreds, tens, ones.
 function jumpsUp(start, end) {
   const gap = end - start;
   if ((gap % 10 === 0 && gap < 100) || gap % 100 === 0) return [[start, end]];
@@ -340,8 +652,7 @@ function addHelp(x, y) {
   return {
     kind: 'jumps', start: s, end, steps, labels: steps.map(([f, t]) => '+' + (t - f)), showEnd: false,
     intro: (x < y ? `Start on the bigger number, ${s}. ` : `Start on ${s}. `) + `Add ${amt} in jumps.`,
-    outro: 'Where did the frog land?',
-    reveal: `The frog landed on ${end}. Type ${end}.`,
+    outro: 'Where did the frog land?', reveal: `The frog landed on ${end}. Type ${end}.`,
   };
 }
 function upHelp(start, end) {
@@ -356,7 +667,6 @@ function upHelp(start, end) {
 const fill = (tokens, ans) => tokens.map(t => t === '?' ? ans : t).join(' ');
 
 /* ---------- question makers ---------- */
-// Up to 20: adding, taking away, missing numbers. Half of them cross 10, the tricky bit.
 function smallQ(mode, type, missing) {
   const bridge = Math.random() < 0.5;
   let a, b, c, start, end;
@@ -377,6 +687,7 @@ function smallQ(mode, type, missing) {
   else intro = `Start on ${start} and hop ${n} ${dir > 0 ? 'forward' : 'back'}.`;
   return {
     mode, layout: 'eq', tokens, ans, key: mode + '|' + tokens.join(' '), solved: fill(tokens, ans),
+    info: { kind: 'small', type, missing, a, b, c },
     help: {
       kind: 'pads', start, end, steps, labels: steps.map((s, i) => String(i + 1)), showEnd: missing, intro,
       outro: missing ? 'How many hops did the frog do?' : 'Where did the frog land?',
@@ -384,8 +695,6 @@ function smallQ(mode, type, missing) {
     },
   };
 }
-
-// Numbers like the homework sheet: 43 + 18, 70 + 44, 300 + 61, 600 + 400, 75 + 25.
 function bigPair() {
   const r = Math.random(); let a, b;
   if (r < 0.45) { a = rnd(12, 89); b = rnd(11, 49); }
@@ -411,10 +720,8 @@ function wordQ() {
   const T = pick(WORD), v = bigPair(), ans = v[T.miss];
   const text = T.t.replace(/\{([abc])\}/g, (m, k) => String(v[k]));
   const help = T.miss === 'c' ? addHelp(v.a, v.b) : upHelp(T.miss === 'a' ? v.b : v.a, v.c);
-  return { mode: 'words', layout: 'words', text, ans, key: 'words|' + text, solved: text.replace('{?}', ans), help };
+  return { mode: 'words', layout: 'words', text, ans, key: 'words|' + text, solved: text.replace('{?}', ans), info: { kind: 'words', miss: T.miss, a: v.a, b: v.b, c: v.c }, help };
 }
-
-// Missing numbers: 68 + ? = 100, ? + 16 = 300, 158 + ? = 165, ? + 19 = 84, ? + 800 = 2000 ...
 function missQ() {
   const r = Math.random(); let a, c;
   if (r < 0.22) { c = 100; a = rnd(11, 89); if (a % 10 === 0) a++; }
@@ -426,10 +733,8 @@ function missQ() {
   else { a = rnd(1, 9) * 100; c = a + rnd(11, 89); }
   const b = c - a;
   const tokens = Math.random() < 0.5 ? ['?', '+', a, '=', c] : [a, '+', '?', '=', c];
-  return { mode: 'missbig', layout: 'eq', tokens, ans: b, key: 'missbig|' + tokens.join(' '), solved: fill(tokens, b), help: upHelp(a, c) };
+  return { mode: 'missbig', layout: 'eq', tokens, ans: b, key: 'missbig|' + tokens.join(' '), solved: fill(tokens, b), info: { kind: 'miss', a, b, c }, help: upHelp(a, c) };
 }
-
-// Three numbers where two of them make a whole ten: 15 + 35 + 14, 16 + 4 + 9.
 function threeQ() {
   const col = Math.random() < 0.4; let x, y, z;
   if (col) { x = rnd(1, 19); if (x % 10 === 0) x++; y = (10 - x % 10) + 10 * rnd(0, 1); z = rnd(3, 19); }
@@ -438,14 +743,11 @@ function threeQ() {
   const help = {
     kind: 'jumps', start: pair, end: sum, steps, labels: steps.map(([f, t]) => '+' + (t - f)), showEnd: false,
     pre: `Find two numbers that make a whole ten: ${x} + ${y} = ${pair}.`,
-    intro: `Now start on ${pair} and add ${z}.`,
-    outro: 'Where did the frog land?',
-    reveal: `${pair} + ${z} = ${sum}. Type ${sum}.`,
+    intro: `Now start on ${pair} and add ${z}.`, outro: 'Where did the frog land?', reveal: `${pair} + ${z} = ${sum}. Type ${sum}.`,
   };
   const tokens = [nums[0], '+', nums[1], '+', nums[2], '=', '?'];
-  return { mode: 'three', layout: col ? 'col' : 'eq', tokens, nums, ans: sum, key: 'three|' + nums.join('+'), solved: fill(tokens, sum), help };
+  return { mode: 'three', layout: col ? 'col' : 'eq', tokens, nums, ans: sum, key: 'three|' + nums.join('+'), solved: fill(tokens, sum), info: { kind: 'three', x, y, z }, help };
 }
-
 const STORIES = [
   { t: 'A circus clown is fired {a} m on Monday and {b} m on Tuesday. How far is he fired altogether?', u: 'm' },
   { t: 'A frog hops {a} cm, then hops {b} cm more. How far does it hop altogether?', u: 'cm' },
@@ -454,6 +756,7 @@ const STORIES = [
   { t: 'A shop sells {a} apples on Saturday and {b} apples on Sunday. How many apples is that in total?', u: 'apples' },
   { t: 'Maya reads {a} pages on Monday and {b} pages on Tuesday. How many pages does she read altogether?', u: 'pages' },
   { t: 'A train has {a} seats in the first carriage and {b} seats in the second. What is the total number of seats?', u: 'seats' },
+  { t: 'A cow eats {a} carrots in the morning and {b} carrots in the afternoon. How many carrots does she eat altogether?', u: 'carrots' },
 ];
 const MISS_STORIES = [
   { t: 'Leo needs {c} points to win. He has {a} points. How many more points does he need?', u: 'points' },
@@ -461,18 +764,17 @@ const MISS_STORIES = [
   { t: 'Ava wants to collect {c} shells. She has found {a}. How many more shells does she need?', u: 'shells' },
 ];
 function storyQ() {
-  let T, a, b, c, ans, help, solved;
-  if (Math.random() < 0.3) {
+  let T, a, b, c, ans, help, solved, missing = Math.random() < 0.3;
+  if (missing) {
     T = pick(MISS_STORIES); c = pick([50, 60, 80, 100, 100, 100]); a = rnd(11, c - 6); if (a % 10 === 0) a++;
-    ans = c - a; help = upHelp(a, c); solved = `${a} + ${ans} = ${c}`; b = ans;
+    b = ans = c - a; help = upHelp(a, c); solved = `${a} + ${ans} = ${c}`;
   } else {
-    T = pick(STORIES); a = rnd(12, 59); b = rnd(12, 49); c = a + b;
-    ans = c; help = addHelp(a, b); solved = `${a} + ${b} = ${c}`;
+    T = pick(STORIES); a = rnd(12, 59); b = rnd(12, 49); c = ans = a + b;
+    help = addHelp(a, b); solved = `${a} + ${b} = ${c}`;
   }
   const text = T.t.replace('{a}', a).replace('{b}', b).replace('{c}', c);
-  return { mode: 'story', layout: 'story', text, unit: T.u, ans, key: 'story|' + text, solved: `${solved} ${T.u}`, help };
+  return { mode: 'story', layout: 'story', text, unit: T.u, ans, key: 'story|' + text, solved: `${solved} ${T.u}`, info: { kind: 'story', missing, a, b, c }, help };
 }
-
 const GEN = {
   add: () => smallQ('add', 'add', false),
   sub: () => smallQ('sub', 'sub', false),
@@ -487,18 +789,15 @@ function fits(mode, q) {
   return q.mode === mode;
 }
 function buildRound(mode) {
-  if (mode === 'test') {
-    return shuffle([GEN.add, GEN.add, GEN.add, GEN.add, GEN.sub, GEN.sub, GEN.sub, GEN.sub, GEN.miss20, GEN.miss20]).map(g => g());
-  }
   const seen = new Set(), qs = [];
-  // The frog brings back up to 3 sums she found tricky before.
-  const tricky = shuffle(Object.values(state.tricky).map(t => t && t.q).filter(q => q && q.help && fits(mode, q))).slice(0, 3);
-  for (const q of tricky) { seen.add(q.key); qs.push(q); }
-  while (qs.length < ROUND) {
-    let q;
-    for (let t = 0; t < 30; t++) { q = GEN[mode](); if (!seen.has(q.key)) break; }
-    seen.add(q.key); qs.push(q);
+  const take = gen => { let q; for (let t = 0; t < 30; t++) { q = gen(); if (!seen.has(q.key)) break; } seen.add(q.key); qs.push(q); };
+  if (CLOCKS[mode]) {
+    for (let i = 0; i < 10; i++) { take(GEN.add); take(GEN.sub); }
+    return shuffle(qs);
   }
+  const tricky = shuffle(Object.values(state.tricky).map(t => t && t.q).filter(q => q && q.info && fits(mode, q))).slice(0, 3);
+  for (const q of tricky) { seen.add(q.key); qs.push(q); }
+  while (qs.length < 10) take(GEN[mode]);
   return shuffle(qs);
 }
 function markMiss(q) {
@@ -510,6 +809,76 @@ function markHit(q) {
   t.left--; if (t.left <= 0) delete state.tricky[q.key]; save();
 }
 
+/* ---------- tips for the review ---------- */
+const countList = (from, n, dir) => { const xs = []; for (let k = 1; k <= n; k++) xs.push(from + dir * k); return xs.join(', '); };
+function tipSmall({ type, missing, a, b, c }) {
+  if (type === 'add' && !missing) {
+    const big = Math.max(a, b), sm = Math.min(a, b);
+    if (a === b) return { title: "It's a double!", lines: [`${a} + ${a} is a double.`, `Doubles are super useful to know by heart: ${a} + ${a} = ${c}.`] };
+    if (big - sm === 1) return { title: 'Use a near double', lines: [`${sm} + ${sm} = ${sm * 2}. That's a double.`, `${big} is 1 more than ${sm}, so add 1 more: ${sm * 2} + 1 = ${c}.`] };
+    if (sm === 10) return { title: 'Adding 10 is easy', lines: [`Adding 10 just adds a ten: ${big} + 10 = ${c}.`] };
+    if (sm === 9) return { title: 'Adding 9? Add 10, then take 1 away', lines: [`${big} + 10 = ${big + 10}.`, `9 is 1 less than 10, so take 1 away: ${big + 10} − 1 = ${c}.`] };
+    if (c === 10) return { title: 'Number bonds to 10', lines: [`${big} and ${sm} are best friends: together they make 10.`, `Learn the pairs that make 10: 1 + 9, 2 + 8, 3 + 7, 4 + 6, 5 + 5.`] };
+    if (big < 10 && c > 10) { const need = 10 - big, rest = sm - need; return { title: 'Make 10 first', lines: [`${big} needs ${need} more to make 10.`, `Split ${sm} into ${need} and ${rest}.`, `${big} + ${need} = 10, then 10 + ${rest} = ${c}.`] }; }
+    if (big > 10) return { title: 'Use a sum you already know', lines: [`${big - 10} + ${sm} = ${c - 10}.`, `${big} is 10 more than ${big - 10}, so the answer is 10 more too: ${c}.`] };
+    return { title: 'Start with the bigger number', lines: [`Put ${big} in your head and count on ${sm}.`, `${big}… ${countList(big, sm, 1)}.`, `So ${a} + ${b} = ${c}.`] };
+  }
+  if (type === 'sub' && !missing) {
+    const check = `Check by adding: ${c} + ${b} = ${a} ✓`;
+    if (b === 10) return { title: 'Taking away 10 is easy', lines: [`Just take away the ten: ${a} − 10 = ${c}.`, check] };
+    if (b === 9 && a >= 10) return { title: 'Take away 9? Take away 10, then add 1 back', lines: [`${a} − 10 = ${a - 10}.`, `That's 1 too many, so add 1 back: ${a - 10} + 1 = ${c}.`, check] };
+    if (a === 2 * b) return { title: 'Use a double', lines: [`${b} + ${b} = ${a}.`, `So ${a} − ${b} = ${b}.`] };
+    if (b > 10) return { title: 'Take away the 10 first', lines: [`${b} is 10 and ${b - 10}.`, `${a} − 10 = ${a - 10}, then ${a - 10} − ${b - 10} = ${c}.`, check] };
+    if (a > 10 && c < 10) { const first = a - 10, rest = b - first; return { title: 'Jump back to 10 first', lines: [`Split ${b} into ${first} and ${rest}.`, `${a} − ${first} = 10, then 10 − ${rest} = ${c}.`, check] }; }
+    if (a > 10) return { title: 'Use a sum you already know', lines: [`${a - 10} − ${b} = ${c - 10}.`, `${a} is 10 more than ${a - 10}, so the answer is 10 more too: ${c}.`, check] };
+    if (b > a / 2) return { title: 'Close together? Count up!', lines: [`${b} and ${a} are close, so count up from ${b} to ${a}.`, `${b}… ${countList(b, c, 1)}. That's ${c} jumps.`, check] };
+    return { title: 'Count back', lines: [`Start on ${a} and count back ${b}.`, `${a}… ${countList(a, b, -1)}.`, check] };
+  }
+  if (type === 'add') {
+    const lines = [`Start on ${a} and count up to ${c}.`];
+    if (a < 10 && c > 10) lines.push(`${a} up to 10 is ${10 - a}. 10 up to ${c} is ${c - 10}.`, `${10 - a} + ${c - 10} = ${b}.`);
+    else lines.push(`${a}… ${countList(a, b, 1)}. That's ${b}.`);
+    lines.push(`Or take away: ${c} − ${a} = ${b}.`);
+    return { title: 'Count up to find the missing number', lines };
+  }
+  const lines = [`The missing number is the gap between ${c} and ${a}.`];
+  if (c < 10 && a > 10) lines.push(`${c} up to 10 is ${10 - c}. 10 up to ${a} is ${a - 10}.`, `${10 - c} + ${a - 10} = ${b}.`);
+  else lines.push(`Count up from ${c} to ${a}: ${countList(c, b, 1)}. That's ${b}.`);
+  lines.push(`Check: ${a} − ${b} = ${c} ✓`);
+  return { title: 'Find the gap', lines };
+}
+function tipAdd(A, B) {
+  const big = Math.max(A, B), sm = Math.min(A, B), C = A + B;
+  if (A % 100 === 0 && B % 100 === 0) return { title: 'Count in hundreds', lines: [`${A} is ${A / 100} hundreds and ${B} is ${B / 100} hundreds.`, `${A / 100} + ${B / 100} = ${C / 100}, so that's ${C / 100} hundreds: ${C}.`] };
+  if (big % 100 === 0 && sm < 100) return { title: 'Slot it in', lines: [`${big} has no tens or ones, so ${sm} just slots in.`, `${big} + ${sm} = ${C}.`] };
+  if (sm % 10 === 9 && sm < 100) return { title: `Adding ${sm}? Add ${sm + 1}, then take 1 away`, lines: [`${big} + ${sm + 1} = ${big + sm + 1}.`, `That's 1 too many, so take 1 away: ${C}.`] };
+  const st = jumpsAdd(big, sm);
+  return { title: 'Add the tens, then the ones', lines: [`Start with the bigger number, ${big}.`, ...st.map(([f, t]) => `${f} + ${t - f} = ${t}`), `So the answer is ${C}.`] };
+}
+function tipMiss(A, C) {
+  const st = jumpsUp(A, C), parts = st.map(([f, t]) => t - f), gap = C - A;
+  const lines = st.length > 1
+    ? [`Start on ${A} and count up to ${C} in friendly jumps.`, ...st.map(([f, t]) => `${f} up to ${t} is ${t - f}.`), `Add the jumps: ${parts.join(' + ')} = ${gap}.`]
+    : [`From ${A} up to ${C} is one big jump of ${gap}.`];
+  if (C === 100 && A % 10) lines.push(`Trick for 100: the ones make 10 (${A % 10} + ${gap % 10}) and the tens make 90 (${A - A % 10} + ${gap - gap % 10}).`);
+  lines.push(`Check: ${A} + ${gap} = ${C} ✓`);
+  return { title: 'Count up in friendly jumps', lines };
+}
+function tipFor(q) {
+  const i = q.info;
+  if (i.kind === 'small') return tipSmall(i);
+  if (i.kind === 'miss') return tipMiss(i.a, i.c);
+  if (i.kind === 'three') return { title: 'Find two numbers that make a ten', lines: [`Look at the ones: ${i.x % 10} + ${i.y % 10} = 10.`, `So add those two first: ${i.x} + ${i.y} = ${i.x + i.y}.`, `Then add the last one: ${i.x + i.y} + ${i.z} = ${i.x + i.y + i.z}.`] };
+  if (i.kind === 'words') {
+    const known = i.miss === 'a' ? i.b : i.a;
+    const eq = i.miss === 'c' ? `${i.a} + ${i.b} = ☐` : i.miss === 'a' ? `☐ + ${i.b} = ${i.c}` : `${i.a} + ☐ = ${i.c}`;
+    const base = i.miss === 'c' ? tipAdd(i.a, i.b) : tipMiss(known, i.c);
+    return { title: base.title, lines: [`Turn the words into a sum: ${eq}`, i.miss === 'c' ? `"Total", "sum", "plus" and "altogether" all mean add.` : `The box is the missing number, so count up from ${known} to ${i.c}.`, ...base.lines] };
+  }
+  if (i.missing) return { title: '"How many more" means count up', lines: [`Write it as a sum: ${i.a} + ☐ = ${i.c}`, ...tipMiss(i.a, i.c).lines] };
+  return { title: 'Find the clue words', lines: [`"Altogether", "in total" and "more get on" all mean add.`, `Write it as a sum: ${i.a} + ${i.b} = ☐`, ...tipAdd(i.a, i.b).lines] };
+}
+
 /* ---------- screens ---------- */
 function show(id) { document.querySelectorAll('.screen').forEach(s => { s.hidden = s.id !== id; }); }
 function refreshHome() {
@@ -518,13 +887,26 @@ function refreshHome() {
   const n = Object.keys(state.tricky).length, r = $('remember');
   r.hidden = n === 0;
   r.textContent = `The frog remembers ${n} tricky sum${n === 1 ? '' : 's'} and will bring ${n === 1 ? 'it' : 'them'} back to practise.`;
+  const lv = levelAt(state.stars), next = LEVELS.find(l => l.at > state.stars);
+  $('lvName').textContent = lv.name;
+  $('lvStars').textContent = `${state.stars} star${state.stars === 1 ? '' : 's'}`;
+  $('lvFill').style.width = next ? Math.round((state.stars - lv.at) / (next.at - lv.at) * 100) + '%' : '100%';
+  $('lvNext').textContent = next ? `${next.at - state.stars} more stars and your frog gets ${next.gift}!` : 'Your frog has every outfit. Frog Legend!';
+  const d = dayStreak(), chip = $('dayChip');
+  chip.hidden = d < 2; chip.textContent = `🔥 ${d} days in a row`;
+  $('clockModes').innerHTML = Object.entries(CLOCKS).map(([id, c]) => {
+    const b = state.bests[id];
+    const best = !b ? 'No record yet' : (b.correct === 20 && b.time < c.secs ? `Best: all 20 in ${fmt(b.time)}` : `Best: ${b.correct} right`);
+    return `<button class="mode clocky" data-mode="${id}"><span class="clock-top"><svg class="clock-ic"><use href="#clockSym"/></svg>${c.name}</span><small>${c.sub}</small><span class="best">${best}</span></button>`;
+  }).join('');
+  updateFrog();
 }
 
 /* ---------- number line ---------- */
 const PAD_Y = 118;
-let xOf = () => 0, hopToken = 0;
-function drawLine(q) {
-  const h = q.help; let s = '';
+let hopToken = 0;
+function drawLine(svg, q) {
+  const h = q.help; let s = '', xOf;
   if (h.kind === 'pads') {
     xOf = v => 40 + v * 46;
     s += `<path d="M14 ${PAD_Y}H986" class="water"/>`;
@@ -546,77 +928,121 @@ function drawLine(q) {
       s += `<text class="${i === 0 ? 'st' : ''}${vis ? '' : ' later'}" data-v="${v}" x="${pos.get(v)}" y="${PAD_Y + 46}">${v}</text>`;
     });
   }
-  s += '<g id="arcs"></g>';
-  s += `<g id="frogG" transform="translate(${xOf(h.start)} ${PAD_Y})"><use href="#frogSym" x="-32" y="-52" width="64" height="54"/></g>`;
-  $('line').innerHTML = s;
+  s += '<g class="arcs"></g>';
+  s += `<g class="frogG" transform="translate(${xOf(h.start)} ${PAD_Y})"><use href="#frogSym" x="-32" y="-71" width="64" height="73"/></g>`;
+  svg.innerHTML = s;
+  svg._xOf = xOf;
 }
-function addArc(from, to, label, kind) {
-  const g = $('arcs'); if (!g) return;
-  const x1 = xOf(from), x2 = xOf(to), mx = (x1 + x2) / 2, pads = kind === 'pads';
+function addArc(svg, from, to, label, kind) {
+  const g = svg.querySelector('.arcs'); if (!g) return;
+  const xOf = svg._xOf, x1 = xOf(from), x2 = xOf(to), mx = (x1 + x2) / 2, pads = kind === 'pads';
   g.insertAdjacentHTML('beforeend',
     `<path class="arc" d="M${x1} ${PAD_Y - 6}Q${mx} ${pads ? 34 : -32} ${x2} ${PAD_Y - 6}"/>` +
     `<text class="${pads ? 'hopn' : 'jumpn'}" x="${mx}" y="${pads ? 54 : 30}">${label}</text>`);
-  const t = $('line').querySelector(`text[data-v="${to}"]`); if (t) t.classList.remove('later');
+  const t = svg.querySelector(`text[data-v="${to}"]`); if (t) t.classList.remove('later');
 }
 function animateHop(frog, x1, x2, dur, height) {
   return new Promise(res => {
     if (reduced) { frog.setAttribute('transform', `translate(${x2} ${PAD_Y})`); return res(); }
     const t0 = performance.now();
-    function f(now) {
-      const t = Math.min(1, (now - t0) / dur);
+    function f() {
+      const t = Math.min(1, Math.max(0, performance.now() - t0) / dur);
       frog.setAttribute('transform', `translate(${x1 + (x2 - x1) * t} ${PAD_Y - Math.sin(Math.PI * t) * height})`);
       if (t < 1) requestAnimationFrame(f); else res();
     }
     requestAnimationFrame(f);
   });
 }
-async function runHelp(q) {
+// Runs the frog animation for a question. Returns false if something else interrupted it.
+async function runHelp(q, svg, sayFn, btn) {
   const h = q.help, my = ++hopToken;
-  game.hopping = true; $('helpBtn').disabled = true;
-  $('lineWrap').hidden = false; drawLine(q);
-  if (h.pre) { say(h.pre); await wait(reduced ? 1200 : 2200); if (my !== hopToken) return false; }
-  say(h.intro); await wait(reduced ? 400 : 900); if (my !== hopToken) return false;
-  const frog = $('frogG'), pads = h.kind === 'pads', n = h.steps.length;
-  const dur = pads ? (n > 9 ? 250 : 340) : 700, height = pads ? 48 : 66;
+  if (btn) btn.disabled = true;
+  svg.closest('.line-wrap').hidden = false; drawLine(svg, q);
+  const done = ok => { if (btn && my === hopToken) btn.disabled = false; return ok; };
+  if (h.pre) { sayFn(h.pre); await wait(reduced ? 1200 : 2200); if (my !== hopToken) return done(false); }
+  sayFn(h.intro); await wait(reduced ? 400 : 900); if (my !== hopToken) return done(false);
+  const frog = svg.querySelector('.frogG'), pads = h.kind === 'pads', n = h.steps.length;
+  const dur = pads ? (n > 9 ? 250 : 340) : 700, height = pads ? 44 : 56;
   for (let k = 0; k < n; k++) {
     const [from, to] = h.steps[k];
-    await animateHop(frog, xOf(from), xOf(to), dur, height);
-    if (my !== hopToken) return false;
-    addArc(from, to, h.labels[k], h.kind); sfx.plip(k);
+    await animateHop(frog, svg._xOf(from), svg._xOf(to), dur, height);
+    if (my !== hopToken) return done(false);
+    addArc(svg, from, to, h.labels[k], h.kind); sfx.plip(k);
     await wait(reduced ? 0 : (pads ? 70 : 250));
-    if (my !== hopToken) return false;
+    if (my !== hopToken) return done(false);
   }
-  game.hopping = false; $('helpBtn').disabled = false;
-  return true;
+  return done(true);
 }
 
 /* ---------- playing ---------- */
-let game = null;
+let game = null, lastGame = null, endToken = 0;
 function say(t) { $('msg').textContent = t; }
 function flash(cls) { const c = $('card'); c.classList.remove('good', 'bad'); void c.offsetWidth; c.classList.add(cls); }
 
-function startRound(mode) {
-  game = { mode, qs: buildRound(mode), i: 0, stars: 0, results: [] };
+async function startRound(mode, qs) {
+  hopToken++; endToken++;
+  const timed = !!CLOCKS[mode];
+  game = { mode, timed, qs: qs || buildRound(mode), i: 0, stars: 0, streak: 0, bestStreak: 0, results: [], limit: timed ? CLOCKS[mode].secs : 0 };
+  game.total = game.qs.length;
   $('starCount').textContent = '0';
+  $('streak').hidden = true;
+  $('timer').hidden = !timed;
+  $('dots').hidden = timed;
+  $('dots').classList.toggle('many', game.total > 12);
   show('play'); showQ();
+  if (timed) {
+    const g = game; g.locked = true;
+    $('tfill').style.width = '100%'; $('ttext').textContent = fmt(g.limit); $('timer').classList.remove('low');
+    await countdown();
+    if (game !== g) return;
+    g.locked = false; g.t0 = performance.now(); g.timerId = setInterval(tickTimer, 100);
+  }
+}
+async function countdown() {
+  const o = $('overlay'), t = $('overlayT'), g = game;
+  o.hidden = false; t.classList.remove('small');
+  for (const n of ['3', '2', '1', 'Go!']) {
+    if (game !== g) break;
+    t.textContent = n; t.classList.remove('zoom'); void t.offsetWidth; t.classList.add('zoom');
+    sfx.beep(n === 'Go!'); await wait(750);
+  }
+  o.hidden = true;
+}
+function tickTimer() {
+  const g = game; if (!g || !g.timed) return;
+  const left = g.limit - (performance.now() - g.t0) / 1000;
+  $('tfill').style.width = Math.max(0, left / g.limit * 100) + '%';
+  $('ttext').textContent = fmt(left);
+  const low = left <= 10; $('timer').classList.toggle('low', low);
+  if (low && left > 0 && Math.ceil(left) !== g.lastTick) { g.lastTick = Math.ceil(left); sfx.tick(); }
+  if (left <= 0) timeUp();
+}
+function stopTimer() { if (game && game.timerId) { clearInterval(game.timerId); game.timerId = 0; } }
+async function timeUp() {
+  const g = game; stopTimer(); g.locked = true; g.timeUp = true;
+  const o = $('overlay'), t = $('overlayT');
+  t.textContent = "Time's up!"; t.classList.add('small'); t.classList.remove('zoom'); void t.offsetWidth; t.classList.add('zoom');
+  o.hidden = false; sfx.boing();
+  await wait(1300); o.hidden = true;
+  if (game === g) endRound();
 }
 function showQ() {
   hopToken++;
-  Object.assign(game, { q: game.qs[game.i], typed: '', attempts: 0, missed: false, locked: false, hopping: false, revealed: false });
-  const q = game.q, helper = game.mode !== 'test';
+  Object.assign(game, { q: game.qs[game.i], typed: '', attempts: 0, given: null, missed: false, locked: false, revealed: false });
+  const q = game.q, helper = !game.timed;
   $('card').classList.remove('good', 'bad');
-  renderQ();
+  renderSum($('sum'), q, '', '');
   const hiding = (q.layout === 'eq' && q.tokens[q.tokens.length - 1] !== '?') || (q.layout === 'words' && !q.text.endsWith('{?}.'));
-  say(q.layout === 'story' ? 'Read it carefully, then type the answer.' : hiding ? 'What number is hiding in the box?' : 'Type your answer, then tap Check.');
+  say(game.timed ? 'Quick as you can!' : q.layout === 'story' ? 'Read it carefully, then type the answer.' : hiding ? 'What number is hiding in the box?' : 'Type your answer, then tap Check.');
   $('helpBtn').hidden = !helper; $('helpBtn').disabled = false;
   $('helpLabel').textContent = q.help.kind === 'pads' ? 'Show me the hops' : 'Show me the jumps';
   $('lineWrap').hidden = !(helper && q.help.kind === 'pads');
-  if (helper) drawLine(q);
+  if (helper) drawLine($('line'), q);
+  $('qcount').textContent = `${game.i + 1}/${game.total}`;
   updateDots();
 }
-function renderQ() {
-  const q = game.q, t = game.typed, el = $('sum');
-  const box = `<span class="box${t ? '' : ' empty'}${game.revealed ? ' shown' : ''}">${t}</span>`;
+function renderSum(el, q, typed, boxState) {
+  const box = `<span class="box${typed ? '' : ' empty'}${boxState ? ' ' + boxState : ''}">${typed}</span>`;
   el.className = 'sum ' + q.layout;
   if (q.layout === 'eq') {
     const boxChars = q.help.kind === 'pads' ? 2 : 3.5;
@@ -631,13 +1057,21 @@ function renderQ() {
     el.innerHTML = `<p class="story-t">${q.text}</p><div class="story-a">${box}<span class="unit">${q.unit}</span></div>`;
   }
 }
+function renderQ() { renderSum($('sum'), game.q, game.typed, game.revealed ? 'shown' : ''); }
 function updateDots() {
+  if (game.timed) return;
   let s = '';
-  for (let i = 0; i < ROUND; i++) {
+  for (let i = 0; i < game.total; i++) {
     const r = game.results[i];
     s += `<span class="dot ${r ? (r.ok ? 'ok' : 'miss') : (i === game.i ? 'now' : '')}"></span>`;
   }
   $('dots').innerHTML = s;
+}
+function setStreak() {
+  const s = $('streak');
+  s.hidden = game.streak < 2;
+  s.textContent = `🔥 ${game.streak}`;
+  s.classList.remove('bump'); void s.offsetWidth; s.classList.add('bump');
 }
 function press(d) {
   if (!game || game.locked || game.typed.length >= 4) return;
@@ -649,66 +1083,188 @@ function check() {
   if (!game.typed) { say('Type a number first.'); return; }
   if (Number(game.typed) === game.q.ans) right(); else wrong();
 }
-function right() {
-  const q = game.q, first = game.attempts === 0;
-  game.locked = true; hopToken++; game.hopping = false;
-  if (first) { game.stars++; markHit(q); }
-  game.results.push({ q, ok: first });
-  flash('good'); sfx.good();
-  say(first ? pick(PRAISE) : 'Yes! Now you know that one.');
-  $('starCount').textContent = game.stars; updateDots();
-  setTimeout(next, first ? 1200 : 1600);
+function streakParty() {
+  const s = game.streak;
+  if (s === 3) toast('3 in a row!');
+  else if (s === 5) { toast('5 in a row!'); parade(); burst(innerWidth / 2, innerHeight * 0.3, 70, { emoji: PARTY }); }
+  else if (s === 10) { toast('10 in a row!'); parade(); rain(120, PARTY); }
+  else if (s === 15) { toast('15! Unstoppable!'); rain(140, PARTY); }
+  else if (s === 20) { toast('20 in a row!!'); parade(); rain(180, PARTY); }
+  else if (s > 5 && s % 5 === 0) { toast(`${s} in a row!`); burst(innerWidth / 2, innerHeight * 0.3, 60, { emoji: PARTY }); }
 }
-function wrong() {
-  const q = game.q; game.attempts++;
-  if (!game.missed) { game.missed = true; markMiss(q); }
-  flash('bad'); sfx.bad(); game.typed = '';
-  if (game.mode === 'test') {
-    game.locked = true; game.revealed = true; game.typed = String(q.ans);
-    game.results.push({ q, ok: false }); renderQ(); updateDots();
-    say(`Not this time. It was ${q.ans}.`);
-    setTimeout(next, 2400); return;
-  }
-  renderQ();
-  if (game.attempts === 1) { say('Not quite. Have another go!'); return; }
-  if (game.attempts === 2 && !game.hopping) {
-    runHelp(q).then(ok => { if (ok && game && game.q === q && !game.locked) say(q.help.reveal); });
+function right() {
+  const g = game, q = g.q, first = g.attempts === 0;
+  g.locked = true; hopToken++;
+  if (first) { g.stars++; g.streak++; g.bestStreak = Math.max(g.bestStreak, g.streak); markHit(q); }
+  g.results.push({ q, ok: first, given: g.given });
+  $('starCount').textContent = g.stars; setStreak(); updateDots();
+  flash('good');
+  const [cx, cy] = centreOf($('card'));
+  if (g.timed) {
+    sfx.coin(g.streak); plusOne(); burst(cx, cy, 14, { power: 9 });
+    if (g.streak && g.streak % 5 === 0) { buddy(); toast(`${g.streak} in a row!`); }
+    say(pick(['Yes!', 'Zoom!', 'Speedy!', 'Correct!', 'Ribbit!']));
+    setTimeout(next, 260);
     return;
   }
-  if (!game.hopping) say(q.help.reveal);
+  sfx.good(g.streak);
+  if (first) {
+    buddy(); burst(cx, cy, 36, { emoji: Math.random() < 0.5 ? PARTY : null }); streakParty();
+    say(pick(["That's right!", 'Brilliant!', 'Super hopping!', 'Yes! Well done!', 'You got it!', 'Fantastic!', 'Smashed it!']));
+  } else say('Yes! Now you know that one.');
+  setTimeout(next, first ? 1500 : 1600);
+}
+function wrong() {
+  const g = game, q = g.q; g.attempts++;
+  if (g.given == null) g.given = g.typed;
+  if (!g.missed) { g.missed = true; markMiss(q); }
+  g.streak = 0; setStreak();
+  flash('bad'); sfx.bad(); g.typed = '';
+  if (g.timed) {
+    g.locked = true; g.revealed = true; g.typed = String(q.ans);
+    g.results.push({ q, ok: false, given: g.given }); renderQ();
+    say(`Oops! It was ${q.ans}.`);
+    setTimeout(next, 1100); return;
+  }
+  renderQ();
+  if (g.attempts === 1) { say(pick(['Not quite. Have another go!', 'Oops! Try again!', 'So close! One more go!'])); return; }
+  if (g.attempts === 2) {
+    runHelp(q, $('line'), say, $('helpBtn')).then(ok => { if (ok && game === g && g.q === q && !g.locked) say(q.help.reveal); });
+    return;
+  }
+  say(q.help.reveal);
 }
 async function onHelp() {
-  if (!game || game.locked || game.hopping) return;
-  const q = game.q, ok = await runHelp(q);
-  if (ok && game && game.q === q && !game.locked) say(game.attempts >= 2 ? q.help.reveal : q.help.outro);
+  const g = game; if (!g || g.locked) return;
+  const q = g.q, ok = await runHelp(q, $('line'), say, $('helpBtn'));
+  if (ok && game === g && g.q === q && !g.locked) say(g.attempts >= 2 ? q.help.reveal : q.help.outro);
 }
 function next() {
-  if (!game) return;
-  game.i++;
-  if (game.i >= ROUND) endRound(); else showQ();
+  const g = game; if (!g || g.ended || g.timeUp) return;
+  g.i++;
+  if (g.i >= g.total) endRound(); else showQ();
 }
-function endRound() {
-  const stars = game.stars, perfect = stars === ROUND;
+
+/* ---------- end of round ---------- */
+async function endRound() {
+  const g = game; if (!g || g.ended) return;
+  g.ended = true; g.locked = true; stopTimer(); hopToken++;
+  const my = ++endToken;
+  const correct = g.results.filter(r => r.ok).length, ratio = correct / g.total, perfect = correct === g.total;
+  const prevLv = levelAt(state.stars);
+  state.stars += g.stars;
+  const lv = levelAt(state.stars);
   let got = null, upgraded = false;
-  if (state.stickers.length < STICKERS.length) { got = { i: state.stickers.length, gold: perfect }; state.stickers.push(got); }
-  else if (perfect) { got = state.stickers.find(s => !s.gold) || null; if (got) { got.gold = true; upgraded = true; } }
-  save();
-  $('resTitle').textContent = perfect ? 'Perfect! Every single one!' : stars >= 8 ? 'Fantastic hopping!' : stars >= 5 ? 'Great work!' : 'Good try! Keep hopping!';
-  let s = '';
-  for (let i = 0; i < ROUND; i++) s += `<svg class="${i < stars ? 'star-on' : 'star-off'}"><use href="#starSym"/></svg>`;
-  $('resStars').innerHTML = s;
-  $('resLine').textContent = `You got ${stars} out of ${ROUND} right first time.`;
-  const st = $('resSticker');
+  if (g.mode !== 'retry') {
+    if (state.stickers.length < STICKERS.length) { got = { i: state.stickers.length, gold: perfect }; state.stickers.push(got); }
+    else if (perfect) { got = state.stickers.find(s => !s.gold) || null; if (got) { got.gold = true; upgraded = true; } }
+  }
+  bumpDay();
+  let record = false, beat = false, used = 0;
+  if (g.timed) {
+    used = g.timeUp ? g.limit : Math.min(g.limit, (performance.now() - g.t0) / 1000);
+    beat = perfect && !g.timeUp;
+    const b = state.bests[g.mode];
+    if (!b || correct > b.correct || (correct === b.correct && used < b.time)) { state.bests[g.mode] = { correct, time: Math.round(used * 10) / 10 }; record = !!b || correct > 0; }
+  }
+  state.joke = (state.joke + 1) % JOKES.length;
+  save(); updateFrog();
+  lastGame = g;
+
+  // Words
+  let title;
+  if (g.mode === 'retry') title = perfect ? 'You fixed them all!' : 'Getting better!';
+  else if (g.timed) title = beat ? 'You beat the clock!' : g.timeUp ? "Time's up! Great try!" : ratio >= 0.9 ? 'Super speedy!' : 'All done!';
+  else title = perfect ? 'Perfect! Every single one!' : ratio >= 0.8 ? 'Fantastic hopping!' : ratio >= 0.5 ? 'Great work!' : 'Good try! Keep hopping!';
+  $('resTitle').textContent = title;
+  $('resLine').textContent = g.timed
+    ? (beat ? `All ${g.total} right in ${fmt(used)}, with ${fmt(g.limit - used)} to spare!` : `${correct} right out of ${g.total} in ${fmt(used)}.`)
+    : g.mode === 'retry' ? `You got ${correct} out of ${g.total} right this time.` : `You got ${correct} out of ${g.total} right first time.`;
+  const b = state.bests[g.mode];
+  $('resBest').hidden = !g.timed || !b;
+  if (g.timed && b) $('resBest').textContent = `Your best for ${CLOCKS[g.mode].name}: ${b.correct} right` + (b.correct === 20 ? ` in ${fmt(b.time)}` : '');
+  $('resBanner').hidden = true;
+  const starRow = $('resStars');
+  starRow.classList.toggle('many', g.total > 12);
+  let s = ''; for (let i = 0; i < g.total; i++) s += '<svg class="star-off"><use href="#starSym"/></svg>';
+  starRow.innerHTML = s;
+  $('resSticker').hidden = true;
+  const jk = JOKES[state.joke];
+  $('jokeQ').textContent = jk[0]; $('jokeA').textContent = jk[1]; $('jokeA').hidden = true; $('jokeBtn').hidden = false;
+  const missed = uniqueMissed(g);
+  $('reviewBtn').hidden = missed.length === 0;
+  $('reviewBtn').textContent = `Let's fix the tricky ones (${missed.length})`;
+  $('againBtn').classList.toggle('alt', missed.length > 0);
+  show('results');
+
+  // Show
+  await wait(350); if (my !== endToken) return;
+  const stars = starRow.querySelectorAll('svg');
+  for (let i = 0; i < correct; i++) {
+    stars[i].setAttribute('class', 'star-on lit'); sfx.ding(i);
+    await wait(reduced ? 0 : (g.total > 12 ? 70 : 120)); if (my !== endToken) return;
+  }
+  if (beat || ratio >= 0.9) { sfx.fanfare(); rain(140, PARTY); parade(); }
+  else if (ratio >= 0.6) { sfx.fanfare(); burst(innerWidth / 2, innerHeight * 0.35, 90, { emoji: PARTY }); }
+  else buddy(pick(ANIMALS), pick(['Practice makes purr-fect!', 'Keep hopping!', "You're getting there!"]));
+  if (record) { await wait(500); if (my !== endToken) return; $('resBanner').hidden = false; sfx.tada(); }
   if (got) {
-    st.hidden = false;
-    st.innerHTML = `<span class="big">${STICKERS[got.i]}</span><span>${upgraded ? 'Your sticker turned gold!' : got.gold ? 'A gold sticker for a perfect round!' : 'New sticker for your book!'}</span>`;
-  } else st.hidden = true;
-  const missed = game.results.filter(r => !r.ok);
-  const pr = $('resPractise');
-  pr.hidden = missed.length === 0;
-  pr.innerHTML = `<h3>Sums to practise</h3><ul>${missed.map(r => `<li>${r.q.solved}</li>`).join('')}</ul>`;
-  show('results'); sfx.fanfare();
+    await wait(700); if (my !== endToken) return;
+    sfx.drumroll(); await wait(reduced ? 300 : 850); if (my !== endToken) return;
+    const st = $('resSticker');
+    st.innerHTML = `<span class="big spin">${STICKERS[got.i]}</span><span>${upgraded ? 'Your sticker turned gold!' : got.gold ? 'A gold sticker for a perfect round!' : 'New sticker for your book!'}</span>`;
+    st.hidden = false; sfx.tada();
+    const [x, y] = centreOf(st.querySelector('.big')); burst(x, y, 50, { emoji: ['⭐', '✨'] });
+  }
+  if (lv.at > prevLv.at) { await wait(1200); if (my !== endToken) return; await levelUp(lv); }
 }
+function uniqueMissed(g) {
+  const seen = new Set();
+  return g.results.filter(r => !r.ok && !seen.has(r.q.key) && seen.add(r.q.key));
+}
+function levelUp(lv) {
+  return new Promise(res => {
+    $('lvTitle').textContent = `Level up! You're a ${lv.name}!`;
+    $('lvGift').textContent = `Your frog got ${lv.gift}!`;
+    $('levelup').hidden = false; sfx.fanfare(); setTimeout(() => ANIMALS[0].snd(), 900); rain(120, ['⭐', '🎉', '🐸', '✨']);
+    $('lvBtn').onclick = () => { $('levelup').hidden = true; sfx.boing(); res(); };
+  });
+}
+
+/* ---------- review the tricky ones ---------- */
+let rev = null;
+function clearFx() { parts = []; $('parade').hidden = true; $('buddy').classList.remove('show'); }
+function startReview() {
+  clearFx();
+  rev = { items: uniqueMissed(lastGame), i: 0 };
+  $('revBody').hidden = false; $('revDone').hidden = true;
+  show('review'); showRev();
+}
+function showRev() {
+  hopToken++;
+  const it = rev.items[rev.i], q = it.q, n = rev.items.length;
+  $('revCount').textContent = `Tricky one ${rev.i + 1} of ${n}`;
+  renderSum($('revSum'), q, String(q.ans), 'right');
+  const you = $('revYou'); you.textContent = '';
+  if (it.given) { you.append('You put '); const s = document.createElement('s'); s.textContent = it.given; you.append(s, `. The answer is ${q.ans}.`); }
+  else you.textContent = `The answer is ${q.ans}.`;
+  const tip = tipFor(q);
+  $('tipTitle').textContent = tip.title;
+  const ol = $('tipLines'); ol.innerHTML = '';
+  tip.lines.forEach(l => { const li = document.createElement('li'); li.textContent = l; ol.appendChild(li); });
+  $('revLineWrap').hidden = true; $('revMsg').textContent = ''; $('revShow').disabled = false;
+  $('revNext').textContent = rev.i === n - 1 ? 'Done' : 'Next tip';
+  sfx.whoosh();
+}
+function revNext() {
+  rev.i++;
+  if (rev.i < rev.items.length) { showRev(); return; }
+  hopToken++;
+  $('revBody').hidden = true; $('revDone').hidden = false; $('revCount').textContent = 'All the tips done!';
+  sfx.tada(); burst(innerWidth / 2, innerHeight * 0.35, 60, { emoji: PARTY }); buddy(ANIMALS[5], 'Hoo-ray! Twit-twoo!');
+}
+
+/* ---------- sticker book ---------- */
 function openBook() {
   let s = '';
   for (let i = 0; i < STICKERS.length; i++) {
@@ -717,10 +1273,11 @@ function openBook() {
   }
   $('slots').innerHTML = s;
   const n = state.stickers.length;
-  $('bookNote').textContent = n >= STICKERS.length ? 'Your sticker book is full! Get 10 out of 10 to turn stickers gold.'
-    : `${n} of ${STICKERS.length} stickers. Finish a round to win the next one. Get 10 out of 10 for a gold one.`;
+  $('bookNote').textContent = n >= STICKERS.length ? 'Your sticker book is full! Get every sum right to turn stickers gold.'
+    : `${n} of ${STICKERS.length} stickers. Finish a round to win the next one. Get every sum right for a gold one.`;
   show('book');
 }
+function goHome() { clearFx(); stopTimer(); hopToken++; endToken++; game = null; $('overlay').hidden = true; refreshHome(); show('home'); }
 
 /* ---------- wiring ---------- */
 const pad = $('pad');
@@ -730,13 +1287,27 @@ pad.addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   if (b.dataset.d) press(b.dataset.d); else if (b.dataset.act === 'del') del(); else check();
 });
-document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => { audio(); startRound(b.dataset.mode); }));
+$('home').addEventListener('click', e => { const b = e.target.closest('.mode'); if (b) { audio(); startRound(b.dataset.mode); } });
 $('helpBtn').addEventListener('click', onHelp);
-$('quitBtn').addEventListener('click', () => { hopToken++; game = null; refreshHome(); show('home'); });
-$('againBtn').addEventListener('click', () => startRound(game ? game.mode : 'add'));
-$('homeBtn').addEventListener('click', () => { game = null; refreshHome(); show('home'); });
+$('quitBtn').addEventListener('click', goHome);
+$('againBtn').addEventListener('click', () => { const g = lastGame; startRound(g ? (g.mode === 'retry' ? g.origin : g.mode) : 'add'); });
+$('homeBtn').addEventListener('click', goHome);
+$('reviewBtn').addEventListener('click', () => { endToken++; startReview(); });
+$('jokeBtn').addEventListener('click', () => { $('jokeA').hidden = false; $('jokeBtn').hidden = true; sfx.laugh(); });
+$('revShow').addEventListener('click', () => {
+  const q = rev.items[rev.i].q;
+  runHelp(q, $('revLine'), t => { $('revMsg').textContent = t; }, $('revShow')).then(ok => { if (ok) $('revMsg').textContent = `So the answer is ${q.ans}.`; });
+});
+$('revNext').addEventListener('click', revNext);
+$('retryBtn').addEventListener('click', () => {
+  const origin = lastGame.mode === 'retry' ? lastGame.origin : lastGame.mode;
+  startRound('retry', shuffle(rev.items.map(r => r.q)));
+  game.origin = origin;
+});
+$('revHome').addEventListener('click', goHome);
+$('revHome2').addEventListener('click', goHome);
 $('bookBtn').addEventListener('click', openBook);
-$('bookBack').addEventListener('click', () => { refreshHome(); show('home'); });
+$('bookBack').addEventListener('click', goHome);
 $('soundBtn').addEventListener('click', () => { state.sound = !state.sound; save(); refreshHome(); if (state.sound) sfx.tap(); });
 document.addEventListener('keydown', e => {
   if ($('play').hidden) return;
@@ -744,6 +1315,7 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'Backspace') { e.preventDefault(); del(); }
   else if (e.key === 'Enter') { e.preventDefault(); check(); }
 });
+window.addEventListener('resize', () => { if (fxRaf) fxSize(); });
 refreshHome(); show('home');
 })();
 </script>
