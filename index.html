@@ -212,10 +212,10 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 .name-input{font-family:var(--display);font-weight:800;font-size:28px;color:var(--ink);background:var(--paper);border:3px solid var(--shade);border-radius:18px;padding:6px 16px;width:100%;max-width:360px;-webkit-user-select:text;user-select:text}
 .name-input:focus{outline:4px solid var(--sun);outline-offset:2px}
 .swatches{display:flex;flex-wrap:wrap;gap:12px}
-.swatch{width:62px;height:62px;border-radius:50%;box-shadow:0 4px 0 var(--shade);border:4px solid var(--paper);position:relative}
+.swatch{width:62px;height:62px;border-radius:50%;box-shadow:0 4px 0 var(--shade);border:4px solid var(--paper);position:relative;display:grid;place-items:center}
 .swatch[aria-pressed="true"]{border-color:var(--ink);transform:scale(1.08)}
 .swatch:disabled{opacity:.35}
-.swatch .lock{position:absolute;inset:auto 0 -22px 0;font-size:12px;font-weight:700;color:var(--ink-soft);white-space:nowrap}
+.swatch .lock{font-size:22px;line-height:1}
 .outfits{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .outfit{display:flex;align-items:center;gap:10px;background:var(--paper);border-radius:18px;padding:10px 12px;box-shadow:0 4px 0 var(--shade);font-weight:700;font-size:17px;text-align:left;border:3px solid transparent}
 .outfit .ic{font-size:30px;line-height:1}
@@ -286,6 +286,20 @@ body.quake #app{animation:quake .25s linear 6}
 .overlay-t.zoom{animation:zoom .7s ease}
 .lv-card{background:var(--paper);border-radius:32px;padding:24px 30px;box-shadow:0 10px 0 var(--shade);text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;width:min(480px,calc(100% - 32px))}
 .lv-card svg{width:180px;height:205px;animation:idle 1.2s ease-in-out infinite}
+.lv-pics{display:flex;align-items:flex-end;justify-content:center;gap:4px}
+.lv-pic{height:220px;width:auto;max-width:45vw;object-fit:contain;animation:idle 1.4s ease-in-out infinite}
+/* Rosalie's own picture: chosen on the iPad, never part of the website */
+.rosalie{position:fixed;left:50%;bottom:0;z-index:61;pointer-events:none;display:flex;flex-direction:column;align-items:center;transform:translate(-50%,115%)}
+.rosalie img{height:min(52vh,440px);width:auto;max-width:90vw;object-fit:contain;filter:drop-shadow(0 8px 0 rgba(29,56,54,.18))}
+.rosalie.big img{height:min(70vh,600px)}
+.rosalie.go{animation:rosJump 2.6s ease forwards}
+.ros-say{font-family:var(--display);font-weight:800;font-size:clamp(28px,5vw,44px);background:var(--paper);color:var(--ink);border-radius:24px;padding:6px 22px;box-shadow:0 5px 0 var(--shade);white-space:nowrap;margin-bottom:-6px}
+.pic-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.pic-preview{height:120px;width:auto;max-width:40vw;object-fit:contain;background:var(--paper);border-radius:18px;box-shadow:0 4px 0 var(--shade);padding:4px}
+.pic-note{margin:0;font-size:16px;font-weight:700;color:var(--ink-soft);max-width:520px}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
+label.chip{display:inline-flex;align-items:center;cursor:pointer}
+@keyframes rosJump{0%{transform:translate(-50%,115%)}22%{transform:translate(-50%,-7%) scale(1.03)}32%{transform:translate(-50%,0)}42%{transform:translate(-50%,-5%)}52%{transform:translate(-50%,0)}84%{transform:translate(-50%,0)}100%{transform:translate(-50%,120%)}}
 .lv-card h2{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(32px,6vw,46px);color:var(--frog-dark);line-height:1.05;text-wrap:balance}
 .lv-card p{margin:0 0 8px;font-size:22px;font-weight:700}
 .lv-card .key{padding-inline:40px;min-height:64px}
@@ -302,7 +316,7 @@ body.quake #app{animation:quake .25s linear 6}
 @keyframes bob{from{transform:translateY(0) rotate(-8deg)}to{transform:translateY(-18px) rotate(8deg)}}
 @keyframes rise{from{opacity:1;transform:translate(-50%,-50%)}to{opacity:0;transform:translate(-50%,-180%)}}
 @keyframes zoom{0%{transform:scale(2.4);opacity:0}35%{transform:scale(1);opacity:1}100%{transform:scale(.9)}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.buddy.show{transform:translate(0,0)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.buddy.show{transform:translate(0,0)}.rosalie.go{transform:translate(-50%,0)}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -464,8 +478,18 @@ body.quake #app{animation:quake .25s linear 6}
         <input id="frogName" class="name-input" maxlength="14" autocomplete="off" autocapitalize="words" spellcheck="false">
         <h3 class="sub-h">Colour</h3>
         <div class="swatches" id="swatches"></div>
+        <p class="pic-note" id="swatchNote" hidden></p>
         <h3 class="sub-h" style="margin-top:22px">Outfits</h3>
         <div class="outfits" id="outfits"></div>
+        <h3 class="sub-h" style="margin-top:22px">Rosalie's picture</h3>
+        <p class="pic-note">Choose a picture of Rosalie from this iPad's photos and she'll jump in to celebrate at the end of each round. It stays on this iPad and isn't uploaded anywhere.</p>
+        <div class="pic-row">
+          <img id="picPreview" class="pic-preview" alt="Rosalie's picture" hidden>
+          <label class="chip" for="picInput" id="picChoose">Choose picture</label>
+          <input type="file" id="picInput" class="vh" accept="image/*">
+          <button class="chip" id="picRemove" hidden>Remove picture</button>
+        </div>
+        <p class="pic-note" id="picMsg" hidden></p>
       </div>
     </div>
   </section>
@@ -496,12 +520,13 @@ body.quake #app{animation:quake .25s linear 6}
 
 <canvas id="fx" aria-hidden="true"></canvas>
 <div class="fun" id="fun" hidden></div>
+<div class="rosalie" id="rosalie" hidden aria-hidden="true"><div class="ros-say" id="rosSay"></div><img id="rosImg" alt=""></div>
 <div class="buddy" id="buddy" aria-hidden="true"><span class="face"></span><span class="bubble"></span></div>
 <div class="parade" id="parade" hidden aria-hidden="true"></div>
 <div class="overlay" id="overlay" hidden><div class="overlay-t" id="overlayT"></div></div>
 <div class="overlay" id="levelup" hidden>
   <div class="lv-card">
-    <svg viewBox="-44 -72 88 100" aria-hidden="true"><use href="#frogSym" x="-44" y="-72" width="88" height="100"/></svg>
+    <div class="lv-pics"><img id="lvPic" class="lv-pic" alt="" hidden><svg viewBox="-44 -72 88 100" aria-hidden="true"><use href="#frogSym" x="-44" y="-72" width="88" height="100"/></svg></div>
     <h2 id="lvTitle"></h2>
     <p id="lvGift"></p>
     <p id="lvUnlock" hidden></p>
@@ -770,6 +795,7 @@ const sfx = {
   sneeze: () => { noise({ dur: 0.35, vol: 0.22, bp: 3200 }); voice({ type: 'square', f: [[0, 700], [0.25, 260]], dur: 0.3, vol: 0.08, lp: 2200 }); },
   buzz: dur => voice({ type: 'sawtooth', f: [[0, 230], [dur, 260]], dur, vol: 0.035, lp: 1800, vib: 45 }),
   sparkle: () => [0, 7, 12, 16, 19, 24].forEach((st, i) => voice({ f: [[0, NOTE(st + 12)]], dur: 0.12, vol: 0.07, at: i * 0.05 })),
+  cheer: () => { for (let i = 0; i < 6; i++) noise({ at: i * 0.06, dur: 0.9 - i * 0.08, vol: 0.05, bp: 900 + i * 350 }); [0, 4, 7, 12].forEach((st, i) => voice({ type: 'triangle', f: [[0, NOTE(st)]], dur: 0.25, vol: 0.08, at: 0.1 + i * 0.08 })); },
   pop: () => voice({ f: [[0, 900], [0.08, 300]], dur: 0.09, vol: 0.12 }),
   stomp: at => { voice({ f: [[0, 90], [0.2, 35]], dur: 0.25, vol: 0.3, at }); noise({ at, dur: 0.2, vol: 0.1, bp: 150 }); },
   disco: () => {
@@ -1555,12 +1581,18 @@ async function endRound() {
     stars[i].setAttribute('class', 'star-on lit'); sfx.ding(i);
     await wait(reduced ? 0 : (g.total > 12 ? 70 : 120)); if (my !== endToken) return;
   }
-  if (beat || ratio >= 0.9) { sfx.fanfare(); burst(innerWidth / 2, innerHeight * 0.35, 120, { emoji: PARTY }); parade(); }
+  const great = beat || ratio >= 0.9, hasPic = !!getPic();
+  if (great) { sfx.fanfare(); burst(innerWidth / 2, innerHeight * 0.35, 120, { emoji: PARTY }); if (!hasPic) parade(); }
   else if (ratio >= 0.6) { sfx.fanfare(); burst(innerWidth / 2, innerHeight * 0.35, 90, { emoji: PARTY }); }
-  else buddy(pick(ANIMALS), pick(['Practice makes purr-fect!', 'Keep hopping!', "You're getting there!"]));
+  else if (!hasPic) buddy(pick(ANIMALS), pick(['Practice makes purr-fect!', 'Keep hopping!', "You're getting there!"]));
+  if (hasPic) {
+    const words = perfect ? 'I got them ALL!' : great ? 'Woohoo! I did it!' : ratio >= 0.6 ? 'Yes! Go me!' : "I'll get them next time!";
+    await wait(300); if (my !== endToken) return;
+    await rosalieJump(great, words); if (my !== endToken) return;
+  }
   if (unlocked(220, state.stars) && ratio >= 0.6) { const fresh = markSeen('fireworks'); fireworksShow(4); if (fresh) banners.push(['New surprise found: Fireworks Finale!', 'alt']); }
-  // Bonus surprise, every round, once the parade has gone
-  await wait(reduced ? 600 : 3300); if (my !== endToken) return;
+  // Bonus surprise, every round, once the parade (or Rosalie) has gone
+  await wait(reduced ? 600 : hasPic ? 500 : 3300); if (my !== endToken) return;
   const sur = pickSurprise();
   if (await runSurprise(sur, g)) banners.push([`New surprise found: ${sur.name}! (${SURPRISES.filter(x => state.seen[x.id]).length} of ${SURPRISES.length})`, 'alt']);
   if (my !== endToken) return;
@@ -1586,6 +1618,7 @@ function uniqueMissed(g) {
 }
 function levelUp(lv) {
   return new Promise(res => {
+    const pic = getPic(); $('lvPic').hidden = !pic; if (pic) $('lvPic').src = pic;
     $('lvTitle').textContent = `Level up, ${NAME}! You're a ${lv.name}!`;
     speak(`Level up, ${NAME}! You're a ${lv.name}!`);
     $('lvGift').textContent = `${state.frogName} got ${lv.gift}!`;
@@ -1597,7 +1630,7 @@ function levelUp(lv) {
 
 /* ---------- review the tricky ones ---------- */
 let rev = null;
-function clearFx() { parts = []; $('parade').hidden = true; $('buddy').classList.remove('show'); funHide(); }
+function clearFx() { parts = []; $('parade').hidden = true; $('buddy').classList.remove('show'); funHide(); $('rosalie').hidden = true; }
 function startReview() {
   clearFx();
   rev = { items: uniqueMissed(lastGame), i: 0 };
@@ -1641,19 +1674,88 @@ function openBook() {
     : `${n} of ${STICKERS.length} stickers. Finish a round to win the next one. Get every sum right for a gold one.`;
   show('book');
 }
+/* ---------- Rosalie's picture (kept on this iPad only) ---------- */
+const PIC_KEY = 'froghop.picture';
+function getPic() { try { return localStorage.getItem(PIC_KEY) || ''; } catch (e) { return ''; } }
+// Shrinks the photo and makes a plain white or light background see-through.
+function preparePicture(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const sc = Math.min(1, 640 / Math.max(img.width, img.height)), w = Math.round(img.width * sc), h = Math.round(img.height * sc);
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      const x = c.getContext('2d'); x.drawImage(img, 0, 0, w, h);
+      try {
+        const d = x.getImageData(0, 0, w, h), p = d.data, light = i => p[i] > 228 && p[i + 1] > 228 && p[i + 2] > 228;
+        const corners = [0, w - 1, (h - 1) * w, h * w - 1].filter(k => light(k * 4)).length;
+        if (corners >= 3) {
+          const seen = new Uint8Array(w * h), stack = [];
+          for (let i = 0; i < w; i++) stack.push(i, (h - 1) * w + i);
+          for (let j = 0; j < h; j++) stack.push(j * w, j * w + w - 1);
+          while (stack.length) {
+            const k = stack.pop(); if (seen[k]) continue; seen[k] = 1;
+            const i = k * 4; if (!light(i)) continue;
+            p[i + 3] = 0;
+            const cx = k % w;
+            if (cx > 0) stack.push(k - 1); if (cx < w - 1) stack.push(k + 1);
+            if (k >= w) stack.push(k - w); if (k < w * (h - 1)) stack.push(k + w);
+          }
+          x.putImageData(d, 0, 0);
+        }
+      } catch (e) {}
+      URL.revokeObjectURL(url);
+      resolve(c.toDataURL('image/png'));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('not an image')); };
+    img.src = url;
+  });
+}
+function showPicControls() {
+  const pic = getPic();
+  $('picPreview').hidden = !pic; if (pic) $('picPreview').src = pic;
+  $('picRemove').hidden = !pic;
+  $('picChoose').textContent = pic ? 'Change picture' : 'Choose picture';
+}
+$('picInput').addEventListener('change', async e => {
+  const f = e.target.files && e.target.files[0]; e.target.value = '';
+  if (!f) return;
+  const msg = $('picMsg'); msg.hidden = false; msg.textContent = 'Getting the picture ready…';
+  try {
+    const data = await preparePicture(f);
+    try { localStorage.setItem(PIC_KEY, data); } catch (err) { msg.textContent = 'That picture is too big to save. Try a smaller one.'; return; }
+    msg.textContent = 'Saved! Rosalie will celebrate at the end of each round.';
+    showPicControls(); sfx.tada();
+  } catch (err) { msg.textContent = "That file isn't a picture. Try choosing a photo."; }
+});
+$('picRemove').addEventListener('click', () => {
+  try { localStorage.removeItem(PIC_KEY); } catch (e) {}
+  $('picMsg').hidden = false; $('picMsg').textContent = 'Picture removed.'; showPicControls();
+});
+// Rosalie jumps up from the bottom of the screen and cheers.
+async function rosalieJump(big, words) {
+  const pic = getPic(); if (!pic) return false;
+  const r = $('rosalie'); $('rosImg').src = pic; $('rosSay').textContent = words;
+  r.classList.toggle('big', big); r.classList.remove('go'); r.hidden = false; void r.offsetWidth; r.classList.add('go');
+  sfx.slideUp(); setTimeout(() => sfx.cheer(), 450);
+  await wait(2700); r.hidden = true; r.classList.remove('go');
+  return true;
+}
+
 /* ---------- dress-up room ---------- */
 // Whether an outfit is showing: the crown and party hat can't both be worn, and the crown wins.
 function wearing(k) {
   const lv = LEVELS.find(l => l.item === k), on = unlocked(lv.at) && state.look.wear[k] !== false;
   return k === 'hat' ? on && !wearing('crown') : on;
 }
-function openWardrobe() { renderWardrobe(); $('frogName').value = state.frogName; show('wardrobe'); }
+function openWardrobe() { renderWardrobe(); $('frogName').value = state.frogName; $('picMsg').hidden = true; showPicControls(); show('wardrobe'); }
 function renderWardrobe() {
   $('wardTitle').textContent = `Dress up ${state.frogName}`;
   $('swatches').innerHTML = Object.entries(PALETTES).map(([id, p]) => {
     const ok = unlocked(p.at), lv = LEVELS.filter(l => l.at <= p.at).pop();
-    return `<button class="swatch" data-color="${id}" style="background:${p.css}" aria-label="${p.name}" aria-pressed="${state.look.color === id}" ${ok ? '' : 'disabled'}>${ok ? '' : `<span class="lock">🔒 ${lv.name}</span>`}</button>`;
+    return `<button class="swatch" data-color="${id}" style="background:${p.css}" aria-label="${p.name}${ok ? '' : `, unlocks at ${lv.name}`}" aria-pressed="${state.look.color === id}" ${ok ? '' : 'disabled'}>${ok ? '' : '<span class="lock">🔒</span>'}</button>`;
   }).join('');
+  const locked = Object.values(PALETTES).filter(p => !unlocked(p.at)).map(p => `${p.name} unlocks at ${LEVELS.filter(l => l.at <= p.at).pop().name}`);
+  $('swatchNote').hidden = !locked.length; $('swatchNote').textContent = locked.join('. ') + '.';
   $('outfits').innerHTML = LEVELS.filter(l => l.item).map(l => {
     const [ic, name] = OUTFITS[l.item], ok = unlocked(l.at), on = wearing(l.item);
     return `<button class="outfit" data-item="${l.item}" aria-pressed="${on}" ${ok ? '' : 'disabled'}><span class="ic">${ok ? ic : '🔒'}</span><span>${name}<small>${ok ? (on ? 'Wearing it' : 'Tap to wear') : `Reach ${l.name}`}</small></span></button>`;
