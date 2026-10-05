@@ -16,7 +16,7 @@
 <body>
 <!-- game:start -->
 <title>Rosalie's Frog Hop</title>
-<meta name="build" content="2026-10-04 20:31:17">
+<meta name="build" content="2026-10-05 07:25:17">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Baloo+2:wght@600;700;800&display=swap">
@@ -259,7 +259,45 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 .tile{background:var(--paper);border-radius:22px;padding:12px 16px;box-shadow:0 5px 0 var(--shade);display:flex;flex-direction:column;gap:2px}
 .tile b{font-family:var(--display);font-weight:800;font-size:34px;line-height:1.1;color:var(--frog-dark);font-variant-numeric:tabular-nums}
 .tile span{font-weight:700;color:var(--ink-soft);font-size:16px}
-.records .sub-h{width:min(900px,100%)}
+.records .sub-h{width:min(900px,100%);font-size:26px}
+/* Trophy cabinet */
+.book-top h2.cabinet-h{font-size:clamp(32px,5.5vw,52px);background:linear-gradient(180deg,#FFE27A 0%,#E9B12A 55%,#B97F05 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1px #8A5E00;filter:drop-shadow(0 3px 0 rgba(138,94,0,.3))}
+.hall{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;width:min(900px,100%)}
+.plaque{position:relative;overflow:hidden;border-radius:18px;padding:10px;background:linear-gradient(145deg,#94612F,#5E3A1A);box-shadow:0 6px 0 #3F2711,0 12px 18px rgba(29,56,54,.22)}
+.plaque-in{border-radius:10px;padding:12px 14px;background:linear-gradient(160deg,#FFF3BF 0%,#F5C84A 36%,#D9A21E 62%,#F7DA7A 100%);display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;box-shadow:inset 0 0 0 2px rgba(255,255,255,.55),inset 0 0 0 4px rgba(138,94,0,.3)}
+.plaque .pt{font-size:40px;line-height:1}
+.plaque .pn{font-family:var(--display);font-weight:800;font-size:17px;letter-spacing:.09em;text-transform:uppercase;color:#5E3A00;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+.plaque .pv{font-family:var(--display);font-weight:800;font-size:48px;line-height:1.05;color:#3F2711;font-variant-numeric:tabular-nums;text-shadow:0 1px 0 rgba(255,255,255,.7),0 -1px 0 rgba(0,0,0,.12)}
+.plaque .pu{font-weight:700;color:#5E3A00;font-size:15px}
+.plaque .pd{margin-top:6px;padding-top:5px;width:85%;border-top:1px solid rgba(94,58,0,.35);font-size:14px;font-style:italic;font-weight:700;color:#5E3A00}
+.plaque::after{content:"";position:absolute;top:0;left:-60%;width:35%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.6),transparent);transform:skewX(-20deg);animation:shine 5s ease-in-out infinite;pointer-events:none}
+.plaque:nth-child(2n)::after{animation-delay:1.3s}.plaque:nth-child(3n)::after{animation-delay:2.4s}
+.plaque.empty{background:linear-gradient(145deg,#9AA9A5,#7A8985);box-shadow:0 6px 0 #5E6B68}
+.plaque.empty .plaque-in{background:linear-gradient(160deg,#F2F5F4,#D6DEDC);box-shadow:inset 0 0 0 2px rgba(255,255,255,.6)}
+.plaque.empty .pt{filter:grayscale(1);opacity:.5}
+.plaque.empty .pn,.plaque.empty .pv,.plaque.empty .pu,.plaque.empty .pd{color:#6E7D7A;text-shadow:none}
+.plaque.empty::after{display:none}
+.medals{display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:18px 10px;width:min(900px,100%)}
+.medal{display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px}
+.ribbon{display:flex;gap:3px;margin-bottom:-10px;position:relative;z-index:0}
+.ribbon i{width:18px;height:30px;background:var(--lake);clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%)}
+.ribbon i:last-child{background:var(--coral)}
+.disc{width:86px;height:86px;border-radius:50%;display:grid;place-items:center;font-size:38px;line-height:1;position:relative;z-index:1;box-shadow:0 4px 0 rgba(0,0,0,.2),inset 0 0 0 5px rgba(255,255,255,.35),inset 0 -6px 10px rgba(0,0,0,.18)}
+.medal.bronze .disc{background:radial-gradient(circle at 35% 30%,#F6CBA6,#C77D44 55%,#8E4F22)}
+.medal.silver .disc{background:radial-gradient(circle at 35% 30%,#FFFFFF,#C9D3D8 55%,#8E9DA5)}
+.medal.gold .disc{background:radial-gradient(circle at 35% 30%,#FFF4C2,#F5C443 55%,#B97F05)}
+.medal.platinum .disc{background:radial-gradient(circle at 35% 30%,#FFFFFF,#D8EEF6 40%,#9CC3D3 68%,#B9A8E6)}
+.medal.platinum .ribbon i{background:var(--berry)}.medal.platinum .ribbon i:last-child{background:var(--ink)}
+.medal b{font-family:var(--display);font-weight:800;font-size:16px;line-height:1.15;margin-top:4px}
+.medal small{font-size:13px;font-weight:700;color:var(--ink-soft);line-height:1.25}
+.medal .tier{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.medal .new{font-size:11px;font-weight:800;background:var(--coral);color:#fff;border-radius:999px;padding:1px 8px}
+.medal.locked .disc{background:#D7E2DF;box-shadow:inset 0 0 0 3px #C3D2CE}
+.medal.locked .disc span{filter:grayscale(1);opacity:.35}
+.medal.locked .ribbon i{background:#C3D2CE}
+.medal.locked b{color:var(--ink-soft)}
+.records .book-note{margin-top:4px}
+@keyframes shine{0%,55%{left:-60%}100%{left:130%}}
 .surprises{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;width:min(900px,100%)}
 .sur{display:flex;align-items:center;gap:12px;background:var(--paper);border-radius:20px;padding:10px 14px;box-shadow:0 5px 0 var(--shade);font-weight:700}
 .sur .ic{font-size:38px;line-height:1}
@@ -469,7 +507,7 @@ label.chip{display:inline-flex;align-items:center;cursor:pointer}
       <button id="bookBtn" class="chip">Sticker book &middot; <b id="stickerCount">0</b></button>
       <button id="tricksBtn" class="chip zap">💡 Tricks</button>
       <button id="factsBtn" class="chip zap">⚡ Fast facts</button>
-      <button id="recBtn" class="chip">Records</button>
+      <button id="recBtn" class="chip zap">🏆 Trophy cabinet</button>
       <span id="dayChip" class="chip flame" hidden></span>
       <button id="soundBtn" class="chip" aria-pressed="true">🔊 Sound on</button>
     </div>
@@ -645,15 +683,18 @@ label.chip{display:inline-flex;align-items:center;cursor:pointer}
   <section id="records" class="screen records" hidden>
     <div class="book-top">
       <button id="recBack" class="chip">Home</button>
-      <h2>Rosalie's records</h2>
+      <h2 class="cabinet-h">Rosalie's Trophy Cabinet</h2>
       <span style="width:84px"></span>
     </div>
-    <button class="chip" id="grownBtn">For grown-ups: what Rosalie finds tricky</button>
+    <h3 class="sub-h">🏆 Hall of Fame</h3>
+    <div class="hall" id="recHall"></div>
+    <h3 class="sub-h">🏅 Medals <span id="medalCount"></span></h3>
+    <div class="medals" id="recMedals"></div>
+    <h3 class="sub-h">📊 All-time totals</h3>
     <div class="tiles" id="recTiles"></div>
-    <h3 class="sub-h">Beat the clock</h3>
-    <div class="tiles" id="recClock"></div>
-    <h3 class="sub-h">Surprises found <span id="surCount"></span></h3>
+    <h3 class="sub-h">🎁 Surprises found <span id="surCount"></span></h3>
     <div class="surprises" id="recSurprises"></div>
+    <button class="chip" id="grownBtn">For grown-ups: what Rosalie finds tricky</button>
     <p class="book-note" id="buildNote"></p>
   </section>
 
@@ -868,19 +909,29 @@ function load() {
     voice: typeof s.voice === 'string' ? s.voice : '',
     facts: s.facts && typeof s.facts === 'object' ? s.facts : {},
     mist: Object.assign({ kinds: {}, pats: {} }, s.mist && typeof s.mist === 'object' ? s.mist : {}),
+    awards: s.awards && typeof s.awards === 'object' ? s.awards : {},
   };
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
 const state = load();
 state.totals.tamed = state.totals.tamed || 0;
 const today = () => Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000) / 864e5);
+// Dates are stored as YYYY-MM-DD on the iPad's own calendar, and shown like "Sun 5 Oct 2026".
+const isoToday = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+function fmtDate(iso) {
+  if (!iso) return 'Earlier';
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }).replace(',', '');
+}
+state.awards = state.awards && typeof state.awards === 'object' ? state.awards : {};
+state.totals.brave = state.totals.brave || 0;
 const dayKey = d => d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
 function bumpDay() {
   const today = dayKey(new Date()), yest = dayKey(new Date(Date.now() - 864e5));
   if (state.days.last === today) return;
   state.days.count = state.days.last === yest ? state.days.count + 1 : 1;
   state.days.last = today;
-  state.days.best = Math.max(state.days.best || 0, state.days.count);
+  if (state.days.count > (state.days.best || 0)) { state.days.best = state.days.count; state.days.bestDate = isoToday(); }
 }
 function dayStreak() {
   const today = dayKey(new Date()), yest = dayKey(new Date(Date.now() - 864e5));
@@ -2148,13 +2199,14 @@ async function endRound() {
     used = g.timeUp ? g.limit : Math.min(g.limit, (performance.now() - g.t0) / 1000);
     beat = perfect && !g.timeUp;
     const b = state.bests[g.mode]; g.prevBest = b ? { ...b } : null;
-    if (g.endless) { if (!b || correct > b.correct) { state.bests[g.mode] = { correct, time: g.limit }; record = correct > 0; } ratio = record ? 1 : 0.7; }
-    else if (!b || correct > b.correct || (correct === b.correct && used < b.time)) { state.bests[g.mode] = { correct, time: Math.round(used * 10) / 10 }; record = !!b || correct > 0; }
+    if (g.endless) { if (!b || correct > b.correct) { state.bests[g.mode] = { correct, time: g.limit, date: isoToday() }; record = correct > 0; } ratio = record ? 1 : 0.7; }
+    else if (!b || correct > b.correct || (correct === b.correct && used < b.time)) { state.bests[g.mode] = { correct, time: Math.round(used * 10) / 10, date: isoToday() }; record = !!b || correct > 0; }
   }
   state.totals.rounds++;
   if (perfect && g.mode !== 'retry') state.totals.perfect++;
   const newStreak = g.bestStreak > state.totals.bestStreak && g.bestStreak >= 3 ? g.bestStreak : 0;
-  state.totals.bestStreak = Math.max(state.totals.bestStreak, g.bestStreak);
+  if (g.bestStreak > state.totals.bestStreak) { state.totals.bestStreak = g.bestStreak; state.totals.bestStreakDate = isoToday(); }
+  if (braveAll) state.totals.brave++;
   let unseenJokes = JOKES.map((_, i) => i).filter(i => !state.jokesSeen.includes(i));
   if (!unseenJokes.length) { state.jokesSeen = []; unseenJokes = JOKES.map((_, i) => i); }
   state.joke = pick(unseenJokes); state.jokesSeen.push(state.joke);
@@ -2227,6 +2279,7 @@ async function endRound() {
   if (await runSurprise(sur, g)) banners.push([`New surprise found: ${sur.name}! (${SURPRISES.filter(x => state.seen[x.id]).length} of ${SURPRISES.length})`, 'alt']);
   if (my !== endToken) return;
   if (g.bonus) banners.push([`+${g.bonus} golden fly stars!`, 'gold']);
+  checkAwards(true).forEach(a => banners.push([`🏅 New medal: ${a.name}!`, 'gold']));
   for (const [text, cls] of banners) {
     await wait(550); if (my !== endToken) return;
     const el = document.createElement('div'); el.className = 'banner ' + cls; el.textContent = text; $('resBanners').appendChild(el); sfx.tada();
@@ -2435,6 +2488,46 @@ $('frogName').addEventListener('input', e => {
   state.frogName = v || 'Hoppy'; save(); $('wardTitle').textContent = `Dress up ${state.frogName}`;
 });
 
+/* ---------- medals ---------- */
+const beaten = id => { const b = state.bests[id]; return !!b && b.correct === 20 && b.time < CLOCKS[id].secs; };
+const sprintBest = () => (state.bests.t60 || {}).correct || 0;
+const LEVEL_TIERS = { Froglet: 'bronze', Hopper: 'bronze', Leaper: 'silver', 'Super Frog': 'silver', 'Frog Royalty': 'gold', 'Frog Legend': 'platinum' };
+const AWARDS = [
+  { id: 'round1', name: 'First Hop', e: '🐸', tier: 'bronze', how: 'Finish your first round', ok: () => state.totals.rounds >= 1 },
+  { id: 'sums25', name: '25 Sums Club', e: '✅', tier: 'bronze', how: 'Get 25 sums right first time', ok: () => state.totals.right >= 25 },
+  { id: 'sums100', name: '100 Sums Club', e: '💯', tier: 'silver', how: 'Get 100 sums right first time', ok: () => state.totals.right >= 100 },
+  { id: 'sums250', name: '250 Sums Club', e: '🌟', tier: 'gold', how: 'Get 250 sums right first time', ok: () => state.totals.right >= 250 },
+  { id: 'sums1000', name: '1000 Sums Legend', e: '👑', tier: 'platinum', how: 'Get 1000 sums right first time', ok: () => state.totals.right >= 1000 },
+  { id: 'perfect1', name: 'Perfect Round', e: '⭐', tier: 'bronze', how: 'Get every sum right first time in a round', ok: () => state.totals.perfect >= 1 },
+  { id: 'perfect10', name: 'Perfect Ten', e: '🌠', tier: 'gold', how: 'Get 10 perfect rounds', ok: () => state.totals.perfect >= 10 },
+  { id: 'brave1', name: 'Brave Brain', e: '🧠', tier: 'bronze', how: 'Do a whole round with no frog help', ok: () => state.totals.brave >= 1 },
+  { id: 'brave10', name: 'Super Brave Brain', e: '🦁', tier: 'silver', how: 'Do 10 rounds with no frog help', ok: () => state.totals.brave >= 10 },
+  { id: 'run10', name: 'Ten in a Row', e: '🔥', tier: 'silver', how: 'Get 10 in a row on your own', ok: () => state.totals.bestStreak >= 10 },
+  { id: 'run25', name: 'Unstoppable', e: '🚀', tier: 'gold', how: 'Get 25 in a row on your own', ok: () => state.totals.bestStreak >= 25 },
+  { id: 'days3', name: '3-Day Hopper', e: '📅', tier: 'bronze', how: 'Play 3 days in a row', ok: () => (state.days.best || 0) >= 3 },
+  { id: 'days7', name: 'Week Warrior', e: '🗓️', tier: 'silver', how: 'Play 7 days in a row', ok: () => (state.days.best || 0) >= 7 },
+  { id: 'days30', name: 'Month Marathon', e: '🏃', tier: 'platinum', how: 'Play 30 days in a row', ok: () => (state.days.best || 0) >= 30 },
+  { id: 'tamed1', name: 'Tricky Tamer', e: '🎯', tier: 'bronze', how: 'Tame a tricky one', ok: () => state.totals.tamed >= 1 },
+  { id: 'tamed20', name: 'Tricky Master', e: '🏹', tier: 'gold', how: 'Tame 20 tricky ones', ok: () => state.totals.tamed >= 20 },
+  { id: 'sprint10', name: 'Speedy 10', e: '💨', tier: 'bronze', how: 'Get 10 in a 1-minute Sprint', ok: () => sprintBest() >= 10 },
+  { id: 'sprint15', name: 'Speedy 15', e: '🏎️', tier: 'silver', how: 'Get 15 in a 1-minute Sprint', ok: () => sprintBest() >= 15 },
+  { id: 'sprint20', name: 'Speedy 20', e: '🌪️', tier: 'gold', how: 'Get 20 in a 1-minute Sprint', ok: () => sprintBest() >= 20 },
+  { id: 'beatwarm', name: 'Warm-up Winner', e: '⏱️', tier: 'bronze', how: 'Get all 20 in the 3-minute Warm-up', ok: () => beaten('t180') },
+  { id: 'beattest', name: 'Beat the Clock', e: '⏰', tier: 'gold', how: 'Get all 20 in the 2-minute Test speed', ok: () => beaten('t120') },
+  { id: 'beatlight', name: 'Lightning Legend', e: '⚡', tier: 'platinum', how: 'Get all 20 in 1½ minutes', ok: () => beaten('t90') },
+  ...FAMILIES.map(f => ({ id: 'fam_' + f.id, name: `${f.name} Master`, e: '⚡', tier: 'gold', how: `Make every ${f.name} fact gold`, ok: () => goldCount(f) === f.pairs.length })),
+  { id: 'allgold', name: 'Fast Facts Champion', e: '🏆', tier: 'platinum', how: `Make all ${ALL_PAIRS.length} key facts gold`, ok: () => goldTotal() === ALL_PAIRS.length },
+  { id: 'surprises', name: 'Surprise Hunter', e: '🎁', tier: 'gold', how: 'Find all 8 surprises', ok: () => SURPRISES.every(x => state.seen[x.id]) },
+  ...LEVELS.filter(l => l.item).map(l => ({ id: 'lv_' + l.item, name: l.name, e: OUTFITS[l.item][0], tier: LEVEL_TIERS[l.name], how: `Collect ${l.at} stars`, ok: () => state.stars >= l.at })),
+];
+// Awards anything newly earned. Dated today, or left undated for things earned before dates were kept.
+function checkAwards(dated) {
+  const got = [];
+  for (const a of AWARDS) if (!(a.id in state.awards) && a.ok()) { state.awards[a.id] = dated ? isoToday() : ''; got.push(a); }
+  if (got.length) save();
+  return got;
+}
+
 /* ---------- grown-ups: what she finds tricky ---------- */
 const PATTERN_NOTES = {
   off1: ['Often just 1 out', 'Usually a counting slip. Learning the facts by heart (Speed builders) fixes this better than counting more carefully.'],
@@ -2476,17 +2569,32 @@ $('gNext').addEventListener('click', e => { const b = e.target.closest('[data-st
 
 /* ---------- records ---------- */
 function openRecords() {
-  const t = state.totals, tiles = [
-    [t.right, 'sums right first time'], [t.rounds, 'rounds played'], [t.perfect, 'perfect rounds'],
-    [t.bestStreak, 'best run in a row'], [state.days.best || state.days.count || 0, 'most days in a row'], [state.stars, 'stars collected'],
-    [goldTotal() + ' / ' + ALL_PAIRS.length, 'fast facts gold'],
+  checkAwards(true);
+  const t = state.totals, clock = id => state.bests[id];
+  // Hall of Fame: her personal bests as engraved plaques, each with the date it was set.
+  const plaques = [
+    { e: '💨', name: 'Sprint', b: clock('t60'), v: b => b.correct, u: () => 'sums in a minute' },
+    ...['t180', 't120', 't90'].map(id => ({ e: id === 't90' ? '⚡' : '⏱️', name: CLOCKS[id].name, b: clock(id),
+      v: b => (b.correct === 20 && b.time < CLOCKS[id].secs) ? fmt(b.time) : `${b.correct}/20`,
+      u: b => (b.correct === 20 && b.time < CLOCKS[id].secs) ? 'all 20 sums' : `right in ${fmt(CLOCKS[id].secs)}` })),
+    { e: '🔥', name: 'Best run', b: t.bestStreak ? { n: t.bestStreak, date: t.bestStreakDate } : null, v: b => b.n, u: () => 'in a row on her own' },
+    { e: '📅', name: 'Most days', b: state.days.best ? { n: state.days.best, date: state.days.bestDate } : null, v: b => b.n, u: b => b.n === 1 ? 'day' : 'days in a row' },
+  ];
+  $('recHall').innerHTML = plaques.map(p => p.b
+    ? `<div class="plaque"><div class="plaque-in"><span class="pt">${p.e}</span><span class="pn">${p.name}</span><span class="pv">${p.v(p.b)}</span><span class="pu">${p.u(p.b)}</span><span class="pd">${p.b.date ? 'Set on ' : ''}${fmtDate(p.b.date)}</span></div></div>`
+    : `<div class="plaque empty"><div class="plaque-in"><span class="pt">${p.e}</span><span class="pn">${p.name}</span><span class="pv">–</span><span class="pu">&nbsp;</span><span class="pd">Not set yet. Go for it!</span></div></div>`).join('');
+  // Medals: earned ones first (newest first), then the ones still to win.
+  const earned = AWARDS.filter(a => a.id in state.awards).sort((a, b) => (state.awards[b.id] || '').localeCompare(state.awards[a.id] || ''));
+  const locked = AWARDS.filter(a => !(a.id in state.awards));
+  const isNew = a => state.awards[a.id] === isoToday();
+  $('medalCount').textContent = `${earned.length} of ${AWARDS.length}`;
+  $('recMedals').innerHTML = earned.map(a => `<div class="medal ${a.tier}"><div class="ribbon"><i></i><i></i></div><div class="disc"><span>${a.e}</span></div><b>${a.name}</b><span class="tier">${a.tier}</span>${isNew(a) ? '<span class="new">NEW TODAY</span>' : `<small>${fmtDate(state.awards[a.id])}</small>`}</div>`).join('')
+    + locked.map(a => `<div class="medal locked"><div class="ribbon"><i></i><i></i></div><div class="disc"><span>${a.e}</span></div><b>${a.name}</b><small>${a.how}</small></div>`).join('');
+  const tiles = [
+    [t.right, 'sums right first time'], [t.rounds, 'rounds played'], [t.perfect, 'perfect rounds'], [state.stars, 'stars collected'],
+    [goldTotal() + ' / ' + ALL_PAIRS.length, 'fast facts gold'], [t.tamed, 'tricky ones tamed'],
   ];
   $('recTiles').innerHTML = tiles.map(([n, l]) => `<div class="tile"><b>${n}</b><span>${l}</span></div>`).join('');
-  $('recClock').innerHTML = Object.entries(CLOCKS).map(([id, c]) => {
-    const b = state.bests[id];
-    if (c.endless) return `<div class="tile"><b>${b ? b.correct : '–'}</b><span>${c.name}: sums in a minute</span></div>`;
-    return `<div class="tile"><b>${!b ? '–' : b.correct === 20 ? fmt(b.time) : b.correct + '/20'}</b><span>${c.name}${b && b.correct === 20 ? ': all 20' : ''}</span></div>`;
-  }).join('');
   const found = SURPRISES.filter(x => state.seen[x.id]).length;
   $('surCount').textContent = `${found} of ${SURPRISES.length}`;
   $('recSurprises').innerHTML = SURPRISES.map(x => {
@@ -2580,6 +2688,7 @@ async function checkForUpdate() {
 document.addEventListener('visibilitychange', () => { if (!document.hidden) checkForUpdate(); });
 $('buildNote').textContent = BUILD ? `Game version: ${BUILD}` : '';
 
+checkAwards(false);
 refreshHome(); show('home');
 checkForUpdate();
 // Test hook: only used by automated tests, never set in normal play.

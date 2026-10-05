@@ -58,9 +58,16 @@ The game is built to make mistakes feel safe, because she's a bit of a perfectio
 - **Learning from the tricky ones:** goes through each sum she got wrong, showing what she typed ("Mistakes help us learn!"), the right answer and a tip for that exact sum. For sums up to 20 the matching ten-frame animation plays straight away, using her numbers; bigger sums get the frog's friendly jumps. Then she can try those sums again.
 - Sums she gets wrong are saved on the iPad and come back in later rounds until she gets them right first time.
 
+## Trophy cabinet
+
+The 🏆 Trophy cabinet button opens Rosalie's Trophy Cabinet:
+- **Hall of Fame:** her personal bests as engraved gold plaques with the date each was set (Sprint, Warm-up, Test speed, Lightning, best run in a row, most days in a row). Records set before dates were kept say "Earlier"; unset ones are grey with "Not set yet. Go for it!"
+- **Medals:** 36 bronze, silver, gold and platinum medals, earned for milestones (25, 100, 250 and 1000 sums right), perfect rounds, brave-brain rounds, runs in a row, days in a row, taming tricky ones, Sprint scores, beating each clock, making each fast-fact family gold, finding every surprise and reaching each level. Earned medals show their date ("NEW TODAY" on the day); medals still to win are faded, with what to do to earn them. A new medal also gets a "🏅 New medal!" banner at the end of the round.
+- All-time totals, surprises found, and the grown-ups page.
+
 ## For grown-ups
 
-Records → "For grown-ups: what Rosalie finds tricky" shows mistakes noted, tricky ones waiting and tamed, a suggested speed builder (the family with the most slips), her trickiest facts with their related take-aways, which kinds of sum go wrong most (adding or taking away across 10, missing numbers, word sums and so on), and patterns in her mistakes with what they usually mean: often 1 out (counting slips), adding instead of taking away, 10 out, or digits swapped.
+Trophy cabinet → "For grown-ups: what Rosalie finds tricky" shows mistakes noted, tricky ones waiting and tamed, a suggested speed builder (the family with the most slips), her trickiest facts with their related take-aways, which kinds of sum go wrong most (adding or taking away across 10, missing numbers, word sums and so on), and patterns in her mistakes with what they usually mean: often 1 out (counting slips), adding instead of taking away, 10 out, or digits swapped.
 
 ## Updates
 
