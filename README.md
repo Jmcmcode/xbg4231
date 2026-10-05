@@ -28,14 +28,19 @@ Her name is set once, as `NAME` near the top of the script in `index.html`. It a
 
 The sums are kept calm so she can concentrate: a right answer gets a soft chime, a few words ("Brilliant, Rosalie!") and a star; a wrong answer gets a gentle tone and "have another go". Nothing pops up, flies across or covers the sum while she's working, in any mode.
 
-All the fun comes when a round is finished, in this order:
-1. The stars light up one at a time with rising pings, and the voice reads out her result.
-2. **A new personal best in Beat the clock** gets its own moment first: a trophy bounces in with "NEW RECORD!" and the improvement in big numbers ("12 → 15", or "2:05 → 1:52" for the same score done faster), a drumroll, fanfare, fireworks and the voice cheering her on.
-3. A fanfare, with confetti and an animal parade for a great round.
-4. **A surprise, every round:** Fly Snack (the frog's tongue catches a fly, then it burps), Giant Boing, Sneezy Cow, Duck Stampede, Golden Fly (tap it for 3 bonus stars), Disco Frog, Dino Stomp, plus a Fireworks Finale after good rounds once she reaches Frog Royalty. Three are there from the start and the rest unlock with levels. Ones she hasn't found yet come up more often.
-5. Banners for anything special: best streak ever, a brave-brain round, fixed mistakes, new gold fast facts, a new surprise found, milestones (25, 50, 100, 150, 200 sums right and beyond), golden fly stars.
-6. A drumroll and a new sticker (gold for a perfect round), and a joke (64 of them, none repeated until she's seen them all).
-7. A level-up when she reaches one: her frog gets a new outfit and a new surprise unlocks.
+All the fun comes when a round is finished. It's graded on what she can control (effort, bravery, beating her own usual) rather than on the score alone, so a perfect score is never the only way to the big party:
+
+| Level | When | What she gets |
+|---|---|---|
+| Every round | For finishing | Stars counting up, her sticker, a joke and a kind word from Hoppy |
+| Well earned | Any one of: a whole round with no frog help, fixing a mistake herself, a new gold fact, taming a tricky one, beating her own recent average, or getting most right | **A surprise**, introduced with the reason ("🎁 A surprise for fixing a mistake yourself!") so she knows what she did well |
+| Big party | A new record, a round much better than her usual, or nearly all right | Fanfare, the animal parade (or Rosalie's big jump), fireworks once unlocked, then the surprise |
+
+"Her usual" is the average of her last few rounds of the same game, kept on the iPad.
+
+The order at the end of a round: stars light up one at a time and the voice reads out her result; a new record gets its trophy moment; the party or fanfare; the surprise (if earned); banners (best run, brave brain, fixed mistakes, gold facts, tamed tricky ones, new surprises, milestones, new medals); then the sticker, the joke, and a level-up when she reaches one.
+
+**Hoppy's encouragement** (against perfectionism) appears now and then rather than everywhere: a "thought for today" on the home screen, always after a tough round ("Tricky rounds grow your brain the most."), sometimes after a perfect one ("Perfect! And remember, mistakes are welcome here too."), at the end of the mistakes review, on the My tricky ones button ("Tricky means learning!") and in the Trophy Cabinet.
 
 ## Coming back
 
