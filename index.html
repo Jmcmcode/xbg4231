@@ -16,7 +16,7 @@
 <body>
 <!-- game:start -->
 <title>Rosalie's Frog Hop</title>
-<meta name="build" content="2026-10-05 08:09:01">
+<meta name="build" content="2026-10-05 08:21:57">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Baloo+2:wght@600;700;800&display=swap">
@@ -207,7 +207,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,68px);lin
 .newsticker .big.spin{animation:stickerIn .8s cubic-bezier(.3,1.6,.5,1)}
 .joke{flex:1;min-width:260px;background:var(--paper);border-radius:24px;padding:12px 18px;box-shadow:0 6px 0 var(--shade);text-align:left;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
 .joke b{font-family:var(--display);font-size:20px;color:var(--berry)}
-.joke p{margin:0;font-weight:700;font-size:19px}
+.joke p{margin:0;font-weight:700;font-size:19px;white-space:pre-line}
 .joke .ans{color:var(--frog-dark);font-size:21px}
 .res-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;align-items:center}
 .res-actions .key{padding-inline:34px;grid-column:auto;min-height:68px}
@@ -558,7 +558,7 @@ label.chip{display:inline-flex;align-items:center;cursor:pointer}
     <div class="res-row">
       <div class="newsticker" id="resSticker" hidden></div>
       <div class="joke" id="joke">
-        <b>Joke time, Rosalie!</b>
+        <b id="jokeLabel">Joke time, Rosalie!</b>
         <p id="jokeQ"></p>
         <button id="jokeBtn" class="chip">Tell me!</button>
         <p class="ans" id="jokeA" hidden></p>
@@ -859,6 +859,462 @@ const JOKES = [
   ['What is an owl\'s favourite game?', 'Hoo-dunnit!'],
   ['Why did the frog read so many books?', 'He was looking for a good ribbit!'],
 ];
+// More silly jokes, added later. Added at the end so the record of which she's seen still lines up.
+JOKES.push(...[
+[
+"Knock knock! Who's there? Lettuce. Lettuce who?",
+"Lettuce in, it's cold out here!"
+],
+[
+"Knock knock! Who's there? Boo. Boo who?",
+"Don't cry, it's only a joke!"
+],
+[
+"Knock knock! Who's there? Cow says. Cow says who?",
+"No silly, a cow says MOO!"
+],
+[
+"Knock knock! Who's there? Interrupting cow. Interrupting c…",
+"MOOOOO!"
+],
+[
+"Knock knock! Who's there? Atch. Atch who?",
+"Bless you!"
+],
+[
+"Knock knock! Who's there? Tank. Tank who?",
+"You're welcome!"
+],
+[
+"Knock knock! Who's there? Olive. Olive who?",
+"Olive you!"
+],
+[
+"Knock knock! Who's there? Banana. Banana who? Knock knock! Who's there? Orange. Orange who?",
+"Orange you glad I didn't say banana?"
+],
+[
+"Knock knock! Who's there? Owls say. Owls say who?",
+"Yes, they do!"
+],
+[
+"Knock knock! Who's there? Ice cream. Ice cream who?",
+"Ice cream if you don't let me in!"
+],
+[
+"Knock knock! Who's there? Wooden shoe. Wooden shoe who?",
+"Wooden shoe like to hear another joke?"
+],
+[
+"Knock knock! Who's there? Alpaca. Alpaca who?",
+"Alpaca the suitcase, you load the car!"
+],
+[
+"Knock knock! Who's there? Water. Water who?",
+"Water you doing in my pond?"
+],
+[
+"Knock knock! Who's there? Iva. Iva who?",
+"I've a sore hand from knocking!"
+],
+[
+"Knock knock! Who's there? Cash. Cash who?",
+"No thanks, I'd rather have peanuts!"
+],
+[
+"Knock knock! Who's there? Figs. Figs who?",
+"Figs the doorbell, it's broken!"
+],
+[
+"Knock knock! Who's there? Spell. Spell who?",
+"W. H. O."
+],
+[
+"What do frogs wear in summer?",
+"Jumpsuits!"
+],
+[
+"What is a frog's favourite sweet?",
+"Lollihops!"
+],
+[
+"What is a frog's favourite car?",
+"A Beetle!"
+],
+[
+"Why are frogs good at basketball?",
+"They always make the jump shots!"
+],
+[
+"What does a frog say when it washes the windows?",
+"Rub-it, rub-it!"
+],
+[
+"What do you get if you cross a frog with a dog?",
+"A croaker spaniel!"
+],
+[
+"What do you call a girl with a frog on her head?",
+"Lily!"
+],
+[
+"Why did the frog cross the road?",
+"To show everyone he wasn't chicken!"
+],
+[
+"What did the frog say when it caught a fly?",
+"That was fly-tastic!"
+],
+[
+"What do you call a cow in an earthquake?",
+"A milkshake!"
+],
+[
+"What do you call a sleeping bull?",
+"A bulldozer!"
+],
+[
+"Where do cows go on holiday?",
+"Moo York!"
+],
+[
+"What's the best way to count cows?",
+"With a cow-culator!"
+],
+[
+"What do you get if you cross a pig with a dinosaur?",
+"Jurassic pork!"
+],
+[
+"What do you call a sheep covered in chocolate?",
+"A candy baa!"
+],
+[
+"What is a sheep's favourite game?",
+"Baa-dminton!"
+],
+[
+"Why did the chicken cross the playground?",
+"To get to the other slide!"
+],
+[
+"Which side of a chicken has the most feathers?",
+"The outside!"
+],
+[
+"Why do ducks make great detectives?",
+"They always quack the case!"
+],
+[
+"What do you call a duck that steals things?",
+"A robber duck!"
+],
+[
+"What do you call a dog on a hot day?",
+"A hot dog!"
+],
+[
+"What do you call a dog that can tell the time?",
+"A watchdog!"
+],
+[
+"What is a cat's favourite button on the TV remote?",
+"Paws!"
+],
+[
+"What do you call a pile of cats?",
+"A meow-ntain!"
+],
+[
+"Why don't cats play games in the jungle?",
+"Too many cheetahs!"
+],
+[
+"What do you call an elephant that doesn't matter?",
+"An irrelephant!"
+],
+[
+"How do you get a squirrel to like you?",
+"Act like a nut!"
+],
+[
+"What do you call a bear with no ears?",
+"B!"
+],
+[
+"What do you call a deer with no eyes?",
+"No idea! (No-eye deer!)"
+],
+[
+"Why do giraffes have such long necks?",
+"Because their feet are so smelly!"
+],
+[
+"What's black and white and red all over?",
+"A sunburnt penguin!"
+],
+[
+"What do penguins wear on their heads?",
+"Ice caps!"
+],
+[
+"What do you call an alligator in a vest?",
+"An investigator!"
+],
+[
+"Why do bees hum?",
+"Because they don't know the words!"
+],
+[
+"What do you call a bee that can't make up its mind?",
+"A maybe!"
+],
+[
+"What do you call a fly without wings?",
+"A walk!"
+],
+[
+"What do you call a fish wearing a bow tie?",
+"Sofishticated!"
+],
+[
+"Where do fish keep their money?",
+"In the riverbank!"
+],
+[
+"Why do fish live in salt water?",
+"Because pepper makes them sneeze!"
+],
+[
+"Why don't oysters share their toys?",
+"Because they're shellfish!"
+],
+[
+"What do you call a dinosaur that crashes his car?",
+"Tyrannosaurus wrecks!"
+],
+[
+"What do you call a dinosaur with no eyes?",
+"Do-you-think-he-saurus!"
+],
+[
+"What do you call a pretend noodle?",
+"An impasta!"
+],
+[
+"Why did the tomato go red?",
+"It saw the salad dressing!"
+],
+[
+"What do you call cheese that isn't yours?",
+"Nacho cheese!"
+],
+[
+"What's orange and sounds like a parrot?",
+"A carrot!"
+],
+[
+"What do you call a sad strawberry?",
+"A blueberry!"
+],
+[
+"Why did the orange stop rolling down the hill?",
+"It ran out of juice!"
+],
+[
+"Why are grapes never lonely?",
+"They come in bunches!"
+],
+[
+"What do snowmen eat for breakfast?",
+"Ice Krispies!"
+],
+[
+"What's brown and sticky?",
+"A stick!"
+],
+[
+"What do you call a man with a spade on his head?",
+"Doug!"
+],
+[
+"What do you call a man without a spade on his head?",
+"Douglas!"
+],
+[
+"What do you call a train that sneezes?",
+"An achoo-choo train!"
+],
+[
+"How do trees get on the internet?",
+"They log in!"
+],
+[
+"What did the sea say to the beach?",
+"Nothing, it just waved!"
+],
+[
+"What do you call a boomerang that doesn't come back?",
+"A stick!"
+],
+[
+"Why can't a nose be 12 inches long?",
+"Because then it would be a foot!"
+],
+[
+"What has four wheels and flies?",
+"A rubbish lorry!"
+],
+[
+"Why did the bicycle fall over?",
+"It was two tyred!"
+],
+[
+"What did one wall say to the other wall?",
+"I'll meet you at the corner!"
+],
+[
+"What gets wetter the more it dries?",
+"A towel!"
+],
+[
+"What has hands but can't clap?",
+"A clock!"
+],
+[
+"Why did the golfer bring two pairs of trousers?",
+"In case he got a hole in one!"
+],
+[
+"What do you call a ghost's mum and dad?",
+"Transparents!"
+],
+[
+"Why are skeletons so calm?",
+"Nothing gets under their skin!"
+],
+[
+"Why didn't the skeleton go to the party?",
+"He had no body to go with!"
+],
+[
+"Why should you never give Elsa a balloon?",
+"Because she'll let it go!"
+],
+[
+"What did the big flower say to the little flower?",
+"Hi, bud!"
+],
+[
+"What do you call a funny mountain?",
+"Hill-arious!"
+],
+[
+"Why did the girl throw the clock out of the window?",
+"To see time fly!"
+],
+[
+"What did the left eye say to the right eye?",
+"Between you and me, something smells!"
+],
+[
+"Why did the boy take a ladder to school?",
+"He wanted to go to high school!"
+],
+[
+"What's a pirate's favourite letter?",
+"You'd think it's R, but their first love is the C!"
+],
+[
+"Why did the robot go on holiday?",
+"To recharge its batteries!"
+],
+[
+"What do you call a belt made of watches?",
+"A waist of time!"
+],
+[
+"What music do mummies like?",
+"Wrap music!"
+],
+[
+"Why did the cookie cry?",
+"Because its mum had been a wafer so long!"
+],
+[
+"How do you make seven even?",
+"Take away the s!"
+],
+[
+"What did the triangle say to the circle?",
+"You're pointless!"
+],
+[
+"What did the calculator say to the pupil?",
+"You can count on me!"
+],
+[
+"What is a maths teacher's favourite tree?",
+"Geometree!"
+],
+[
+"Why was the number 10 so good at football?",
+"Because it always scored a perfect ten!"
+]
+]);
+// Fun facts, shown instead of a joke about one round in three. Only well-established facts.
+const FACTS = [
+"A group of frogs is called an army.",
+"Frogs don't drink with their mouths. They soak up water through their skin!",
+"Frogs close their eyes when they swallow. Their eyeballs help push the food down!",
+"Some frogs freeze solid in winter and come back to life when it warms up in spring.",
+"The biggest frog in the world, the goliath frog, can be as heavy as a pet rabbit.",
+"Ancient Egyptians used a picture of a tadpole to mean the number 100,000.",
+"Octopuses have three hearts.",
+"A shrimp's heart is in its head.",
+"Butterflies taste things with their feet.",
+"Sea otters hold hands when they sleep so they don't float away from each other.",
+"Flamingos are pink because of the shrimps and algae they eat.",
+"Owls can't move their eyes, so they turn their whole head instead.",
+"A hummingbird's heart can beat more than 1,000 times a minute.",
+"Snails have thousands of tiny teeth.",
+"Elephants can't jump.",
+"A giraffe has seven bones in its neck. So do you!",
+"A cheetah can run about as fast as a car on a motorway.",
+"Bees have five eyes.",
+"A baby kangaroo is only about the size of a jelly bean when it's born.",
+"Cows have a stomach with four parts.",
+"Hippos can't swim. They walk or bounce along the bottom of the river instead.",
+"Starfish don't have a brain.",
+"A tortoise's shell is part of its skeleton. It can't climb out of it!",
+"Polar bears have black skin under their white fur.",
+"Sharks have been around for longer than trees.",
+"A group of flamingos is called a flamboyance.",
+"A group of owls is called a parliament.",
+"Koalas sleep for up to 20 hours a day.",
+"Penguins can't fly, but they're brilliant swimmers.",
+"A day on Venus is longer than a whole year on Venus!",
+"The Moon moves about 4 centimetres further away from Earth every year.",
+"Saturn is so light for its size that it would float in a giant bath of water.",
+"Lightning is hotter than the surface of the Sun.",
+"Scientists think it rains diamonds on the planets Neptune and Uranus.",
+"A rainbow is really a full circle. From the ground we only see half of it.",
+"Honey can last for thousands of years without going off.",
+"Bananas are berries, but strawberries aren't!",
+"The Eiffel Tower grows about 15 centimetres taller in summer, because metal stretches when it's hot.",
+"Your heart beats about 100,000 times a day.",
+"You can't hum while you're holding your nose. Try it!",
+"On a dice, the numbers on opposite sides always add up to 7.",
+"Four is the only number that has the same number of letters as its value: F-O-U-R.",
+"If you add up all the numbers from 1 to 10, you get 55.",
+"The Romans didn't have a number for zero.",
+"If you counted to a million without stopping, it would take about 11 days.",
+"We probably count in tens because we have ten fingers.",
+"A baker's dozen is 13, not 12.",
+"There are 1,440 minutes in a day.",
+"'Eleven' comes from an old word meaning 'one left over' (after counting to ten).",
+"Any number times zero is zero. Even a million times zero!"
+];
 const NAME = 'Rosalie';
 // Gentle encouragement from Hoppy. Kept short and rotated so it doesn't become wallpaper.
 const THOUGHTS = [
@@ -938,6 +1394,7 @@ function load() {
     days: s.days && typeof s.days === 'object' ? s.days : { last: '', count: 0 },
     joke: Number(s.joke) || 0,
     jokesSeen: Array.isArray(s.jokesSeen) ? s.jokesSeen : [],
+    factsSeen: Array.isArray(s.factsSeen) ? s.factsSeen : [],
     frogName: typeof s.frogName === 'string' && s.frogName.trim() ? s.frogName.trim().slice(0, 14) : 'Hoppy',
     look: s.look && typeof s.look === 'object' ? { color: s.look.color || 'green', wear: s.look.wear && typeof s.look.wear === 'object' ? s.look.wear : {} } : { color: 'green', wear: {} },
     totals: Object.assign({ right: 0, rounds: 0, perfect: 0, bestStreak: 0 }, s.totals && typeof s.totals === 'object' ? s.totals : {}),
@@ -2251,9 +2708,17 @@ async function endRound() {
   const newStreak = g.bestStreak > state.totals.bestStreak && g.bestStreak >= 3 ? g.bestStreak : 0;
   if (g.bestStreak > state.totals.bestStreak) { state.totals.bestStreak = g.bestStreak; state.totals.bestStreakDate = isoToday(); }
   if (braveAll) state.totals.brave++;
-  let unseenJokes = JOKES.map((_, i) => i).filter(i => !state.jokesSeen.includes(i));
-  if (!unseenJokes.length) { state.jokesSeen = []; unseenJokes = JOKES.map((_, i) => i); }
-  state.joke = pick(unseenJokes); state.jokesSeen.push(state.joke);
+  // Mostly a joke; about one round in three, a fun fact instead. Neither repeats until she's seen them all.
+  const fact = Math.random() < 0.33;
+  if (fact) {
+    let unseenFacts = FACTS.map((_, i) => i).filter(i => !state.factsSeen.includes(i));
+    if (!unseenFacts.length) { state.factsSeen = []; unseenFacts = FACTS.map((_, i) => i); }
+    g.fact = pick(unseenFacts); state.factsSeen.push(g.fact);
+  } else {
+    let unseenJokes = JOKES.map((_, i) => i).filter(i => !state.jokesSeen.includes(i));
+    if (!unseenJokes.length) { state.jokesSeen = []; unseenJokes = JOKES.map((_, i) => i); }
+    state.joke = pick(unseenJokes); state.jokesSeen.push(state.joke);
+  }
   save(); updateFrog();
   lastGame = g;
 
@@ -2288,8 +2753,15 @@ async function endRound() {
   let s = ''; for (let i = 0; i < shown; i++) s += '<svg class="star-off"><use href="#starSym"/></svg>';
   starRow.innerHTML = s;
   $('resSticker').hidden = true;
-  const jk = JOKES[state.joke];
-  $('jokeQ').textContent = jk[0]; $('jokeA').textContent = jk[1]; $('jokeA').hidden = true; $('jokeBtn').hidden = false;
+  if (g.fact != null) {
+    $('jokeLabel').textContent = `Did you know, ${NAME}? 🤓`;
+    $('jokeQ').textContent = 'Here’s a fun fact…'; $('jokeA').textContent = FACTS[g.fact]; $('jokeBtn').textContent = 'Tell me!';
+  } else {
+    const jk = JOKES[state.joke];
+    $('jokeLabel').textContent = `Joke time, ${NAME}!`;
+    $('jokeQ').textContent = jk[0].startsWith('Knock knock') ? jk[0].replace(/([!?.]) /g, '$1\n') : jk[0]; $('jokeA').textContent = jk[1]; $('jokeBtn').textContent = 'Tell me!';
+  }
+  $('jokeA').hidden = true; $('jokeBtn').hidden = false; g.factShown = g.fact != null;
   const missed = uniqueMissed(g);
   $('reviewBtn').hidden = missed.length === 0;
   $('reviewBtn').textContent = `Let's learn from the tricky ones (${missed.length})`;
@@ -2687,7 +3159,7 @@ $('quitBtn').addEventListener('click', goHome);
 $('againBtn').addEventListener('click', () => { const g = lastGame; startRound(g ? (g.mode === 'retry' ? g.origin : g.mode) : 'add'); });
 $('homeBtn').addEventListener('click', goHome);
 $('reviewBtn').addEventListener('click', () => { endToken++; startReview(); });
-$('jokeBtn').addEventListener('click', () => { $('jokeA').hidden = false; $('jokeBtn').hidden = true; sfx.laugh(); });
+$('jokeBtn').addEventListener('click', () => { $('jokeA').hidden = false; $('jokeBtn').hidden = true; if (lastGame && lastGame.factShown) sfx.sparkle(); else sfx.laugh(); });
 $('revShow').addEventListener('click', () => {
   const q = rev.items[rev.i].q;
   if (rev.show) { playShow($('revTF'), rev.show); return; }
